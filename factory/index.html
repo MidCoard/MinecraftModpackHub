@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf3ef" />
+    <meta
+      name="description"
+      content="Focess Minecraft 工具：按模组寻找整合包，使用 FactoryCanvas 规划与验证产线。"
+    />
+    <link rel="icon" href="/mark.svg" />
+    <title>FactoryCanvas · Minecraft 产线规划</title>
+  </head>
+  <body class="factory-page">
+    <a class="skip-link" href="#main" data-text="skip">跳到主要内容</a>
+    <header class="site-header">
+      <a
+        class="wordmark"
+        href="/"
+        data-aria="brandLabel"
+        aria-label="Focess Minecraft 首页"
+        ><svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z" fill="currentColor" />
+          <path
+            d="m3 9.5 13 7.5 13-7.5M16 17v13"
+            fill="none"
+            stroke="var(--page)"
+            stroke-width="2"
+          /></svg
+        ><span
+          >Focess<span class="brand-divider">/</span
+          ><span class="brand-sub">Minecraft</span></span
+        ></a
+      >
+      <nav data-aria="navLabel" aria-label="工具导航">
+        <a href="/modpacks/" data-text="navSearch">整合包搜索</a
+        ><a href="/factory/" data-text="navFactory">产线规划</a
+        ><button
+          type="button"
+          class="locale-toggle"
+          data-locale
+          aria-label="Switch to English"
+        >
+          EN
+        </button>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="factory-hero">
+        <div class="factory-heading">
+          <p class="eyebrow">
+            FACTORYCANVAS
+            <span class="preview-label" data-text="preview"
+              >浏览器规划 · 本地数据</span
+            >
+          </p>
+          <h1>
+            <span data-text="factoryHeadlineA">把配方，连成一条</span><br /><em
+              data-text="factoryHeadlineB"
+              >能运行的产线。</em
+            >
+          </h1>
+          <p class="intro-copy" data-text="factoryIntro">
+            从整合包的真实配方出发，规划物料如何流动、机器如何供电，以及整条产线能交付多少。
+          </p>
+          <div class="factory-actions">
+            <a class="primary-link" href="/factory/app/"
+              ><span data-text="openLocal">打开产线规划器</span
+              ><span aria-hidden="true">↗</span></a
+            ><a class="quiet-link" href="#getting-started" data-text="usage"
+              >如何使用 ↓</a
+            >
+          </div>
+          <p class="local-note" data-text="localNote">
+            直接读取导出的 JSON，无需运行 Java，也不上传整合包。
+          </p>
+        </div>
+        <div class="factory-board">
+          <div class="board-toolbar">
+            <span class="board-dot"></span><span>FactoryCanvas</span
+            ><span class="board-caption" data-text="diagram">产线示意</span>
+          </div>
+          <div class="large-flow">
+            <svg
+              class="flow-map"
+              viewBox="0 0 620 220"
+              role="img"
+              data-aria="flowLabel"
+              aria-label="原料经过加工后到达产物的产线示意"
+            >
+              <g fill="none" stroke="currentColor" stroke-width="2">
+                <path class="flow-line" d="M124 110h120m132 0h120" />
+                <path opacity=".3" d="M310 145v42H64V143" />
+                <rect x="24" y="74" width="100" height="72" rx="0" />
+                <rect x="244" y="66" width="132" height="88" rx="0" />
+                <rect x="496" y="74" width="100" height="72" rx="0" />
+              </g>
+              <g fill="currentColor">
+                <circle cx="124" cy="110" r="4" />
+                <circle cx="244" cy="110" r="4" />
+                <circle cx="376" cy="110" r="4" />
+                <circle cx="496" cy="110" r="4" />
+              </g>
+              <g
+                fill="currentColor"
+                text-anchor="middle"
+                font-size="16"
+                font-family="Fusion Pixel, monospace"
+              >
+                <text x="74" y="116" data-text="flowInput">原料</text>
+                <text x="310" y="116" data-text="flowProcess">加工</text>
+                <text x="546" y="116" data-text="flowOutput">产物</text>
+              </g>
+              <path
+                d="m185 105 7 5-7 5m250-10 7 5-7 5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
+          <div class="board-footer">
+            <span data-text="boardInput">物料与机器</span
+            ><span class="board-caption" data-text="boardOutput"
+              >连接 → 求解 → 验证</span
+            >
+          </div>
+        </div>
+      </section>
+      <section
+        class="capability-grid"
+        data-aria="capLabel"
+        aria-label="主要功能"
+      >
+        <article>
+          <img
+            class="capability-icon"
+            src="/art/kenney/table.png"
+            alt=""
+            width="44"
+            height="44"
+          />
+          <h2 data-text="capImport">导入真实配方</h2>
+          <p data-text="capImportCopy">
+            选择导出的整合包 JSON，或使用站点提供的配方数据。
+          </p>
+        </article>
+        <article>
+          <img
+            class="capability-icon"
+            src="/art/kenney/hammer_iron.png"
+            alt=""
+            width="44"
+            height="44"
+          />
+          <h2 data-text="capPlan">连接与求解</h2>
+          <p data-text="capPlanCopy">
+            设置供给、机器和目标产量，检查物料平衡、供电与设备需求。
+          </p>
+        </article>
+        <article>
+          <img
+            class="capability-icon"
+            src="/art/kenney/oven.png"
+            alt=""
+            width="44"
+            height="44"
+          />
+          <h2 data-text="capSim">验证实际执行</h2>
+          <p data-text="capSimCopy">
+            在实时仿真中观察物料流动与加工进度，保存方案并继续调整。
+          </p>
+        </article>
+      </section>
+      <section id="getting-started" class="getting-started">
+        <div>
+          <p class="eyebrow" data-text="usageLabel">在浏览器中开始</p>
+          <h2 data-text="usageTitle">你的整合包，留在本机。</h2>
+          <p data-text="usageCopy">
+            规划器仅在你选择后读取
+            JSON，计算和方案保存在浏览器中，不上传游戏文件。
+          </p>
+        </div>
+        <div class="usage-card">
+          <h3 data-text="runTitle">选择数据，开始规划</h3>
+          <p data-text="runCopy">
+            打开规划器，导入整合包 JSON，再选择配方与目标：
+          </p>
+          <p>JSON → 配方与物料 → 求解与仿真</p>
+          <p data-text="runThen">
+            保存方案版本，并定期导出方案备份。清除站点数据会删除浏览器中的副本。
+          </p>
+          <details>
+            <summary data-text="limitsTitle">当前支持范围</summary>
+            <p data-text="limitsCopy">
+              离线元信息读取支持 Forge、NeoForge 与 Fabric。游戏内采集适配目标为
+              Minecraft 1.20.1 / Forge
+              47.4.16，目前已编译验证，尚未完成发行前的游戏内验收；NeoForge 与
+              Fabric 运行时采集尚未实现。静态导入不等同于游戏最终配方。
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span
+        >Focess Minecraft tools<small
+          class="site-disclaimer"
+          data-text="disclaimer"
+          >非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。</small
+        ></span
+      >
+      <div>
+        <a href="https://focess.top/" data-text="homeLink">Focess 主页</a
+        ><a href="https://api.focess.top/">FocessAPI ↗</a
+        ><a href="/credits.txt" data-text="credits">素材与署名</a>
+      </div>
+    </footer>
+    <script type="module" src="/src/site/site.js"></script>
+  </body>
+</html>

@@ -18,19 +18,26 @@
     "searchbar": {
       "placeholder": "输入关键词以搜索 mods",
       "no-match": "无匹配模组",
-      "createby": "由 {0} 创建"
+      "createby": "由 {0} 创建",
+      "clear": "清空搜索",
+      "loading": "正在搜索模组…",
+      "error": "搜索失败，请检查网络后重试。",
+      "retry": "重试"
     },
     "modlist": {
       "added": "成功添加模组",
-      "removed": "成功移除模组"
+      "removed": "成功移除模组",
+      "remove": "移除 {0}"
     },
     "searchbtn": "搜索包含以上模组的整合包"
   },
   "header": {
     "toolbar": {
       "status": "状态",
-      "home": "首页"
-    }
+      "home": "首页",
+      "tools": "工具首页"
+    },
+    "language": "界面语言"
   },
   "status": {
     "title": {
@@ -38,7 +45,9 @@
       "availableModpacks": "可用整合包数量",
       "notAvailableModpacks": "不可用整合包",
       "notEmptyModpacks": "非空整合包"
-    }
+    },
+    "loading": "正在读取索引状态…",
+    "error": "索引状态读取失败，请重试。"
   },
   "search": {
     "no-match-modpack": "未找到符合要求的整合包",
@@ -47,6 +56,14 @@
     "mod-count": "模组数量：",
     "download-count": "下载量：",
     "create-time": "创建时间：",
-    "update-time": "更新时间："
+    "update-time": "更新时间：",
+    "loading": "正在查找匹配的整合包…",
+    "error": "整合包加载失败，请重试。",
+    "retry": "重试",
+    "more": "加载更多整合包"
+  },
+  "footer": {
+    "credits": "素材与署名",
+    "disclaimer": "非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。"
   }
 }

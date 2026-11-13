@@ -1,18 +1,31 @@
+@import "./theme.css";
+
 html,
 body {
   margin: 0;
-  overflow-y: hidden;
-  font-family: IPix, PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
-  @apply text-primary bg-primary/5;
-  overflow: hidden;
+
+  font-family:
+    "Segoe UI",
+    PingFang SC,
+    HarmonyOS_Regular,
+    Helvetica Neue,
+    Microsoft YaHei,
+    sans-serif !important;
+  color: var(--ink);
+  background: var(--page);
 }
 
 .font-nomc {
-  font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
+  font-family:
+    PingFang SC,
+    HarmonyOS_Regular,
+    Helvetica Neue,
+    Microsoft YaHei,
+    sans-serif !important;
 }
 
 body {
-  @apply overflow-auto h-100vh;
+  min-height: 100vh;
 }
 
 #app {
@@ -21,7 +34,6 @@ body {
 }
 
 * {
-  outline: none !important;
   @apply box-border;
   -webkit-tap-highlight-color: transparent;
 }
@@ -62,4 +74,38 @@ input::placeholder {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+html {
+  scrollbar-gutter: stable;
+  scrollbar-color: #81988a #ebebeb;
+}
+:focus-visible {
+  outline: 3px solid #296d4e;
+  outline-offset: 4px;
+}
+button,
+a,
+summary {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.header .left,
+.protips .title {
+  font-family: var(--pixel);
+  font-size: 24px;
+}
+.mcbutton {
+  font-family: var(--pixel);
 }

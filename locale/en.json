@@ -18,19 +18,26 @@
     "searchbar": {
       "placeholder": "Enter keywords to search mods",
       "no-match": "No matched mods",
-      "createby": "Create by {0}"
+      "createby": "Create by {0}",
+      "clear": "Clear search",
+      "loading": "Searching mods…",
+      "error": "Search failed. Check your connection and try again.",
+      "retry": "Try again"
     },
     "modlist": {
       "added": "Mod added",
-      "removed": "Mod removed"
+      "removed": "Mod removed",
+      "remove": "Remove {0}"
     },
     "searchbtn": "Checkout modpacks covered above mods"
   },
   "header": {
     "toolbar": {
       "status": "Status",
-      "home": "Home"
-    }
+      "home": "Home",
+      "tools": "All tools"
+    },
+    "language": "Language"
   },
   "status": {
     "title": {
@@ -38,7 +45,9 @@
       "availableModpacks": "Available Modpacks",
       "notAvailableModpacks": "Not Available Modpacks",
       "notEmptyModpacks": "Not Empty Modpacks"
-    }
+    },
+    "loading": "Loading index status…",
+    "error": "Could not load index status. Please try again."
   },
   "search": {
     "no-match-modpack": "No matched modpack found",
@@ -47,6 +56,14 @@
     "mod-count": "Mods Count: ",
     "download-count": "Downloads: ",
     "create-time": "Created: ",
-    "update-time": "Modified: "
+    "update-time": "Modified: ",
+    "loading": "Finding matching modpacks…",
+    "error": "Could not load modpacks. Please try again.",
+    "retry": "Try again",
+    "more": "Show more modpacks"
+  },
+  "footer": {
+    "credits": "Assets & credits",
+    "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft."
   }
 }
