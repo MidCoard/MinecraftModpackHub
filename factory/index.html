@@ -51,7 +51,7 @@
           <p class="eyebrow">
             FACTORYCANVAS
             <span class="preview-label" data-text="preview"
-              >本地应用 · 开发预览</span
+              >浏览器规划 · 本地数据</span
             >
           </p>
           <h1>
@@ -64,19 +64,15 @@
             从整合包的真实配方出发，规划物料如何流动、机器如何供电，以及整条产线能交付多少。
           </p>
           <div class="factory-actions">
-            <a
-              class="primary-link"
-              href="http://127.0.0.1:17865/"
-              target="_blank"
-              rel="noopener"
-              ><span data-text="openLocal">打开已启动的本地应用</span
+            <a class="primary-link" href="/factory/app/"
+              ><span data-text="openLocal">打开产线规划器</span
               ><span aria-hidden="true">↗</span></a
             ><a class="quiet-link" href="#getting-started" data-text="usage"
               >如何使用 ↓</a
             >
           </div>
           <p class="local-note" data-text="localNote">
-            需要先在本机启动。公开下载包尚未发布。
+            直接读取导出的 JSON，无需运行 Java，也不上传整合包。
           </p>
         </div>
         <div class="factory-board">
@@ -146,7 +142,7 @@
           />
           <h2 data-text="capImport">导入真实配方</h2>
           <p data-text="capImportCopy">
-            读取本地整合包与可识别脚本，也可导入游戏运行时采集的数据。
+            选择导出的整合包 JSON，或使用站点提供的配方数据。
           </p>
         </article>
         <article>
@@ -178,20 +174,21 @@
       </section>
       <section id="getting-started" class="getting-started">
         <div>
-          <p class="eyebrow" data-text="usageLabel">在自己的电脑上开始</p>
+          <p class="eyebrow" data-text="usageLabel">在浏览器中开始</p>
           <h2 data-text="usageTitle">你的整合包，留在本机。</h2>
           <p data-text="usageCopy">
-            这个网页介绍工具，不会读取你的文件，也不会把整合包或方案传到公共服务器。
+            规划器仅在你选择后读取
+            JSON，计算和方案保存在浏览器中，不上传游戏文件。
           </p>
         </div>
         <div class="usage-card">
-          <h3 data-text="runTitle">获得应用 JAR 后</h3>
+          <h3 data-text="runTitle">选择数据，开始规划</h3>
           <p data-text="runCopy">
-            安装 Java 17 或更新版本，在保留应用数据的目录中运行：
+            打开规划器，导入整合包 JSON，再选择配方与目标：
           </p>
-          <pre><code>java -jar planner-0.1.0.jar</code></pre>
+          <p>JSON → 配方与物料 → 求解与仿真</p>
           <p data-text="runThen">
-            再打开本地应用，选择实例目录，导入配方并开始规划。
+            保存方案版本，并定期导出方案备份。清除站点数据会删除浏览器中的副本。
           </p>
           <details>
             <summary data-text="limitsTitle">当前支持范围</summary>

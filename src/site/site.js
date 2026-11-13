@@ -17,7 +17,7 @@ const english = {
   intro:
     "Start with the mods you want to play. Then turn real recipes into a production line of your own.",
   online: "Online search",
-  local: "Local application",
+  local: "Browser planning",
   sample: "Which mods do you want to play?",
   searchTitle: "Find a pack that fits",
   searchCopy:
@@ -28,41 +28,41 @@ const english = {
     "Import pack recipes, connect machines and materials, calculate supply and power, then check the line in a live simulation.",
   factoryAction: "Explore FactoryCanvas",
   entryNote:
-    "Search runs online. Production planning runs on your own computer. Two tools, each with a clear purpose.",
+    "Find modpacks online and plan production in your browser. You keep your own recipe data and plans.",
   homeLink: "Focess home",
   flowInput: "Inputs",
   flowProcess: "Process",
   flowOutput: "Outputs",
-  preview: "Local app · development preview",
+  preview: "Browser planning · local data",
   factoryHeadlineA: "Turn your recipes into",
   factoryHeadlineB: "a working production line.",
   factoryIntro:
     "Work from the recipes in your own modpack. Plan material flow, machine power, and the output your line can deliver.",
-  openLocal: "Open the running local app",
+  openLocal: "Open production planner",
   usage: "How to use ↓",
   localNote:
-    "Start the app on your computer first. A public download is not available yet.",
+    "Read an exported JSON file. No Java application or modpack upload required.",
   diagram: "Production concept",
   boardInput: "Materials & machines",
   boardOutput: "Connect → solve → verify",
   capImport: "Import real recipes",
   capImportCopy:
-    "Read your local pack and supported scripts, or import data collected from the running game.",
+    "Choose an exported modpack JSON file, or load recipe data provided by the site.",
   capPlan: "Connect and solve",
   capPlanCopy:
     "Set supplies, machines, and output goals. Check material balance, power, and equipment requirements.",
   capSim: "Verify execution",
   capSimCopy:
     "Watch material movement and machine progress in live simulation. Save your plan and keep refining it.",
-  usageLabel: "GET STARTED ON YOUR COMPUTER",
+  usageLabel: "GET STARTED IN YOUR BROWSER",
   usageTitle: "Your modpack stays local.",
   usageCopy:
-    "This page introduces the tool. It does not read your files or send your pack or plans to a public server.",
-  runTitle: "Once you have the application JAR",
+    "The planner reads only JSON you choose. Calculation and saved plans stay in your browser; game files are not uploaded.",
+  runTitle: "Choose data and start planning",
   runCopy:
-    "Install Java 17 or newer. Run this command from the directory where you keep the application data:",
+    "Open the planner, import a modpack JSON file, then choose recipes and output goals:",
   runThen:
-    "Then open the local app, choose your instance, import recipes, and start planning.",
+    "Save plan versions and export backups regularly. Clearing site data removes the copies stored in your browser.",
   limitsTitle: "Current support",
   limitsCopy:
     "Offline metadata readers cover Forge, NeoForge, and Fabric. The game collector targets Minecraft 1.20.1 / Forge 47.4.16. It is compile-verified and has not completed in-game release acceptance. NeoForge and Fabric runtime collectors are not implemented. Static import is not the final in-game recipe set.",
