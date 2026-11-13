@@ -31,6 +31,7 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: "22"
+          package-manager-cache: false
       - name: Install locked dependencies
         run: npx --yes pnpm@7.33.7 install --frozen-lockfile
       - name: Verify behavior and build site
