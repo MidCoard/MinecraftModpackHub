@@ -1,5 +1,6 @@
 <script setup>
 import { createRequestGate, boundedRequest } from "@/utils/request-gate.js";
+import { readOverview } from "@/utils/overview.js";
 import MCFrame from "@/components/MCFrame.vue";
 import { ENV_BASE_URL } from "@/utils/env";
 import { onMounted, onBeforeUnmount, reactive, ref } from "vue";
@@ -41,11 +42,7 @@ const fetchData = async () => {
       { signal: operation.signal, timeout: 15000 },
     );
     if (!operation.current()) return;
-    for (const key of Object.keys(result)) {
-      if (!Number.isFinite(data[key]))
-        throw new Error("Invalid overview response");
-    }
-    for (const key of Object.keys(result)) result[key] = data[key];
+    Object.assign(result, readOverview(data));
   } catch (error) {
     if (operation.current()) failed.value = true;
   } finally {
@@ -61,9 +58,9 @@ const fetchData = async () => {
         t("header.toolbar.home")
       }}</RouterLink>
     </Teleport>
-    <p v-if="loading" role="status">{{ t("search.loading") }}</p>
+    <p v-if="loading" role="status">{{ t("status.loading") }}</p>
     <p v-else-if="failed" role="alert">
-      {{ t("search.error") }}
+      {{ t("status.error") }}
       <button type="button" @click="fetchData">{{ t("search.retry") }}</button>
     </p>
     <div v-else class="status-wrapper">

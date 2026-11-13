@@ -1,12 +1,33 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { modIds } from "../src/utils/mod-ids.js";
+import { readOverview } from "../src/utils/overview.js";
 import {
   createRequestGate,
   readModSelection,
   boundedRequest,
   moveActive,
 } from "../src/utils/request-gate.js";
+
+test("index counts accept numeric JSON and decimal strings while rejecting missing or corrupt data", () => {
+  const counts = {
+    availableMods: 123,
+    availableModpacks: 45,
+    notAvailableModpacks: 0,
+    notEmptyModpacks: 40,
+  };
+  assert.deepEqual(readOverview(counts), counts);
+  assert.deepEqual(
+    readOverview(
+      Object.fromEntries(
+        Object.entries(counts).map(([key, value]) => [key, String(value)]),
+      ),
+    ),
+    counts,
+  );
+  for (const value of [null, undefined, "", "bad", -1, Infinity, true])
+    assert.throws(() => readOverview({ ...counts, availableMods: value }));
+});
 test("malformed selections cannot become external navigation or injection", () => {
   for (const value of [
     "[]",

@@ -45,7 +45,9 @@
       "availableModpacks": "Available Modpacks",
       "notAvailableModpacks": "Not Available Modpacks",
       "notEmptyModpacks": "Not Empty Modpacks"
-    }
+    },
+    "loading": "Loading index status…",
+    "error": "Could not load index status. Please try again."
   },
   "search": {
     "no-match-modpack": "No matched modpack found",
