@@ -1,24 +1,218 @@
-<!DOCTYPE html>
-<html lang="zh_cn">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" href="/images/favicon.ico" />
-  <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
-  <title>MinecraftModpackHub</title>
-  <meta name="theme-color" content="#ebebeb" />
-  <!-- <meta http-equiv="Expires" content="0" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Cache-control" content="no-cache" />
-  <meta http-equiv="Cache" content="no-cache" /> -->
-  <link rel="stylesheet" href="./fonts/IPix/font.css">
-  <!-- Coded by 戴兜<daidr> with love -->
-</head>
-
-<body>
-  <div id="app"></div>
-  <div id="teleports"></div>
-  <script type="module" src="/src/main.js"></script>
-</body>
-
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#edf3ef" />
+    <meta
+      name="description"
+      content="Focess Minecraft 工具：按模组寻找整合包，使用 FactoryCanvas 规划与验证产线。"
+    />
+    <link rel="icon" href="/mark.svg" />
+    <title>Focess Minecraft · 找整合包，规划产线</title>
+  </head>
+  <body class="tools-page">
+    <a class="skip-link" href="#main" data-text="skip">跳到主要内容</a>
+    <header class="site-header">
+      <a
+        class="wordmark"
+        href="/"
+        data-aria="brandLabel"
+        aria-label="Focess Minecraft 首页"
+        ><svg viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z" fill="currentColor" />
+          <path
+            d="m3 9.5 13 7.5 13-7.5M16 17v13"
+            fill="none"
+            stroke="var(--page)"
+            stroke-width="2"
+          /></svg
+        ><span
+          >Focess<span class="brand-divider">/</span
+          ><span class="brand-sub">Minecraft</span></span
+        ></a
+      >
+      <nav data-aria="navLabel" aria-label="工具导航">
+        <a href="/modpacks/" data-text="navSearch">整合包搜索</a
+        ><a href="/factory/" data-text="navFactory">产线规划</a
+        ><button
+          type="button"
+          class="locale-toggle"
+          data-locale
+          aria-label="Switch to English"
+        >
+          EN
+        </button>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="intro">
+        <p class="eyebrow">FOCESS / MINECRAFT TOOLS</p>
+        <h1>
+          <span data-text="headlineA">找一个整合包。</span><br /><span
+            class="headline-second"
+            data-text="headlineB"
+            >搭一座自己的工厂。</span
+          >
+        </h1>
+        <p class="intro-copy" data-text="intro">
+          从想玩的模组出发，找到合适的世界。再把真实配方，连成自己的产线。
+        </p>
+        <svg class="world-art" viewBox="0 0 360 270" aria-hidden="true">
+          <defs>
+            <pattern
+              id="grass"
+              width="64"
+              height="64"
+              patternUnits="userSpaceOnUse"
+            >
+              <image href="/art/kenney/grass_top.png" width="64" height="64" />
+            </pattern>
+            <g id="block">
+              <path d="m0 32 64-32 64 32-64 32Z" fill="url(#grass)" />
+              <path d="m0 32 64 32v48L0 80Z" fill="#936441" />
+              <path d="m64 64 64-32v48l-64 32Z" fill="#6f4b35" />
+              <path d="m0 32 64 32v9L0 41Z" fill="#608a3e" />
+              <path d="m64 64 64-32v9L64 73Z" fill="#426c31" />
+              <path d="m12 57 10 5v8l-10-5m30 14 9 4v8l-9-4" fill="#b48251" />
+            </g>
+          </defs>
+          <path
+            d="M18 47h40V31h45v16h28v18H18ZM248 22h34V10h35v12h24v17h-93Z"
+            fill="#fff9e8"
+          />
+          <use href="#block" x="48" y="105" />
+          <use href="#block" x="176" y="105" />
+          <use href="#block" x="112" y="137" />
+          <use href="#block" x="112" y="73" />
+          <path d="m167 87 13 6v53l-13-6Z" fill="#775035" />
+          <path d="m180 93 11-6v53l-11 6Z" fill="#513e2c" />
+          <path d="m137 67 43-22 43 22-43 22Z" fill="#88aa51" />
+          <path d="m137 67 43 22v33l-43-22Z" fill="#557b38" />
+          <path d="m180 89 43-22v33l-43 22Z" fill="#3e6530" />
+          <path d="m148 37 32-16 32 16-32 16Z" fill="#9fbb5d" />
+          <path d="m148 37 32 16v31l-32-16Z" fill="#66883e" />
+          <path d="m180 53 32-16v31l-32 16Z" fill="#4c7335" />
+        </svg>
+      </section>
+      <section
+        class="tool-grid"
+        data-aria="toolsLabel"
+        aria-label="Minecraft 工具"
+      >
+        <article class="tool-card discovery">
+          <div class="card-topline">
+            <span class="tool-label">MODPACK HUB</span
+            ><span class="availability"
+              ><i></i><span data-text="online">在线搜索</span></span
+            >
+          </div>
+          <a
+            href="/modpacks/"
+            class="discovery-art"
+            tabindex="-1"
+            aria-hidden="true"
+            ><div class="pixel-land">
+              <span></span><span></span><span></span><span></span><span></span
+              ><span></span><span></span>
+            </div>
+            <div class="search-sample">
+              <span class="search-glyph">⌕</span
+              ><span data-text="sample">想玩哪些模组？</span>
+            </div>
+            <div class="mod-chips">
+              <span>Create</span><span>GregTech</span
+              ><span>Applied Energistics 2</span>
+            </div></a
+          >
+          <div class="card-copy">
+            <h2 data-text="searchTitle">找到想玩的整合包</h2>
+            <p data-text="searchCopy">
+              选上喜欢的模组，寻找同时包含它们的整合包，查看版本、作者与下载来源。
+            </p>
+            <a class="primary-link" href="/modpacks/"
+              ><span data-text="searchAction">开始搜索</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </article>
+        <article class="tool-card production">
+          <div class="card-topline">
+            <span class="tool-label">FACTORYCANVAS</span
+            ><span class="availability local"
+              ><span data-text="local">本地应用</span></span
+            >
+          </div>
+          <div class="production-art" aria-hidden="true">
+            <div class="plot-grid"></div>
+            <svg
+              class="flow-map"
+              viewBox="0 0 620 220"
+              role="img"
+              data-aria="flowLabel"
+              aria-label="原料经过加工后到达产物的产线示意"
+            >
+              <g fill="none" stroke="currentColor" stroke-width="2">
+                <path class="flow-line" d="M124 110h120m132 0h120" />
+                <path opacity=".3" d="M310 145v42H64V143" />
+                <rect x="24" y="74" width="100" height="72" rx="0" />
+                <rect x="244" y="66" width="132" height="88" rx="0" />
+                <rect x="496" y="74" width="100" height="72" rx="0" />
+              </g>
+              <g fill="currentColor">
+                <circle cx="124" cy="110" r="4" />
+                <circle cx="244" cy="110" r="4" />
+                <circle cx="376" cy="110" r="4" />
+                <circle cx="496" cy="110" r="4" />
+              </g>
+              <g
+                fill="currentColor"
+                text-anchor="middle"
+                font-size="16"
+                font-family="Fusion Pixel, monospace"
+              >
+                <text x="74" y="116" data-text="flowInput">原料</text>
+                <text x="310" y="116" data-text="flowProcess">加工</text>
+                <text x="546" y="116" data-text="flowOutput">产物</text>
+              </g>
+              <path
+                d="m185 105 7 5-7 5m250-10 7 5-7 5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
+          <div class="card-copy">
+            <h2 data-text="factoryTitle">把产线算清楚</h2>
+            <p data-text="factoryCopy">
+              导入整合包配方，连接机器与物料，计算产能、供电和需求，再用实时仿真验证。
+            </p>
+            <a class="primary-link" href="/factory/"
+              ><span data-text="factoryAction">了解产线规划</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </article>
+      </section>
+      <p class="entry-note" data-text="entryNote">
+        搜索在线使用；产线规划在自己的电脑上运行。两种工具，各做擅长的事。
+      </p>
+    </main>
+    <footer class="site-footer">
+      <span
+        >Focess Minecraft tools<small
+          class="site-disclaimer"
+          data-text="disclaimer"
+          >非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。</small
+        ></span
+      >
+      <div>
+        <a href="https://focess.top/" data-text="homeLink">Focess 主页</a
+        ><a href="https://api.focess.top/">FocessAPI ↗</a
+        ><a href="/credits.txt" data-text="credits">素材与署名</a>
+      </div>
+    </footer>
+    <script type="module" src="/src/site/site.js"></script>
+  </body>
 </html>

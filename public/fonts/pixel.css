@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Fusion Pixel";
+  src: url("./fusion-pixel/fusion-pixel-12px-zh-hans.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

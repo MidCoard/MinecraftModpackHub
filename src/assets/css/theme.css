@@ -1,0 +1,18 @@
+@import url("/fonts/pixel.css");
+:root {
+  color-scheme: light;
+  --page: #e5e8d8;
+  --ink: #293128;
+  --muted: #54604c;
+  --line: #a9b399;
+  --moss: #365c2d;
+  --copper: #edbb78;
+  --panel: #f3ead2;
+  --stone: #353e37;
+  --pixel: "Fusion Pixel", "Microsoft YaHei", monospace;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  font-synthesis: none;
+  color: var(--ink);
+  background: var(--page);
+  scrollbar-color: #738063 var(--page);
+}

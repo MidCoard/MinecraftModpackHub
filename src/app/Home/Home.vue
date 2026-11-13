@@ -1,71 +1,70 @@
 <script setup>
-  import MCButton from "@/components/MCButton.vue";
-  import MCFrame from "@/components/MCFrame.vue";
-  import { useMessage } from "@/components/Message";
-  import SearchBar from "@/components/SearchBar.vue";
-  import { usePageStore } from "@/store/page";
-  import { ENV_BASE_URL } from "@/utils/env";
-  import { Icon } from "@iconify/vue";
-  import { onMounted, reactive, ref } from "vue";
-  import { useI18n } from "vue-i18n";
-  import { RouterLink, useRouter } from "vue-router";
+import { readModSelection } from "@/utils/request-gate.js";
+import MCButton from "@/components/MCButton.vue";
+import MCFrame from "@/components/MCFrame.vue";
+import { useMessage } from "@/components/Message";
+import SearchBar from "@/components/SearchBar.vue";
+import { ENV_BASE_URL } from "@/utils/env";
+import { Icon } from "@iconify/vue";
+import { reactive } from "vue";
+import { useI18n } from "vue-i18n";
+import { RouterLink, useRouter } from "vue-router";
 
-  const pageStore = usePageStore();
+const { success } = useMessage();
 
-  const { success } = useMessage();
+const strof = (str, maxlen) => {
+  if (str.length > maxlen) {
+    return str.substring(0, maxlen) + "...";
+  } else {
+    return str;
+  }
+};
 
-  const strof = (str, maxlen) => {
-    if (str.length > maxlen) {
-      return str.substring(0, maxlen) + "...";
-    } else {
-      return str;
-    }
-  };
+const router = useRouter();
 
-  const router = useRouter();
+const { t } = useI18n();
 
-  const { t } = useI18n();
+let savedMods = [];
+try {
+  savedMods = readModSelection(localStorage);
+} catch {}
+const modList = reactive(savedMods);
 
-  onMounted(async () => {
-    // pageStore.setPageLoadingState(true)
-    // const _result = await callbackUid(123456)
-    // uid.value = _result.data.uid
-    // pageStore.setPageLoadingState(false)
+const onModAdded = (mod) => {
+  // 检查是否有 id 重复的 mod
+  const _mod = modList.find((item) => item.id === mod.id);
+  if (!_mod) {
+    // 如果没有，就把 mod 添加到列表
+    modList.push(mod);
+    try {
+      localStorage.setItem("modList", JSON.stringify(modList));
+    } catch {}
+    success(t("home.modlist.added"));
+  }
+};
+
+const onModRemoveBtnClick = (modid) => {
+  const _modIndex = modList.findIndex((item) => item.id === modid);
+  if (_modIndex !== -1) {
+    modList.splice(_modIndex, 1);
+    try {
+      localStorage.setItem("modList", JSON.stringify(modList));
+    } catch {}
+    success(t("home.modlist.removed"));
+  }
+};
+
+const onSearchBtnClick = () => {
+  // get mod list
+  const modIdList = modList.map((item) => item.id);
+  const modIdString = modIdList.join(",");
+  router.push({
+    name: "search",
+    params: {
+      ids: modIdString,
+    },
   });
-
-  const modList = reactive(JSON.parse(localStorage.getItem("modList")) || []);
-
-  const onModAdded = (mod) => {
-    // 检查是否有 id 重复的 mod
-    const _mod = modList.find((item) => item.id === mod.id);
-    if (!_mod) {
-      // 如果没有，就把 mod 添加到列表
-      modList.push(mod);
-      localStorage.setItem("modList", JSON.stringify(modList));
-      success(t("home.modlist.added"));
-    }
-  };
-
-  const onModRemoveBtnClick = (modid) => {
-    const _modIndex = modList.findIndex((item) => item.id === modid);
-    if (_modIndex !== -1) {
-      modList.splice(_modIndex, 1);
-      localStorage.setItem("modList", JSON.stringify(modList));
-      success(t("home.modlist.removed"));
-    }
-  };
-
-  const onSearchBtnClick = () => {
-    // get mod list
-    const modIdList = modList.map((item) => item.id);
-    const modIdString = modIdList.join(",");
-    router.push({
-      name: "search",
-      params: {
-        ids: modIdString,
-      },
-    });
-  };
+};
 </script>
 
 <template>
@@ -81,10 +80,16 @@
   <SearchBar @add-mod="onModAdded"></SearchBar>
   <div class="mod-list">
     <MCFrame v-for="mod of modList" :key="mod.id" class="mod-item">
-      <div class="icon" @click="onModRemoveBtnClick(mod.id)">
+      <button
+        type="button"
+        class="icon"
+        @click="onModRemoveBtnClick(mod.id)"
+        :aria-label="t('home.modlist.remove', [mod.name])"
+      >
         <Icon icon="pixelarticons:close"></Icon>
-      </div>
+      </button>
       <img
+        alt=""
         class="image"
         :src="
           mod.logoUrl ||
@@ -107,50 +112,55 @@
 </template>
 
 <style scoped lang="scss">
-  .protips {
+.protips {
+  &:deep(.mcframe__main) {
+    @apply py-1 px-2 md:px-10;
+  }
+
+  .title {
+    @apply font-bold text-xl;
+  }
+}
+
+.icon {
+  border: 0;
+  background: transparent;
+  padding: 5px;
+}
+.mod-list {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  @apply gap-2;
+
+  .mod-item {
     &:deep(.mcframe__main) {
-      @apply py-1 px-2 md:px-10;
+      @apply flex p-1 pr-3 relative;
     }
 
-    .title {
-      @apply font-bold text-xl;
+    .image {
+      @apply w-90px h-90px flex-shrink-0 mr-2;
+      @apply object-cover;
     }
-  }
 
-  .mod-list {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-    @apply gap-2;
+    .detail {
+      @apply flex flex-col justify-between;
+    }
 
-    .mod-item {
-      &:deep(.mcframe__main) {
-        @apply flex p-1 pr-3 relative;
-      }
+    .icon {
+      @apply absolute top-0 right-0 text-lg;
+      @apply cursor-pointer transition;
 
-      .image {
-        @apply w-90px h-90px flex-shrink-0 mr-2;
-        @apply object-cover;
-      }
-
-      .detail {
-        @apply flex flex-col justify-between;
-      }
-
-      .icon {
-        @apply absolute top-0 right-0 text-lg;
-        @apply cursor-pointer transition;
-
-        &:hover {
-          @apply bg-red-700 text-white;
-        }
+      &:hover {
+        @apply bg-red-700 text-white;
       }
     }
   }
+}
 
-  .btn-wrapper {
-    @apply flex justify-center mt-4;
+.btn-wrapper {
+  @apply flex justify-center mt-4;
 
-    &:deep(.mcbutton__main) {
-      @apply py-1 px-2;
-    }
+  &:deep(.mcbutton__main) {
+    @apply py-1 px-2;
   }
+}
 </style>
