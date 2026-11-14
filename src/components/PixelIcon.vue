@@ -1,5 +1,14 @@
 <script setup>
-defineProps({ icon: { type: String, required: true } });
+import { computed } from "vue";
+import { pixelIcons } from "@/vendor/minecraft-ui/icons.mjs";
+const props = defineProps({ icon: { type: String, required: true } });
+const shape = computed(() =>
+  props.icon.endsWith(":close")
+    ? pixelIcons.close
+    : props.icon.endsWith(":external-link")
+      ? pixelIcons.external
+      : pixelIcons.search,
+);
 </script>
 <template>
   <svg
@@ -13,11 +22,6 @@ defineProps({ icon: { type: String, required: true } });
     stroke-width="2"
     stroke-linejoin="miter"
   >
-    <path v-if="icon.endsWith(':close')" d="m3 3 10 10M13 3 3 13" />
-    <path
-      v-else-if="icon.endsWith(':external-link')"
-      d="M8 2h6v6M14 2 7 9M5 3H2v11h11v-3"
-    />
-    <path v-else d="M7 13H2V4h12v3M5 4V2h6v2M10 8h4v4h-4zM13 12l2 3" />
+    <path :d="shape" />
   </svg>
 </template>

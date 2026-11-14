@@ -11,7 +11,7 @@
     <link rel="icon" href="/mark.svg" />
     <title>Focess Minecraft · 找整合包，规划产线</title>
   </head>
-  <body class="tools-page">
+  <body class="mc-ui tools-page">
     <a class="skip-link" href="#main" data-text="skip">跳到主要内容</a>
     <header class="site-header">
       <a
@@ -105,7 +105,7 @@
         data-aria="toolsLabel"
         aria-label="Minecraft 工具"
       >
-        <article class="tool-card discovery">
+        <article class="tool-card mc-frame discovery">
           <div class="card-topline">
             <span class="tool-label">MODPACK HUB</span
             ><span class="availability"
@@ -135,13 +135,15 @@
             <p data-text="searchCopy">
               选上喜欢的模组，寻找同时包含它们的整合包，查看版本、作者与下载来源。
             </p>
-            <a class="primary-link" href="/modpacks/"
+            <a
+              class="primary-link mc-button mc-button--primary"
+              href="/modpacks/"
               ><span data-text="searchAction">开始搜索</span
               ><span aria-hidden="true">↗</span></a
             >
           </div>
         </article>
-        <article class="tool-card production">
+        <article class="tool-card mc-frame production">
           <div class="card-topline">
             <span class="tool-label">FACTORYCANVAS</span
             ><span class="availability local"
@@ -193,7 +195,9 @@
             <p data-text="factoryCopy">
               导入整合包配方，连接机器与物料，计算产能、供电和需求，再用实时仿真验证。
             </p>
-            <a class="primary-link" href="/factory/"
+            <a
+              class="primary-link mc-button mc-button--primary"
+              href="/factory/"
               ><span data-text="factoryAction">了解产线规划</span
               ><span aria-hidden="true">↗</span></a
             >

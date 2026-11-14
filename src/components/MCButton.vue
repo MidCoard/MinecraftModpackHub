@@ -1,142 +1,20 @@
 <script setup>
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-});
+defineProps({ disabled: { type: Boolean, default: false } });
 </script>
-
 <template>
   <button
     type="button"
-    class="mcbutton"
-    :class="{ disabled }"
+    class="mcbutton mc-button mc-button--primary"
     :disabled="disabled"
   >
-    <span class="mcbutton__tl mcbutton__border"></span>
-    <span class="mcbutton__t mcbutton__border"></span>
-    <span class="mcbutton__tr mcbutton__border"></span>
-    <span class="mcbutton__l mcbutton__border"></span>
-    <span class="mcbutton__r mcbutton__border"></span>
-    <span class="mcbutton__bl mcbutton__border"></span>
-    <span class="mcbutton__b mcbutton__border"></span>
-    <span class="mcbutton__br mcbutton__border"></span>
-    <span class="mcbutton__main">
-      <slot />
-    </span>
+    <span class="mcbutton__main"><slot /></span>
   </button>
 </template>
-
-<style lang="scss" scoped>
+<style scoped>
 .mcbutton {
-  border: 0;
   padding: 0;
-  background: transparent;
-  font: inherit;
-  @apply relative cursor-pointer;
-  &.disabled {
-    @apply cursor-default pointer-events-none;
-    opacity: 0.55;
-  }
-
-  .mcbutton__border {
-    @apply absolute;
-  }
-
-  .mcbutton__tl {
-    background-color: #fff;
-    @apply top-0 left-0 w-2px h-2px;
-  }
-
-  .mcbutton__t {
-    background-color: #fff;
-    @apply top-0 left-2px right-2px h-2px;
-  }
-
-  .mcbutton__tr {
-    background-color: #a8a8a8;
-    @apply top-0 right-0 w-2px h-2px;
-  }
-
-  .mcbutton__l {
-    background-color: #fff;
-    @apply top-2px left-0 bottom-2px w-2px;
-  }
-
-  .mcbutton__r {
-    background-color: #595959;
-    @apply top-2px right-0 bottom-2px w-2px;
-  }
-
-  .mcbutton__bl {
-    background-color: #a8a8a8;
-    @apply bottom-0 left-0 w-2px h-2px;
-  }
-
-  .mcbutton__b {
-    background-color: #595959;
-    @apply bottom-0 left-2px right-2px h-2px;
-  }
-
-  .mcbutton__br {
-    background-color: #595959;
-    @apply bottom-0 right-0 w-2px h-2px;
-  }
-
-  .mcbutton__main {
-    display: block;
-    @apply select-none text-center;
-    @apply m-0px;
-    @apply font-bold;
-    background: var(--action);
-    color: var(--on-action);
-  }
-
-  &:hover {
-    @apply opacity-90;
-  }
-
-  &:active,
-  &.disabled {
-    @apply opacity-100;
-
-    .mcbutton__tl {
-      background-color: #595959;
-    }
-
-    .mcbutton__t {
-      background-color: #595959;
-    }
-
-    .mcbutton__tr {
-      background-color: #a8a8a8;
-    }
-
-    .mcbutton__l {
-      background-color: #595959;
-    }
-
-    .mcbutton__r {
-      background-color: #fff;
-    }
-
-    .mcbutton__bl {
-      background-color: #a8a8a8;
-    }
-
-    .mcbutton__b {
-      background-color: #fff;
-    }
-
-    .mcbutton__br {
-      background-color: #fff;
-    }
-
-    .mcbutton__main {
-      background: var(--action-hover);
-      color: var(--on-action);
-    }
-  }
+}
+.mcbutton__main {
+  display: block;
 }
 </style>

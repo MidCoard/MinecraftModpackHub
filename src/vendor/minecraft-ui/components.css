@@ -1,0 +1,130 @@
+@import "./theme.css";
+
+/* Use native elements for behavior; these primitives work in React, Vue or HTML. */
+.mc-ui {
+  scrollbar-color: var(--mc-scroll-thumb) var(--mc-canvas);
+  scrollbar-width: auto;
+}
+.mc-ui ::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+.mc-ui ::-webkit-scrollbar-track {
+  background: var(--mc-canvas);
+}
+.mc-ui ::-webkit-scrollbar-thumb {
+  background: var(--mc-scroll-thumb);
+  border: 3px solid var(--mc-canvas);
+}
+.mc-ui ::-webkit-scrollbar-thumb:hover {
+  background: var(--mc-scroll-hover);
+}
+.mc-ui ::-webkit-scrollbar-thumb:active {
+  background: var(--mc-primary);
+}
+.mc-ui :where(button),
+.mc-button {
+  font: inherit;
+  font-weight: 600;
+  min-height: 36px;
+  padding: 6px 11px;
+  border: 2px solid var(--mc-control-border);
+  border-radius: 0;
+  background: var(--mc-button-bg, var(--mc-panel));
+  color: var(--mc-button-text, var(--mc-text));
+  box-shadow: var(--mc-button-frame, var(--mc-raised));
+  cursor: pointer;
+  text-decoration: none;
+}
+.mc-ui :where(button):hover:not(:disabled),
+.mc-button:hover:not(:disabled) {
+  background: var(--mc-button-hover, var(--mc-soft));
+  border-color: var(--mc-primary);
+}
+.mc-ui :where(button):active:not(:disabled),
+.mc-button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: var(--mc-recessed);
+}
+.mc-ui :where(button):disabled,
+.mc-button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.mc-button--primary {
+  --mc-button-bg: var(--mc-action);
+  --mc-button-hover: var(--mc-action-hover);
+  --mc-button-text: var(--mc-on-action);
+  --mc-button-frame: var(--mc-action-frame);
+}
+.mc-ui
+  :where(input:not([type="checkbox"]):not([type="file"]), select, textarea),
+.mc-input {
+  font: inherit;
+  min-height: 39px;
+  border: 2px solid var(--mc-control-border);
+  border-radius: 0;
+  padding: 7px 9px;
+  background: var(--mc-control);
+  color: var(--mc-text);
+  box-shadow: var(--mc-recessed);
+}
+.mc-ui :where(select) {
+  box-shadow: var(--mc-raised);
+  cursor: pointer;
+}
+.mc-ui :where(dialog),
+.mc-frame {
+  border: 2px solid var(--mc-edge);
+  border-radius: 0;
+  background: var(--mc-panel);
+  color: var(--mc-text);
+  box-shadow: var(--mc-raised);
+}
+.mc-popover {
+  box-shadow: var(--mc-popup-shadow);
+}
+.mc-slot {
+  border: 2px solid var(--mc-shadow);
+  border-right-color: var(--mc-highlight);
+  border-bottom-color: var(--mc-highlight);
+  border-radius: 0;
+  background: var(--mc-slot);
+  box-shadow: var(--mc-recessed);
+}
+.mc-tooltip {
+  border: 2px solid var(--mc-tooltip-border);
+  background: var(--mc-tooltip);
+  color: var(--mc-tooltip-text);
+  box-shadow: 0 0 0 2px var(--mc-edge);
+}
+.mc-ui :where(button, a, input, select, textarea, summary):focus-visible,
+.mc-button:focus-visible,
+.mc-input:focus-visible {
+  outline: 3px solid var(--mc-primary);
+  outline-offset: 3px;
+}
+.mc-ui :where(dialog)::backdrop {
+  background: var(--mc-scrim);
+}
+@media (forced-colors: active) {
+  .mc-ui :where(button),
+  .mc-button {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+  .mc-frame,
+  .mc-input,
+  .mc-slot,
+  .mc-tooltip {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-ui :where(button),
+  .mc-button {
+    transition: none;
+  }
+}

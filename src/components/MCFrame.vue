@@ -1,5 +1,5 @@
 <template>
-  <div class="mcframe">
+  <div class="mcframe mc-frame">
     <div class="mcframe__main"><slot /></div>
   </div>
 </template>
@@ -7,11 +7,6 @@
 .mcframe {
   position: relative;
   padding: 6px;
-  border: 2px solid var(--stone);
-  background: var(--panel);
-  box-shadow:
-    var(--raised),
-    0 3px 0 rgb(0 0 0 / 20%);
 }
 .mcframe__main {
   height: 100%;

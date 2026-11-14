@@ -1,43 +1,26 @@
+@import "../../vendor/minecraft-ui/components.css";
 :root {
-  color-scheme: light;
-  --page: #b0b0b0;
-  --ink: #262626;
-  --muted: #3f3f3f;
-  --line: #626262;
-  --moss: #284b1d;
-  --copper: #603609;
-  --panel: #c6c6c6;
-  --stone: #202020;
-  --well: #b0b0b0;
-  --control: #e1e1e1;
-  --highlight: #ffffff;
-  --shadow: #626262;
-  --action: #426b2e;
-  --action-hover: #365925;
-  --on-action: #ffffff;
-  --raised: inset 2px 2px 0 var(--highlight), inset -2px -2px 0 var(--shadow);
-  --recessed: inset 2px 2px 0 var(--shadow), inset -2px -2px 0 var(--highlight);
-  --pixel: "Bahnschrift", "Microsoft YaHei", sans-serif;
-  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  --page: var(--mc-canvas);
+  --ink: var(--mc-text);
+  --muted: var(--mc-muted);
+  --line: var(--mc-border);
+  --moss: var(--mc-primary);
+  --copper: light-dark(#603609, #edbb78);
+  --panel: var(--mc-panel);
+  --stone: var(--mc-edge);
+  --well: var(--mc-well);
+  --control: var(--mc-control);
+  --highlight: var(--mc-highlight);
+  --shadow: var(--mc-shadow);
+  --action: var(--mc-action);
+  --action-hover: var(--mc-action-hover);
+  --on-action: var(--mc-on-action);
+  --raised: var(--mc-raised);
+  --recessed: var(--mc-recessed);
+  --pixel: var(--mc-font-display);
+  font-family: var(--mc-font-body);
   font-synthesis: none;
   color: var(--ink);
   background: var(--page);
-  scrollbar-color: var(--shadow) var(--page);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --page: #242729;
-    --ink: #f3f3f3;
-    --muted: #d0d2d3;
-    --line: #737b80;
-    --moss: #b3e897;
-    --copper: #edbb78;
-    --panel: #3d4145;
-    --stone: #151719;
-    --well: #303438;
-    --control: #4c5156;
-    --highlight: #737b80;
-    --shadow: #202327;
-  }
+  scrollbar-color: var(--mc-scroll-thumb) var(--page);
 }

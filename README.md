@@ -26,3 +26,5 @@ pnpm build
 门户源码不复制另一仓库的构建产物；部署时组合这两个静态产物。本站不捆绑整合包、方案或本地游戏文件。
 
 搜索 UI 基于 daidr 的 MinecraftModpackHub，保留作者标记。站点的图块、工具插画和界面边框使用自绘 SVG/CSS，字体使用系统字体；不捆绑下载的 UI 材质、字体或 Minecraft 原版贴图与标志。真实整合包图标由搜索数据源提供，见 `public/credits.txt`。
+
+基础控件使用 FactoryCanvas 的 `@focess/minecraft-ui` 导出版本，位于 `src/vendor/minecraft-ui/`。该目录由源包的导出命令生成；更新主题时修改源包并重新导出，不手动维护另一份控件样式。
