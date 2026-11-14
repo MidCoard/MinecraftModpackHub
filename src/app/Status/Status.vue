@@ -1,96 +1,85 @@
 <script setup>
-import { createRequestGate, boundedRequest } from "@/utils/request-gate.js";
-import { readOverview } from "@/utils/overview.js";
+import { minecraft } from "@/api/minecraft.js";
+import { createRequestGate } from "@/utils/request-gate.js";
 import MCFrame from "@/components/MCFrame.vue";
-import { ENV_BASE_URL } from "@/utils/env";
-import { onMounted, onBeforeUnmount, reactive, ref } from "vue";
+import SearchFailure from "@/components/SearchFailure.vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useReCaptcha } from "vue-recaptcha-v3";
 import { RouterLink } from "vue-router";
-import axios from "axios";
-
-const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-
-const { t } = useI18n();
-
-const loading = ref(true),
-  failed = ref(false),
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha(),
+  { t, locale } = useI18n(),
+  loading = ref(true),
+  failure = ref(null),
+  result = ref(null),
   gate = createRequestGate();
-onMounted(() => fetchData());
-onBeforeUnmount(() => gate.cancel());
-
-const result = reactive({
-  availableMods: null,
-  availableModpacks: null,
-  notAvailableModpacks: null,
-  notEmptyModpacks: null,
-});
-
-const fetchData = async () => {
+const format = (value) =>
+  Number.isSafeInteger(value)
+    ? new Intl.NumberFormat(locale.value).format(value)
+    : t("search.approx", {
+        value: new Intl.NumberFormat(locale.value, {
+          notation: "compact",
+          maximumSignificantDigits: 3,
+        }).format(value),
+      });
+async function fetchData() {
   const operation = gate.begin();
   loading.value = true;
-  failed.value = false;
+  failure.value = null;
   try {
-    const token = await boundedRequest(async () => {
+    const counts = await minecraft.overview(async () => {
       await recaptchaLoaded();
-      return executeRecaptcha("mod_overview");
-    });
-    if (!operation.current()) return;
-    const { data } = await axios.post(
-      ENV_BASE_URL + "/v1/focessapi/minecraft/overview",
-      { recaptcha: token },
-      { signal: operation.signal, timeout: 15000 },
-    );
-    if (!operation.current()) return;
-    Object.assign(result, readOverview(data));
+      return executeRecaptcha("minecraft_overview");
+    }, operation.signal);
+    if (operation.current()) result.value = counts;
   } catch (error) {
-    if (operation.current()) failed.value = true;
+    if (operation.current()) failure.value = error;
   } finally {
     if (operation.current()) loading.value = false;
   }
-};
+}
+onMounted(fetchData);
+onBeforeUnmount(() => gate.cancel());
 </script>
-
 <template>
   <div>
-    <Teleport to="#header-slot">
-      <RouterLink to="/" class="header-link mc-button">{{
+    <Teleport to="#header-slot"
+      ><RouterLink to="/" class="header-link mc-button">{{
         t("header.toolbar.home")
-      }}</RouterLink>
-    </Teleport>
+      }}</RouterLink></Teleport
+    >
     <h1>{{ t("title.status") }}</h1>
     <MCFrame v-if="loading" class="status-state"
       ><p role="status">{{ t("status.loading") }}</p></MCFrame
     >
-    <MCFrame v-else-if="failed" class="status-state"
-      ><div role="alert">
-        {{ t("status.error") }}
-        <button type="button" @click="fetchData">
-          {{ t("search.retry") }}
-        </button>
-      </div></MCFrame
+    <MCFrame v-else-if="failure" class="status-state"
+      ><SearchFailure :error="failure" @retry="fetchData"
+    /></MCFrame>
+    <template v-else-if="result"
+      ><p class="catalog-total">
+        {{
+          t("status.total", {
+            mods: format(result.mods),
+            modpacks: format(result.modpacks),
+          })
+        }}
+      </p>
+      <div class="status-wrapper">
+        <MCFrame
+          v-for="provider in result.sources"
+          :key="provider.source"
+          class="status-item"
+          ><h2>{{ t("sources." + provider.source) }}</h2>
+          <p class="title">{{ t("status.mods") }}</p>
+          <p class="data">{{ format(provider.mods) }}</p>
+          <p class="title">{{ t("status.modpacks") }}</p>
+          <p class="data">{{ format(provider.modpacks) }}</p></MCFrame
+        >
+      </div>
+      <p class="source-hint">{{ t("status.countNote") }}</p></template
     >
-    <div v-else class="status-wrapper">
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.availableMods") }}</p>
-        <p class="data">{{ result.availableMods }}</p>
-      </MCFrame>
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.availableModpacks") }}</p>
-        <p class="data">{{ result.availableModpacks }}</p>
-      </MCFrame>
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.notAvailableModpacks") }}</p>
-        <p class="data">{{ result.notAvailableModpacks }}</p>
-      </MCFrame>
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.notEmptyModpacks") }}</p>
-        <p class="data">{{ result.notEmptyModpacks }}</p>
-      </MCFrame>
-    </div>
   </div>
 </template>
-
 <style scoped>
 h1 {
   margin: 6px 0 22px;

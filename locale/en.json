@@ -32,7 +32,8 @@
       "title": "Selected mods",
       "count": "{count} selected",
       "empty": "Search above to add your first mod.",
-      "hint": "Results include every mod in your selection. You can remove a mod to broaden the search."
+      "hint": "Results include every selected mod from the current source.",
+      "limit": "Select up to 256 mods."
     },
     "searchbtn": "Find matching modpacks"
   },
@@ -52,10 +53,14 @@
       "notEmptyModpacks": "Not Empty Modpacks"
     },
     "loading": "Loading index status…",
-    "error": "Could not load index status. Please try again."
+    "error": "Could not load index status. Please try again.",
+    "mods": "Collected mods",
+    "modpacks": "Collected modpacks",
+    "total": "Collected catalog: {mods} mods · {modpacks} modpacks",
+    "countNote": "Combined counts add both catalogs; equivalent projects on different sources are counted separately."
   },
   "search": {
-    "no-match-modpack": "No matched modpack found",
+    "no-match-modpack": "No matches in the collected catalog. Try fewer mods or a different source.",
     "latest-game-version": "Latest Game Version: ",
     "unknown": "Unknown",
     "mod-count": "Mods Count: ",
@@ -67,9 +72,60 @@
     "retry": "Try again",
     "more": "Show more modpacks",
     "title": "Matching modpacks",
-    "count": "{count} modpacks found"
+    "count": "{count} modpacks found",
+    "sort": "Sort by",
+    "direction": "Order",
+    "browse": "Browse all modpacks",
+    "retryAfter": "Try again in {seconds}s",
+    "approx": "≈ {value}",
+    "dependencies": "Dependency data",
+    "dependencyNote": "Matches use one selected version. Counts describe resolved declared mods, not every archive file or transitive dependency. Download counts remain separate for each source."
   },
   "footer": {
     "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft."
+  },
+  "sources": {
+    "label": "Source",
+    "curseforge": "CurseForge",
+    "modrinth": "Modrinth",
+    "all": "Both sources",
+    "selectionHint": "Selections are kept separately when you switch sources.",
+    "dependencyHint": "Matching all {count} selected mods from this source. Return home to change the selection."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "mods": "Mod result pages",
+    "packs": "Modpack result pages",
+    "range": "Showing {from}–{to}",
+    "emptyPage": "No entries on this page",
+    "noTotal": "The catalog does not provide a total result count."
+  },
+  "sort": {
+    "createdAt": "Creation time",
+    "updatedAt": "Update time",
+    "downloadCount": "Downloads",
+    "modCount": "Mod count",
+    "asc": "Ascending",
+    "desc": "Descending",
+    "knownCounts": "Mod-count sorting includes only packs with known counts."
+  },
+  "dependency": {
+    "unknown": "Not yet known",
+    "partial": "Partially resolved",
+    "complete": "Declared dependencies resolved"
+  },
+  "errors": {
+    "invalid_request": "These search settings are invalid. Adjust them and try again.",
+    "invalid_response": "The search response could not be read. Please try again.",
+    "verification_unavailable": "Verification could not finish. Check your connection and try again.",
+    "verification_expired": "Verification expired. Try again to obtain a new verification.",
+    "verification_failed": "Verification was rejected. Please try again.",
+    "rate_limited": "Too many requests. Wait before trying again.",
+    "service_unavailable": "The search service is temporarily unavailable. Please try again later.",
+    "api_unavailable": "This search API is not available yet. Please try again later.",
+    "network": "Could not connect to the search service. Please try again.",
+    "timeout": "The search request timed out. Please try again.",
+    "selection_storage": "The selection could not be saved in this browser."
   }
 }

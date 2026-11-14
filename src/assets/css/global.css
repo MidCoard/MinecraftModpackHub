@@ -88,3 +88,72 @@ button:disabled {
 .header .left {
   font-family: var(--pixel);
 }
+
+.source-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.source-filter label {
+  font-weight: 600;
+}
+.source-filter select {
+  min-width: 150px;
+}
+.source-hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 12px 0;
+}
+.query-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+.query-pagination span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.result-filters {
+  margin-bottom: 18px;
+}
+.result-filters .mcframe__main {
+  padding: 14px;
+}
+.filter-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.filter-fields label {
+  display: grid;
+  gap: 6px;
+  min-width: 140px;
+  flex: 1;
+  font-size: 13px;
+  color: var(--muted);
+}
+.modpack-list > article {
+  min-width: 0;
+}
+.modpack-list > article .modpack-item {
+  height: 100%;
+}
+.catalog-total {
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+select:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+.status-item h2 {
+  margin: 0 0 18px;
+  font-family: var(--pixel);
+}

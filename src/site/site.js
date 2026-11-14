@@ -21,7 +21,7 @@ const english = {
   sample: "Which mods do you want to play?",
   searchTitle: "Find a pack that fits",
   searchCopy:
-    "Choose your favorite mods and find modpacks that include them. Check versions, authors, and original download pages.",
+    "Choose mods from CurseForge or Modrinth, find packs that include them, and compare downloads and update times.",
   searchAction: "Find modpacks",
   factoryTitle: "Make your production add up",
   factoryCopy:

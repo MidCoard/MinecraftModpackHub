@@ -1,161 +1,257 @@
 <script setup>
 import MCFrame from "@/components/MCFrame.vue";
-import { ENV_BASE_URL } from "@/utils/env";
-import { onMounted, onBeforeUnmount, ref, computed, watch } from "vue";
+import ResourceLogo from "@/components/ResourceLogo.vue";
+import SearchFailure from "@/components/SearchFailure.vue";
+import {
+  minecraft,
+  routeSelection,
+  resourceKey,
+  safeWebUrl,
+  SORT_FIELDS,
+  SOURCES,
+  PAGE_SIZE,
+  MinecraftError,
+} from "@/api/minecraft.js";
+import { ref, watch, onBeforeUnmount, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useReCaptcha } from "vue-recaptcha-v3";
-import { RouterLink, useRoute } from "vue-router";
-import axios from "axios";
-import { createRequestGate, boundedRequest } from "@/utils/request-gate.js";
-import { modIds } from "@/utils/mod-ids.js";
-const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-const { t, locale } = useI18n();
-const route = useRoute();
+import { RouterLink, useRoute, useRouter } from "vue-router";
+import { createRequestGate } from "@/utils/request-gate.js";
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha(),
+  { t, locale } = useI18n(),
+  route = useRoute(),
+  router = useRouter();
 const modpackList = ref([]),
   loading = ref(true),
-  failed = ref(false),
-  visibleCount = ref(24);
-const visiblePacks = computed(() =>
-  modpackList.value.slice(0, visibleCount.value),
-);
-const gate = createRequestGate();
-const strof = (text, max) =>
-  String(text).length > max ? String(text).slice(0, max) + "…" : text;
-const datetimeFormat = (value) => new Date(value).toLocaleString(locale.value);
+  failure = ref(null),
+  meta = ref(null),
+  gate = createRequestGate();
+const selection = computed(() => {
+  try {
+    return routeSelection(route);
+  } catch {
+    return null;
+  }
+});
+const field = computed(
+    () => selection.value?.query.sort.field || "downloadCount",
+  ),
+  direction = computed(() => selection.value?.query.sort.direction || "desc");
+const formatCount = (value) =>
+  value == null
+    ? t("search.unknown")
+    : Number.isSafeInteger(value)
+      ? new Intl.NumberFormat(locale.value).format(value)
+      : t("search.approx", {
+          value: new Intl.NumberFormat(locale.value, {
+            notation: "compact",
+            maximumSignificantDigits: 3,
+          }).format(value),
+        });
+const datetimeFormat = (value) =>
+  value == null
+    ? t("search.unknown")
+    : new Date(value).toLocaleString(locale.value);
 async function fetchData() {
   const operation = gate.begin();
   loading.value = true;
-  failed.value = false;
+  failure.value = null;
+  meta.value = null;
+  modpackList.value = [];
   try {
-    const ids = modIds(route.params.ids);
-    const token = await boundedRequest(async () => {
-      await recaptchaLoaded();
-      return executeRecaptcha("search_modpacks");
-    });
-    if (!operation.current()) return;
-    const { data } = await axios.post(
-      ENV_BASE_URL + "/v1/focessapi/minecraft/modpack/depend",
-      { recaptcha: token, ids, sortBy: 1, sortType: 4 },
-      { signal: operation.signal, timeout: 15000 },
+    if (!selection.value) throw new MinecraftError("invalid_request", 400);
+    const page = await minecraft.query(
+      "modpacks",
+      selection.value.query,
+      async () => {
+        await recaptchaLoaded();
+        return executeRecaptcha("minecraft_modpacks");
+      },
+      operation.signal,
     );
     if (!operation.current()) return;
-    if (!Array.isArray(data)) throw new Error("Invalid modpack response");
-    modpackList.value = data;
-    visibleCount.value = 24;
+    modpackList.value = page.data;
+    meta.value = page.page;
   } catch (error) {
-    if (operation.current()) failed.value = true;
+    if (operation.current()) failure.value = error;
   } finally {
     if (operation.current()) loading.value = false;
   }
 }
-onMounted(fetchData);
-watch(() => route.params.ids, fetchData);
+function filter(key, value) {
+  router.replace({
+    name: "search",
+    params: { ids: route.params.ids || undefined },
+    query: { ...route.query, [key]: value, offset: "0" },
+  });
+}
+function pageTo(offset) {
+  router.replace({ query: { ...route.query, offset: String(offset) } });
+}
+watch(() => route.fullPath, fetchData, { immediate: true, flush: "sync" });
 onBeforeUnmount(() => gate.cancel());
 </script>
-
 <template>
   <div>
-    <Teleport to="#header-slot">
-      <RouterLink to="/" class="header-link mc-button">{{
+    <Teleport to="#header-slot"
+      ><RouterLink to="/" class="header-link mc-button">{{
         t("header.toolbar.home")
-      }}</RouterLink>
-    </Teleport>
+      }}</RouterLink></Teleport
+    >
     <header class="results-heading">
       <h1>{{ t("search.title") }}</h1>
-      <p v-if="!loading && !failed">
-        {{ t("search.count", { count: modpackList.length }) }}
+      <p v-if="meta">
+        {{
+          meta.returned
+            ? t("pagination.range", {
+                from: meta.offset + 1,
+                to: meta.offset + meta.returned,
+              })
+            : t("pagination.emptyPage")
+        }}
       </p>
     </header>
+    <MCFrame class="result-filters"
+      ><div class="filter-fields">
+        <label
+          >{{ t("sources.label")
+          }}<select
+            :value="selection?.source || 'all'"
+            :disabled="!!selection?.dependencyRefs.length"
+            @change="filter('source', $event.target.value)"
+          >
+            <option value="all">{{ t("sources.all") }}</option>
+            <option
+              v-for="provider in SOURCES"
+              :key="provider"
+              :value="provider"
+            >
+              {{ t("sources." + provider) }}
+            </option>
+          </select></label
+        >
+        <label
+          >{{ t("search.sort")
+          }}<select
+            :value="field"
+            @change="filter('sort', $event.target.value)"
+          >
+            <option v-for="option in SORT_FIELDS" :key="option" :value="option">
+              {{ t("sort." + option) }}
+            </option>
+          </select></label
+        >
+        <label
+          >{{ t("search.direction")
+          }}<select
+            :value="direction"
+            @change="filter('direction', $event.target.value)"
+          >
+            <option value="desc">{{ t("sort.desc") }}</option>
+            <option value="asc">{{ t("sort.asc") }}</option>
+          </select></label
+        >
+      </div>
+      <p v-if="selection?.dependencyRefs.length" class="source-hint">
+        {{
+          t("sources.dependencyHint", {
+            count: selection.dependencyRefs.length,
+          })
+        }}
+      </p>
+      <p v-if="field === 'modCount'" class="source-hint">
+        {{ t("sort.knownCounts") }}
+      </p></MCFrame
+    >
     <div class="modpack-wrapper">
       <MCFrame v-if="loading" class="result-state"
         ><p role="status">{{ t("search.loading") }}</p></MCFrame
       >
-      <MCFrame v-else-if="failed" class="result-state"
-        ><div class="search-failure" role="alert">
-          {{ t("search.error") }}
-          <button type="button" @click="fetchData">
-            {{ t("search.retry") }}
-          </button>
-        </div> </MCFrame
-      ><MCFrame v-else-if="modpackList.length == 0" class="result-state"
-        ><div class="no-match-modpack">
+      <MCFrame v-else-if="failure" class="result-state"
+        ><SearchFailure :error="failure" @retry="fetchData"
+      /></MCFrame>
+      <MCFrame v-else-if="!modpackList.length" class="result-state"
+        ><p class="no-match-modpack">
           {{ t("search.no-match-modpack") }}
-        </div>
-      </MCFrame>
+        </p></MCFrame
+      >
       <div v-else class="modpack-list">
-        <a
-          v-for="modpack of visiblePacks"
-          :key="modpack.id"
-          :href="modpack.url"
-          target="_blank"
-          rel="noopener noreferrer"
+        <component
+          :is="safeWebUrl(modpack.webUrl) ? 'a' : 'article'"
+          v-for="modpack in modpackList"
+          :key="resourceKey(modpack)"
+          :href="safeWebUrl(modpack.webUrl)"
+          :target="safeWebUrl(modpack.webUrl) ? '_blank' : undefined"
+          :rel="safeWebUrl(modpack.webUrl) ? 'noopener noreferrer' : undefined"
+          :data-resource-key="resourceKey(modpack)"
         >
-          <MCFrame class="modpack-item">
-            <div class="top">
-              <img :src="modpack.logoUrl || '/pack.svg'" class="image" alt="" />
+          <MCFrame class="modpack-item"
+            ><div class="top">
+              <ResourceLogo class="image" :url="modpack.logoUrl" />
               <div class="detail">
-                <h2 class="name">{{ modpack.name }}</h2>
-                <div v-if="modpack.authors?.length > 0" class="author">
-                  {{
-                    t("home.searchbar.createby", [
-                      strof(modpack.authors[0].name, 7),
-                    ])
-                  }}
-                </div>
+                <h2 class="name">{{ modpack.name ?? t("search.unknown") }}</h2>
+                <div class="author">{{ t("sources." + modpack.source) }}</div>
               </div>
             </div>
             <div class="bottom">
               <div class="summary-item">
-                <span class="label">{{ t("search.latest-game-version") }}</span>
-                <span class="value">
-                  <template v-if="modpack.latestGameVersions?.length > 0">
-                    {{
-                      modpack.latestGameVersions.map((i) => i.name).join(" ")
-                    }}
-                  </template>
-                  <template v-else>{{ t("search.unknown") }}</template>
-                </span>
+                <span class="label">{{ t("search.mod-count") }}</span
+                ><span class="value">{{ formatCount(modpack.modCount) }}</span>
               </div>
               <div class="summary-item">
-                <span class="label">{{ t("search.mod-count") }}</span>
-                <span class="value">
-                  {{ modpack.dependenciesSize }}
-                </span>
+                <span class="label">{{ t("search.download-count") }}</span
+                ><span class="value">{{
+                  formatCount(modpack.downloadCount)
+                }}</span>
               </div>
               <div class="summary-item">
-                <span class="label">{{ t("search.download-count") }}</span>
-                <span class="value">
-                  {{ modpack.downloadCount }}
-                </span>
+                <span class="label">{{ t("search.create-time") }}</span
+                ><span class="value">{{
+                  datetimeFormat(modpack.createdAt)
+                }}</span>
               </div>
               <div class="summary-item">
-                <span class="label">{{ t("search.create-time") }}</span>
-                <span class="value">
-                  {{ datetimeFormat(modpack.createTime) }}
-                </span>
+                <span class="label">{{ t("search.update-time") }}</span
+                ><span class="value">{{
+                  datetimeFormat(modpack.updatedAt)
+                }}</span>
               </div>
               <div class="summary-item">
-                <span class="label">{{ t("search.update-time") }}</span>
-                <span class="value">
-                  {{ datetimeFormat(modpack.modifyTime) }}
-                </span>
+                <span class="label">{{ t("search.dependencies") }}</span
+                ><span class="value">{{
+                  t("dependency." + modpack.dependencyState)
+                }}</span>
               </div>
             </div>
           </MCFrame>
-        </a>
+        </component>
       </div>
-      <button
-        v-if="!loading && !failed && visibleCount < modpackList.length"
-        type="button"
-        class="load-more"
-        @click="visibleCount += 24"
+      <nav
+        v-if="meta && !loading && !failure"
+        class="query-pagination"
+        :aria-label="t('pagination.packs')"
       >
-        {{ t("search.more") }}
-      </button>
+        <button
+          type="button"
+          :disabled="meta.offset === 0"
+          @click="pageTo(Math.max(0, meta.offset - PAGE_SIZE))"
+        >
+          {{ t("pagination.previous") }}</button
+        ><span>{{ t("pagination.noTotal") }}</span
+        ><button
+          type="button"
+          :disabled="
+            meta.returned < meta.limit || meta.offset + meta.limit > 1000000
+          "
+          @click="pageTo(meta.offset + meta.limit)"
+        >
+          {{ t("pagination.next") }}
+        </button>
+      </nav>
+      <p class="source-hint">{{ t("search.dependencyNote") }}</p>
     </div>
   </div>
 </template>
-
 <style scoped>
 .results-heading {
   display: flex;

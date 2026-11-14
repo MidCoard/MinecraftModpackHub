@@ -1,54 +1,59 @@
 <script setup>
 import { useI18n } from "vue-i18n";
 import { ref, watch, onBeforeUnmount } from "vue";
-import axios from "axios";
 import { useReCaptcha } from "vue-recaptcha-v3";
 import MCFrame from "./MCFrame.vue";
 import LoadingIcon from "./LoadingIcon.vue";
-import { ENV_BASE_URL } from "@/utils/env";
+import ResourceLogo from "./ResourceLogo.vue";
+import SearchFailure from "./SearchFailure.vue";
 import {
-  createRequestGate,
-  boundedRequest,
-  moveActive,
-} from "@/utils/request-gate.js";
-const { t } = useI18n();
-const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-const emit = defineEmits(["add-mod"]);
+  minecraft,
+  buildQuery,
+  resourceKey,
+  PAGE_SIZE,
+} from "@/api/minecraft.js";
+import { createRequestGate, moveActive } from "@/utils/request-gate.js";
+const props = defineProps({ source: { type: String, required: true } });
+const { t } = useI18n(),
+  { executeRecaptcha, recaptchaLoaded } = useReCaptcha(),
+  emit = defineEmits(["add-mod"]);
 const searchText = ref(""),
   showResultPanel = ref(false),
   isLoading = ref(false),
   result = ref([]),
-  error = ref(false),
+  error = ref(null),
   active = ref(-1),
-  input = ref(null);
+  input = ref(null),
+  meta = ref(null),
+  requestedOffset = ref(0);
 let composing = false,
   timer;
 const gate = createRequestGate();
-async function fetchModList(keyword) {
+async function fetchModList(keyword, offset = 0) {
   if (!keyword.trim()) return;
   const operation = gate.begin();
+  requestedOffset.value = offset;
   isLoading.value = true;
-  error.value = false;
+  error.value = null;
   active.value = -1;
   showResultPanel.value = true;
   try {
-    const token = await boundedRequest(async () => {
-      await recaptchaLoaded();
-      return executeRecaptcha("mod_overview");
-    });
-    if (!operation.current()) return;
-    const { data } = await axios.post(
-      ENV_BASE_URL + "/v1/focessapi/minecraft/mod/search",
-      { recaptcha: token, sortBy: 1, sortType: 4, keyword: keyword.trim() },
-      { signal: operation.signal, timeout: 15000 },
+    const query = buildQuery("mods", { source: props.source, keyword, offset });
+    const page = await minecraft.query(
+      "mods",
+      query,
+      async () => {
+        await recaptchaLoaded();
+        return executeRecaptcha("minecraft_mods");
+      },
+      operation.signal,
     );
     if (!operation.current()) return;
-    if (!Array.isArray(data)) throw new Error("Invalid mod search response");
-    result.value = data.slice(0, 50);
-    active.value = -1;
+    result.value = page.data;
+    meta.value = page.page;
   } catch (problem) {
     if (operation.current()) {
-      error.value = true;
+      error.value = problem;
       result.value = [];
     }
   } finally {
@@ -59,8 +64,9 @@ function queueSearch(value) {
   clearTimeout(timer);
   gate.cancel();
   isLoading.value = false;
-  error.value = false;
+  error.value = null;
   result.value = [];
+  meta.value = null;
   active.value = -1;
   if (composing || !value.trim()) {
     showResultPanel.value = false;
@@ -71,6 +77,11 @@ function queueSearch(value) {
   timer = setTimeout(() => fetchModList(value), 300);
 }
 watch(searchText, queueSearch);
+watch(
+  () => props.source,
+  () => queueSearch(searchText.value),
+  { flush: "sync" },
+);
 function clear() {
   searchText.value = "";
   queueSearch("");
@@ -83,7 +94,11 @@ function choose(mod) {
 }
 function retry() {
   input.value?.focus();
-  return fetchModList(searchText.value);
+  return fetchModList(searchText.value, requestedOffset.value);
+}
+function pageTo(offset) {
+  input.value?.focus();
+  return fetchModList(searchText.value, offset);
 }
 function keydown(event) {
   if (event.isComposing || composing) return;
@@ -131,11 +146,12 @@ onBeforeUnmount(() => {
   >
     <div class="search-control">
       <input
-        ref="input"
         id="mod-search-input"
+        ref="input"
         v-model="searchText"
         class="search-input"
         type="text"
+        maxlength="256"
         role="combobox"
         :aria-label="t('home.searchbar.label')"
         :placeholder="t('home.searchbar.placeholder')"
@@ -176,12 +192,12 @@ onBeforeUnmount(() => {
       >
         <LoadingIcon />
       </div>
-      <div v-else-if="error" class="search-error" role="alert">
-        {{ t("home.searchbar.error") }}
-        <button type="button" @click="retry">
-          {{ t("home.searchbar.retry") }}
-        </button>
-      </div>
+      <SearchFailure
+        v-else-if="error"
+        class="search-error"
+        :error="error"
+        @retry="retry"
+      />
       <p
         v-if="!isLoading && !error && !result.length"
         class="no-match"
@@ -194,12 +210,12 @@ onBeforeUnmount(() => {
         id="mod-search-options"
         role="listbox"
         class="mod-list"
-        :aria-label="t('home.searchbar.placeholder')"
+        :aria-label="t('home.searchbar.label')"
       >
         <li
-          v-for="(mod, index) of result"
+          v-for="(mod, index) in result"
           :id="'mod-option-' + index"
-          :key="mod.id"
+          :key="resourceKey(mod)"
           role="option"
           :aria-selected="active === index"
           class="mod-item"
@@ -208,32 +224,38 @@ onBeforeUnmount(() => {
           @click="choose(mod)"
         >
           <div class="left">
-            <div class="image">
-              <img
-                alt=""
-                :src="
-                  mod.logoUrl ||
-                  `${ENV_BASE_URL}/v1/focessapi/minecraft/mod/logo/${mod.id}`
-                "
-              />
-            </div>
+            <div class="image"><ResourceLogo :url="mod.logoUrl" /></div>
             <div class="detail">
-              <div class="name" :title="mod.name">{{ mod.name }}</div>
+              <div class="name">{{ mod.name ?? t("search.unknown") }}</div>
               <div class="version">
-                {{
-                  (mod.latestGameVersions || [])
-                    .slice(0, 5)
-                    .map((item) => item.name)
-                    .join(" ")
-                }}
+                {{ t("sources." + mod.source) }} · {{ mod.sourceId }}
               </div>
             </div>
           </div>
-          <div v-if="mod.authors?.length" class="right">
-            {{ t("home.searchbar.createby", [mod.authors[0].name]) }}
-          </div>
         </li>
       </ul>
+      <nav
+        v-if="meta && !isLoading && !error"
+        class="query-pagination"
+        :aria-label="t('pagination.mods')"
+      >
+        <button
+          type="button"
+          :disabled="meta.offset === 0"
+          @click="pageTo(Math.max(0, meta.offset - PAGE_SIZE))"
+        >
+          {{ t("pagination.previous") }}
+        </button>
+        <button
+          type="button"
+          :disabled="
+            meta.returned < meta.limit || meta.offset + meta.limit > 1000000
+          "
+          @click="pageTo(meta.offset + meta.limit)"
+        >
+          {{ t("pagination.next") }}
+        </button>
+      </nav>
     </MCFrame>
   </div>
 </template>

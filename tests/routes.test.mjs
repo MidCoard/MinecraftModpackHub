@@ -9,25 +9,46 @@ import {
   moveActive,
 } from "../src/utils/request-gate.js";
 
-test("index counts accept numeric JSON and decimal strings while rejecting missing or corrupt data", () => {
-  const counts = {
-    availableMods: 123,
-    availableModpacks: 45,
-    notAvailableModpacks: 0,
-    notEmptyModpacks: 40,
+test("v2 overview sums both collected catalogs, retains genuine zero and rejects old/invalid counts", () => {
+  const data = {
+    data: {
+      sources: [
+        { source: "curseforge", mods: 120, modpacks: 30 },
+        { source: "modrinth", mods: 80, modpacks: 0 },
+      ],
+    },
   };
-  assert.deepEqual(readOverview(counts), counts);
-  assert.deepEqual(
-    readOverview(
-      Object.fromEntries(
-        Object.entries(counts).map(([key, value]) => [key, String(value)]),
-      ),
-    ),
-    counts,
+  assert.deepEqual(readOverview(data), {
+    sources: data.data.sources,
+    mods: 200,
+    modpacks: 30,
+  });
+  for (const value of [null, undefined, "0", "bad", -1, Infinity, true])
+    assert.throws(() =>
+      readOverview({
+        data: {
+          sources: [
+            { source: "curseforge", mods: value, modpacks: 30 },
+            data.data.sources[1],
+          ],
+        },
+      }),
+    );
+  assert.throws(() =>
+    readOverview({
+      availableMods: 120,
+      availableModpacks: 30,
+      notAvailableModpacks: 0,
+      notEmptyModpacks: 30,
+    }),
   );
-  for (const value of [null, undefined, "", "bad", -1, Infinity, true])
-    assert.throws(() => readOverview({ ...counts, availableMods: value }));
+  assert.throws(() =>
+    readOverview({
+      data: { sources: [data.data.sources[0], data.data.sources[0]] },
+    }),
+  );
 });
+
 test("malformed selections cannot become external navigation or injection", () => {
   for (const value of [
     "[]",

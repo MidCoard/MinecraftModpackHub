@@ -1,64 +1,80 @@
 <script setup>
-import { readModSelection } from "@/utils/request-gate.js";
+import {
+  SOURCES,
+  readSelections,
+  saveSelections,
+  resourceKey,
+} from "@/api/minecraft.js";
 import MCButton from "@/components/MCButton.vue";
 import MCFrame from "@/components/MCFrame.vue";
+import ResourceLogo from "@/components/ResourceLogo.vue";
 import { useMessage } from "@/components/Message";
 import SearchBar from "@/components/SearchBar.vue";
-import { ENV_BASE_URL } from "@/utils/env";
 import Icon from "@/components/PixelIcon.vue";
-import { reactive } from "vue";
+import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterLink, useRouter } from "vue-router";
-
-const { success } = useMessage();
-
-const router = useRouter();
-
-const { t } = useI18n();
-
-let savedMods = [];
+const { success } = useMessage(),
+  router = useRouter(),
+  { t } = useI18n();
+let saved = [],
+  initial = "curseforge";
 try {
-  savedMods = readModSelection(localStorage);
+  saved = readSelections(localStorage);
+  const preferred = localStorage.getItem("minecraft-search-source");
+  initial = SOURCES.includes(preferred)
+    ? preferred
+    : saved[0]?.source || initial;
 } catch {}
-const modList = reactive(savedMods);
-
-const onModAdded = (mod) => {
-  // 检查是否有 id 重复的 mod
-  const _mod = modList.find((item) => item.id === mod.id);
-  if (!_mod) {
-    // 如果没有，就把 mod 添加到列表
-    modList.push(mod);
-    try {
-      localStorage.setItem("modList", JSON.stringify(modList));
-    } catch {}
-    success(t("home.modlist.added"));
+const selections = ref(saved),
+  source = ref(initial),
+  selectionError = ref("");
+const modList = computed(() =>
+  selections.value.filter((mod) => mod.source === source.value),
+);
+watch(source, (value) => {
+  selectionError.value = "";
+  try {
+    localStorage.setItem("minecraft-search-source", value);
+  } catch {}
+});
+function persist() {
+  try {
+    saveSelections(localStorage, selections.value);
+  } catch {
+    selectionError.value = t("errors.selection_storage");
   }
-};
-
-const onModRemoveBtnClick = (modid) => {
-  const _modIndex = modList.findIndex((item) => item.id === modid);
-  if (_modIndex !== -1) {
-    modList.splice(_modIndex, 1);
-    try {
-      localStorage.setItem("modList", JSON.stringify(modList));
-    } catch {}
-    success(t("home.modlist.removed"));
+}
+function onModAdded(mod) {
+  if (
+    mod.source !== source.value ||
+    selections.value.some((row) => resourceKey(row) === resourceKey(mod))
+  )
+    return;
+  if (modList.value.length >= 256) {
+    selectionError.value = t("home.modlist.limit");
+    return;
   }
-};
-
-const onSearchBtnClick = () => {
-  // get mod list
-  const modIdList = modList.map((item) => item.id);
-  const modIdString = modIdList.join(",");
+  selections.value.push(mod);
+  persist();
+  success(t("home.modlist.added"));
+}
+function onModRemoveBtnClick(mod) {
+  selections.value = selections.value.filter(
+    (row) => resourceKey(row) !== resourceKey(mod),
+  );
+  persist();
+  success(t("home.modlist.removed"));
+}
+function onSearchBtnClick() {
+  if (!modList.value.length) return;
   router.push({
     name: "search",
-    params: {
-      ids: modIdString,
-    },
+    params: { ids: modList.value.map((mod) => mod.sourceId).join(",") },
+    query: { source: source.value },
   });
-};
+}
 </script>
-
 <template>
   <Teleport to="#header-slot">
     <RouterLink to="/status" class="header-link mc-button">{{
@@ -74,7 +90,17 @@ const onSearchBtnClick = () => {
       <label class="search-field-label" for="mod-search-input">{{
         t("home.searchbar.label")
       }}</label>
-      <SearchBar @add-mod="onModAdded" />
+      <div class="source-filter">
+        <label for="mod-source">{{ t("sources.label") }}</label
+        ><select id="mod-source" v-model="source">
+          <option v-for="provider in SOURCES" :key="provider" :value="provider">
+            {{ t("sources." + provider) }}
+          </option>
+        </select>
+      </div>
+      <p class="source-hint">{{ t("sources.selectionHint") }}</p>
+      <SearchBar :source="source" @add-mod="onModAdded" />
+      <p v-if="selectionError" role="alert">{{ selectionError }}</p>
       <div class="selection-heading">
         <h2>{{ t("home.modlist.title") }}</h2>
         <span>{{ t("home.modlist.count", { count: modList.length }) }}</span>
@@ -84,26 +110,25 @@ const onSearchBtnClick = () => {
           {{ t("home.modlist.empty") }}
         </p>
         <ul v-else class="selected-mods">
-          <li v-for="mod of modList" :key="mod.id" class="selected-mod mc-slot">
-            <img
-              alt=""
-              class="image"
-              :src="
-                mod.logoUrl ||
-                `${ENV_BASE_URL}/v1/focessapi/minecraft/mod/logo/${mod.id}`
-              "
-            />
+          <li
+            v-for="mod of modList"
+            :key="resourceKey(mod)"
+            class="selected-mod mc-slot"
+          >
+            <ResourceLogo class="image" :url="mod.logoUrl" />
             <div class="detail">
-              <span class="name">{{ mod.name }}</span>
-              <span v-if="mod.authors?.length" class="author">{{
-                t("home.searchbar.createby", [mod.authors[0].name])
-              }}</span>
+              <span class="name">{{ mod.name ?? t("search.unknown") }}</span
+              ><span class="author"
+                >{{ t("sources." + mod.source) }} · {{ mod.sourceId }}</span
+              >
             </div>
             <button
               type="button"
               class="remove-mod"
-              @click="onModRemoveBtnClick(mod.id)"
-              :aria-label="t('home.modlist.remove', [mod.name])"
+              @click="onModRemoveBtnClick(mod)"
+              :aria-label="
+                t('home.modlist.remove', [mod.name ?? t('search.unknown')])
+              "
             >
               <Icon icon="pixelarticons:close" />
             </button>
@@ -112,6 +137,11 @@ const onSearchBtnClick = () => {
       </div>
       <div class="search-actions">
         <p>{{ t("home.modlist.hint") }}</p>
+        <RouterLink
+          class="mc-button browse-packs"
+          :to="{ name: 'search', query: { source: 'all' } }"
+          >{{ t("search.browse") }}</RouterLink
+        >
         <MCButton :disabled="modList.length === 0" @click="onSearchBtnClick">{{
           t("home.searchbtn")
         }}</MCButton>
@@ -119,6 +149,7 @@ const onSearchBtnClick = () => {
     </section>
   </MCFrame>
 </template>
+
 <style scoped>
 .search-heading {
   margin: 6px 0 22px;

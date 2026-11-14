@@ -32,7 +32,8 @@
       "title": "已选模组",
       "count": "已选 {count} 个",
       "empty": "在上方搜索并添加第一个模组。",
-      "hint": "结果将同时包含已选模组。移除部分模组，可以扩大搜索范围。"
+      "hint": "结果将同时包含当前来源中的已选模组。",
+      "limit": "最多选择 256 个模组。"
     },
     "searchbtn": "查找匹配的整合包"
   },
@@ -52,10 +53,14 @@
       "notEmptyModpacks": "非空整合包"
     },
     "loading": "正在读取索引状态…",
-    "error": "索引状态读取失败，请重试。"
+    "error": "索引状态读取失败，请重试。",
+    "mods": "已收录模组",
+    "modpacks": "已收录整合包",
+    "total": "收录目录：{mods} 个模组 · {modpacks} 个整合包",
+    "countNote": "合计为两个来源的目录数量之和；跨来源的同类项目分别计数。"
   },
   "search": {
-    "no-match-modpack": "未找到符合要求的整合包",
+    "no-match-modpack": "当前收录目录中没有匹配项，可尝试减少模组或切换来源。",
     "latest-game-version": "最新游戏版本：",
     "unknown": "未知",
     "mod-count": "模组数量：",
@@ -67,9 +72,60 @@
     "retry": "重试",
     "more": "加载更多整合包",
     "title": "匹配的整合包",
-    "count": "找到 {count} 个整合包"
+    "count": "找到 {count} 个整合包",
+    "sort": "排序依据",
+    "direction": "顺序",
+    "browse": "浏览全部整合包",
+    "retryAfter": "{seconds} 秒后重试",
+    "approx": "约 {value}",
+    "dependencies": "依赖信息",
+    "dependencyNote": "按同一选定版本的依赖匹配。模组数量不代表压缩包文件总数或完整的传递依赖；各来源下载量分别统计。"
   },
   "footer": {
     "disclaimer": "非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。"
+  },
+  "sources": {
+    "label": "来源",
+    "curseforge": "CurseForge",
+    "modrinth": "Modrinth",
+    "all": "两个来源",
+    "selectionHint": "切换来源时，会分别保留各自已选的模组。",
+    "dependencyHint": "匹配此来源中全部 {count} 个已选模组；返回首页可修改选择。"
+  },
+  "pagination": {
+    "previous": "上一页",
+    "next": "下一页",
+    "mods": "模组结果分页",
+    "packs": "整合包结果分页",
+    "range": "显示第 {from}–{to} 条",
+    "emptyPage": "此页没有结果",
+    "noTotal": "收录目录不提供结果总数。"
+  },
+  "sort": {
+    "createdAt": "创建时间",
+    "updatedAt": "更新时间",
+    "downloadCount": "下载量",
+    "modCount": "模组数量",
+    "asc": "升序",
+    "desc": "降序",
+    "knownCounts": "按模组数量排序时，仅显示数量已知的整合包。"
+  },
+  "dependency": {
+    "unknown": "尚未取得",
+    "partial": "部分解析",
+    "complete": "声明依赖已解析"
+  },
+  "errors": {
+    "invalid_request": "搜索条件无效，请调整后重试。",
+    "invalid_response": "无法读取搜索响应，请重试。",
+    "verification_unavailable": "验证未能完成，请检查网络后重试。",
+    "verification_expired": "验证已失效，请重试以重新验证。",
+    "verification_failed": "验证未通过，请重试。",
+    "rate_limited": "请求过于频繁，请等待后重试。",
+    "service_unavailable": "搜索服务暂不可用，请稍后重试。",
+    "api_unavailable": "新版搜索接口暂不可用，请稍后重试。",
+    "network": "无法连接搜索服务，请检查网络后重试。",
+    "timeout": "搜索请求超时，请重试。",
+    "selection_storage": "无法在此浏览器中保存已选模组。"
   }
 }

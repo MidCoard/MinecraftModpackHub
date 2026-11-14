@@ -1,17 +1,25 @@
 export function readOverview(data) {
-  return Object.fromEntries(
-    [
-      "availableMods",
-      "availableModpacks",
-      "notAvailableModpacks",
-      "notEmptyModpacks",
-    ].map((key) => {
-      let value = data?.[key];
-      if (typeof value === "string" && /^\d+$/.test(value))
-        value = Number(value);
-      if (!Number.isSafeInteger(value) || value < 0)
-        throw new Error(`Invalid index count: ${key}`);
-      return [key, value];
-    }),
-  );
+  const sources = data?.data?.sources;
+  if (
+    !Array.isArray(sources) ||
+    sources.length !== 2 ||
+    sources[0]?.source !== "curseforge" ||
+    sources[1]?.source !== "modrinth" ||
+    sources.some((row) =>
+      [row.mods, row.modpacks].some(
+        (value) =>
+          typeof value !== "number" || !Number.isInteger(value) || value < 0,
+      ),
+    )
+  )
+    throw new Error("Invalid catalog overview");
+  return {
+    sources: sources.map(({ source, mods, modpacks }) => ({
+      source,
+      mods,
+      modpacks,
+    })),
+    mods: sources[0].mods + sources[1].mods,
+    modpacks: sources[0].modpacks + sources[1].modpacks,
+  };
 }
