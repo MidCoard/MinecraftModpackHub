@@ -12,8 +12,8 @@
   },
   "home": {
     "protips": {
-      "title": "Search modpacks by mods",
-      "desc": "All information are provided by CurseForge API. This website is not affiliated with CurseForge or Minecraft."
+      "title": "Find a modpack",
+      "desc": "Choose the mods you want to play. Find packs that include them together."
     },
     "searchbar": {
       "placeholder": "Enter keywords to search mods",
@@ -22,14 +22,19 @@
       "clear": "Clear search",
       "loading": "Searching mods…",
       "error": "Search failed. Check your connection and try again.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "label": "Search for a mod"
     },
     "modlist": {
       "added": "Mod added",
       "removed": "Mod removed",
-      "remove": "Remove {0}"
+      "remove": "Remove {0}",
+      "title": "Selected mods",
+      "count": "{count} selected",
+      "empty": "Search above to add your first mod.",
+      "hint": "Results include every mod in your selection. You can remove a mod to broaden the search."
     },
-    "searchbtn": "Checkout modpacks covered above mods"
+    "searchbtn": "Find matching modpacks"
   },
   "header": {
     "toolbar": {
@@ -60,7 +65,9 @@
     "loading": "Finding matching modpacks…",
     "error": "Could not load modpacks. Please try again.",
     "retry": "Try again",
-    "more": "Show more modpacks"
+    "more": "Show more modpacks",
+    "title": "Matching modpacks",
+    "count": "{count} modpacks found"
   },
   "footer": {
     "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft."

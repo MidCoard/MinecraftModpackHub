@@ -28,7 +28,8 @@ const { t } = useI18n();
 
 <style lang="scss" scoped>
 .header {
-  @apply h-40px md:h-50px text-base md:text-lg;
+  @apply text-base md:text-lg;
+  min-height: 64px;
   @apply select-none;
   @apply sticky top-3 md:top-5 z-20;
   @apply flex gap-x-2;

@@ -102,10 +102,8 @@ button:disabled {
   }
 }
 
-.header .left,
-.protips .title {
+.header .left {
   font-family: var(--pixel);
-  font-size: 24px;
 }
 .mcbutton {
   font-family: var(--pixel);

@@ -56,21 +56,32 @@ onBeforeUnmount(() => gate.cancel());
 <template>
   <div>
     <Teleport to="#header-slot">
-      <RouterLink to="/" class="header-link">{{
+      <RouterLink to="/" class="header-link mc-button">{{
         t("header.toolbar.home")
       }}</RouterLink>
     </Teleport>
+    <header class="results-heading">
+      <h1>{{ t("search.title") }}</h1>
+      <p v-if="!loading && !failed">
+        {{ t("search.count", { count: modpackList.length }) }}
+      </p>
+    </header>
     <div class="modpack-wrapper">
-      <p v-if="loading" role="status">{{ t("search.loading") }}</p>
-      <div v-else-if="failed" class="search-failure" role="alert">
-        {{ t("search.error") }}
-        <button type="button" @click="fetchData">
-          {{ t("search.retry") }}
-        </button>
-      </div>
-      <div v-else-if="modpackList.length == 0" class="no-match-modpack">
-        {{ t("search.no-match-modpack") }}
-      </div>
+      <MCFrame v-if="loading" class="result-state"
+        ><p role="status">{{ t("search.loading") }}</p></MCFrame
+      >
+      <MCFrame v-else-if="failed" class="result-state"
+        ><div class="search-failure" role="alert">
+          {{ t("search.error") }}
+          <button type="button" @click="fetchData">
+            {{ t("search.retry") }}
+          </button>
+        </div> </MCFrame
+      ><MCFrame v-else-if="modpackList.length == 0" class="result-state"
+        ><div class="no-match-modpack">
+          {{ t("search.no-match-modpack") }}
+        </div>
+      </MCFrame>
       <div v-else class="modpack-list">
         <a
           v-for="modpack of visiblePacks"
@@ -83,7 +94,7 @@ onBeforeUnmount(() => gate.cancel());
             <div class="top">
               <img :src="modpack.logoUrl || '/pack.svg'" class="image" alt="" />
               <div class="detail">
-                <div class="name">{{ modpack.name }}</div>
+                <h2 class="name">{{ modpack.name }}</h2>
                 <div v-if="modpack.authors?.length > 0" class="author">
                   {{
                     t("home.searchbar.createby", [
@@ -145,54 +156,107 @@ onBeforeUnmount(() => gate.cancel());
   </div>
 </template>
 
-<style scoped lang="scss">
-.search-failure {
+<style scoped>
+.results-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin: 6px 0 22px;
+}
+h1 {
+  margin: 0;
+  font: 600 clamp(24px, 3vw, 32px) / 1.3 var(--pixel);
+}
+.results-heading p {
+  color: var(--muted);
+  margin: 0;
+}
+.result-state {
   padding: 20px;
+}
+.result-state p,
+.search-failure,
+.no-match-modpack {
+  margin: 0;
   line-height: 1.8;
 }
-.search-failure button,
+.search-failure button {
+  display: block;
+  margin-top: 14px;
+}
 .load-more {
-  padding: 10px 16px;
-  border: 1px solid var(--line);
-  background: transparent;
-  margin: 12px 0;
+  display: block;
+  margin: 24px auto;
 }
 .modpack-list {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-  @apply gap-2;
-  @apply mb-5;
-
-  .modpack-item {
-    &:deep(.mcframe__main) {
-      @apply flex p-1 pr-3 relative flex-col gap-y-2;
-    }
-
-    .top {
-      @apply flex;
-      .image {
-        @apply w-80px h-80px flex-shrink-0 mr-2;
-        @apply object-cover;
-      }
-
-      .detail {
-        @apply flex flex-col justify-between;
-      }
-    }
-
-    .bottom {
-      .summary-item {
-        @apply flex justify-between;
-        .label {
-          @apply text-gray-700;
-          @apply select-none;
-          @apply whitespace-nowrap;
-        }
-        .value {
-          @apply text-gray-500;
-          @apply whitespace-nowrap overflow-hidden text-ellipsis;
-        }
-      }
-    }
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.modpack-list > a {
+  color: var(--ink);
+  text-decoration: none;
+  min-width: 0;
+}
+.modpack-item {
+  height: 100%;
+}
+.modpack-item :deep(.mcframe__main) {
+  padding: 14px;
+}
+.modpack-list > a:hover .modpack-item {
+  border-color: var(--moss);
+}
+.top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--line);
+}
+.image {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  object-fit: contain;
+  image-rendering: pixelated;
+  background: var(--well);
+  box-shadow: var(--recessed);
+  padding: 5px;
+}
+.detail {
+  min-width: 0;
+}
+.name {
+  margin: 0 0 6px;
+  font: 600 18px/1.4 var(--pixel);
+  overflow-wrap: anywhere;
+}
+.author {
+  font-size: 12px;
+  color: var(--muted);
+}
+.bottom {
+  padding-top: 12px;
+}
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-block: 5px;
+  font-size: 13px;
+}
+.label {
+  color: var(--muted);
+  flex: none;
+}
+.value {
+  text-align: right;
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 </style>

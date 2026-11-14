@@ -12,8 +12,8 @@
   },
   "home": {
     "protips": {
-      "title": "根据模组检索模组包",
-      "desc": "所有信息来源于Curseforge API。 本网站不隶属于Curseforge或Minecraft。"
+      "title": "找到想玩的整合包",
+      "desc": "选出想玩的模组，寻找同时包含它们的整合包。"
     },
     "searchbar": {
       "placeholder": "输入关键词以搜索 mods",
@@ -22,14 +22,19 @@
       "clear": "清空搜索",
       "loading": "正在搜索模组…",
       "error": "搜索失败，请检查网络后重试。",
-      "retry": "重试"
+      "retry": "重试",
+      "label": "搜索模组"
     },
     "modlist": {
       "added": "成功添加模组",
       "removed": "成功移除模组",
-      "remove": "移除 {0}"
+      "remove": "移除 {0}",
+      "title": "已选模组",
+      "count": "已选 {count} 个",
+      "empty": "在上方搜索并添加第一个模组。",
+      "hint": "结果将同时包含已选模组。移除部分模组，可以扩大搜索范围。"
     },
-    "searchbtn": "搜索包含以上模组的整合包"
+    "searchbtn": "查找匹配的整合包"
   },
   "header": {
     "toolbar": {
@@ -60,7 +65,9 @@
     "loading": "正在查找匹配的整合包…",
     "error": "整合包加载失败，请重试。",
     "retry": "重试",
-    "more": "加载更多整合包"
+    "more": "加载更多整合包",
+    "title": "匹配的整合包",
+    "count": "找到 {count} 个整合包"
   },
   "footer": {
     "disclaimer": "非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。"

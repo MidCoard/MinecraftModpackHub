@@ -125,45 +125,44 @@ onBeforeUnmount(() => {
       }
     "
   >
-    <MCFrame
-      ><div class="search-control">
-        <input
-          ref="input"
-          v-model="searchText"
-          class="search-input"
-          type="text"
-          role="combobox"
-          :aria-label="t('home.searchbar.placeholder')"
-          :placeholder="t('home.searchbar.placeholder')"
-          aria-autocomplete="list"
-          aria-controls="mod-search-options"
-          :aria-expanded="showResultPanel"
-          :aria-activedescendant="
-            showResultPanel && active >= 0 ? 'mod-option-' + active : undefined
-          "
-          @keydown="keydown"
-          @focus="showResultPanel = !!searchText.trim()"
-          @compositionstart="
-            composing = true;
-            clearTimeout(timer);
-            gate.cancel();
-          "
-          @compositionend="
-            composing = false;
-            queueSearch(searchText);
-          "
-        />
-        <button
-          v-if="searchText"
-          type="button"
-          class="clear-search"
-          :aria-label="t('home.searchbar.clear')"
-          @click="clear"
-        >
-          ×
-        </button>
-      </div></MCFrame
-    >
+    <div class="search-control">
+      <input
+        ref="input"
+        id="mod-search-input"
+        v-model="searchText"
+        class="search-input"
+        type="text"
+        role="combobox"
+        :aria-label="t('home.searchbar.label')"
+        :placeholder="t('home.searchbar.placeholder')"
+        aria-autocomplete="list"
+        aria-controls="mod-search-options"
+        :aria-expanded="showResultPanel"
+        :aria-activedescendant="
+          showResultPanel && active >= 0 ? 'mod-option-' + active : undefined
+        "
+        @keydown="keydown"
+        @focus="showResultPanel = !!searchText.trim()"
+        @compositionstart="
+          composing = true;
+          clearTimeout(timer);
+          gate.cancel();
+        "
+        @compositionend="
+          composing = false;
+          queueSearch(searchText);
+        "
+      />
+      <button
+        v-if="searchText"
+        type="button"
+        class="clear-search"
+        :aria-label="t('home.searchbar.clear')"
+        @click="clear"
+      >
+        ×
+      </button>
+    </div>
     <MCFrame v-if="showResultPanel" id="mod-search-panel" class="float-panel">
       <div
         v-if="isLoading"
@@ -179,16 +178,20 @@ onBeforeUnmount(() => {
           {{ t("home.searchbar.retry") }}
         </button>
       </div>
+      <p
+        v-if="!isLoading && !error && !result.length"
+        class="no-match"
+        role="status"
+      >
+        {{ t("home.searchbar.no-match") }}
+      </p>
       <ul
-        v-else
+        v-show="!isLoading && !error && result.length"
         id="mod-search-options"
         role="listbox"
         class="mod-list"
         :aria-label="t('home.searchbar.placeholder')"
       >
-        <li v-if="!result.length" class="no-match">
-          {{ t("home.searchbar.no-match") }}
-        </li>
         <li
           v-for="(mod, index) of result"
           :id="'mod-option-' + index"
@@ -230,96 +233,123 @@ onBeforeUnmount(() => {
     </MCFrame>
   </div>
 </template>
-<style lang="scss" scoped>
+<style scoped>
+.search-bar {
+  position: relative;
+}
 .search-control {
-  display: flex;
-  align-items: center;
+  position: relative;
+}
+.search-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 52px 10px 14px;
 }
 .clear-search {
-  border: 0;
-  background: transparent;
-  font-size: 24px;
-  min-width: 40px;
-  min-height: 40px;
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  font-size: 22px;
+}
+.float-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  width: 100%;
+  z-index: 25;
+  box-shadow: var(--mc-popup-shadow);
+}
+.float-panel :deep(.mcframe__main) {
+  max-height: min(50vh, 420px);
+  overflow: auto;
 }
 .mod-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+.mod-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.mod-item + .mod-item {
+  border-top-color: var(--line);
+}
+.mod-item:hover,
 .mod-item.active {
   background: var(--control);
+  border-color: var(--moss);
+  box-shadow: var(--recessed);
 }
+.left {
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+}
+.image {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  padding: 3px;
+  background: var(--well);
+  box-shadow: var(--recessed);
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.version,
+.right {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.right {
+  flex: none;
+  max-width: 30%;
+  overflow-wrap: anywhere;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 22px;
+  font-size: 32px;
+}
+.no-match,
 .search-error {
-  padding: 16px;
+  padding: 18px;
+  margin: 0;
   line-height: 1.7;
 }
 .search-error button {
-  border: 1px solid currentColor;
-  padding: 5px 12px;
-  background: transparent;
+  display: block;
+  margin-top: 12px;
 }
-.search-bar {
-  @apply h-46px;
-  .search-input {
-    @apply bg-transparent border-transparent;
-    @apply px-2 md:px-10;
-    @apply w-full;
-    @apply text-lg;
-  }
-}
-
-.float-panel {
-  @apply mt-1 relative z-10;
-  filter: drop-shadow(0 1rem 1rem rgba(0, 0, 0, 0.5));
-
-  &:deep(.mcframe__main) {
-    @apply max-h-50vh overflow-auto;
-  }
-
-  .loading {
-    @apply flex justify-center items-center py-5 text-5xl;
-  }
-
-  .no-match {
-    @apply text-center;
-  }
-
-  .mod-list {
-    @apply select-none;
-    .mod-item {
-      @apply flex justify-between py-1 px-1;
-
-      &:hover {
-        @apply bg-primary/10 cursor-pointer;
-      }
-
-      .left {
-        @apply flex;
-        .image {
-          @apply mr-2;
-          @apply flex-shrink-0;
-          img {
-            @apply h-50px w-50px object-cover;
-          }
-        }
-
-        .detail {
-          @apply flex flex-col justify-center;
-          .name {
-            @apply whitespace-nowrap overflow-hidden overflow-ellipsis max-w-70vw;
-          }
-
-          .version {
-            @apply text-primary/60;
-          }
-        }
-      }
-
-      .right {
-        @apply hidden md:block;
-      }
-    }
+@media (max-width: 560px) {
+  .right {
+    display: none;
   }
 }
 </style>

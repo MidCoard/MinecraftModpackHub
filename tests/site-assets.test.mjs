@@ -7,7 +7,6 @@ test("navigation artwork ships locally without the replaced textures, fonts or i
     readFileSync(new URL("../" + name, import.meta.url), "utf8");
   for (const name of [
     "index.html",
-    "factory/index.html",
     "modpacks/index.html",
     "src/site/site.css",
     "src/assets/css/theme.css",
@@ -33,14 +32,10 @@ test("navigation artwork ships locally without the replaced textures, fonts or i
     undefined,
   );
   assert.match(read("index.html"), /href="\/modpacks\/"/);
-  assert.match(read("index.html"), /href="\/factory\/app\/"/);
-  assert.doesNotMatch(read("index.html"), /href="\/factory\/"/);
-  assert.match(read("factory/index.html"), /href="\.\/app\/"/);
-  for (const name of [
-    "index.html",
-    "factory/index.html",
-    "src/components/Footer.vue",
-  ]) {
+  assert.match(read("index.html"), /href="\/factory\/"/);
+  assert.doesNotMatch(read("index.html"), /href="\/factory\/app\/"/);
+  assert.doesNotMatch(read("vite.config.js"), /factory\/index\.html/);
+  for (const name of ["index.html", "src/components/Footer.vue"]) {
     assert.doesNotMatch(
       read(name),
       /credits\.txt|data-text="credits"|footer\.credits/,

@@ -17,9 +17,10 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       input: Object.fromEntries(
-        ["index.html", "modpacks/index.html", "factory/index.html"].map(
-          (file) => [file, fileURLToPath(new URL(file, import.meta.url))],
-        ),
+        ["index.html", "modpacks/index.html"].map((file) => [
+          file,
+          fileURLToPath(new URL(file, import.meta.url)),
+        ]),
       ),
     },
   },

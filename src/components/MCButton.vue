@@ -12,7 +12,8 @@ defineProps({ disabled: { type: Boolean, default: false } });
 </template>
 <style scoped>
 .mcbutton {
-  padding: 0;
+  padding: 9px 16px;
+  min-height: 42px;
 }
 .mcbutton__main {
   display: block;

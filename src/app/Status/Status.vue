@@ -54,15 +54,22 @@ const fetchData = async () => {
 <template>
   <div>
     <Teleport to="#header-slot">
-      <RouterLink to="/" class="header-link">{{
+      <RouterLink to="/" class="header-link mc-button">{{
         t("header.toolbar.home")
       }}</RouterLink>
     </Teleport>
-    <p v-if="loading" role="status">{{ t("status.loading") }}</p>
-    <p v-else-if="failed" role="alert">
-      {{ t("status.error") }}
-      <button type="button" @click="fetchData">{{ t("search.retry") }}</button>
-    </p>
+    <h1>{{ t("title.status") }}</h1>
+    <MCFrame v-if="loading" class="status-state"
+      ><p role="status">{{ t("status.loading") }}</p></MCFrame
+    >
+    <MCFrame v-else-if="failed" class="status-state"
+      ><div role="alert">
+        {{ t("status.error") }}
+        <button type="button" @click="fetchData">
+          {{ t("search.retry") }}
+        </button>
+      </div></MCFrame
+    >
     <div v-else class="status-wrapper">
       <MCFrame class="status-item">
         <p class="title">{{ t("status.title.availableMods") }}</p>
@@ -84,34 +91,33 @@ const fetchData = async () => {
   </div>
 </template>
 
-<style scoped lang="scss">
-.protips {
-  &:deep(.mcframe__main) {
-    @apply py-1 px-2 md:px-10;
-  }
-
-  .title {
-    @apply font-bold text-xl;
-  }
+<style scoped>
+h1 {
+  margin: 6px 0 22px;
+  font: 600 clamp(24px, 3vw, 32px) / 1.3 var(--pixel);
 }
-
+.status-state {
+  padding: 20px;
+  line-height: 1.8;
+}
+.status-state button {
+  margin-left: 12px;
+}
 .status-wrapper {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4;
-  @apply gap-2;
-
-  .status-item {
-    &:deep(.mcframe__main) {
-      @apply py-3 md:py-5 px-2;
-      @apply flex flex-col gap-y-3 md:gap-y-5 justify-between;
-    }
-
-    .title {
-      @apply text-xl md:text-2xl text-center;
-    }
-
-    .data {
-      @apply text-lg md:text-xl text-center;
-    }
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 16px;
+}
+.status-item :deep(.mcframe__main) {
+  padding: 22px;
+}
+.title {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0 0 16px;
+}
+.data {
+  font: 600 32px/1.2 var(--mc-font-mono);
+  margin: 0;
 }
 </style>
