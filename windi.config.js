@@ -1,15 +1,15 @@
-import { defineConfig } from 'windicss/helpers'
+import { defineConfig } from "windicss/helpers";
 
 export default defineConfig({
   theme: {
     extend: {
       colors: {
         primary: {
-          extralight: '#ffffff',
-          light: '#c4c4c4',
-          DEFAULT: '#333333',
+          extralight: "var(--panel)",
+          light: "var(--line)",
+          DEFAULT: "var(--ink)",
         },
       },
-    }
-  }
-})
+    },
+  },
+});

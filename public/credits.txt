@@ -1,23 +1,12 @@
-Visual assets used by Focess Minecraft tools
+Focess Minecraft tools
 
-Selected tiles and items: Voxel Pack (base), Kenney Vleugels / Kenney.
-https://kenney.nl/assets/voxel-pack
-Downloaded from the creator's OpenGameArt upload:
-https://opengameart.org/content/voxel-pack
-License: CC0. Original notice: /art/kenney/License.txt
+Terrain, tool illustrations, fallback pack icon and interface frames are authored
+SVG/CSS. No game textures or downloaded UI fonts are bundled. System fonts are
+provided by the visitor's operating system.
 
-Font: Fusion Pixel Font, TakWolf, release 2026.11.10.
-https://github.com/TakWolf/fusion-pixel-font
-Unmodified 12px proportional Simplified Chinese WOFF2.
-License: SIL Open Font License 1.1. Original notices:
-/fonts/fusion-pixel/OFL.txt
-/fonts/fusion-pixel/LICENSES/ark-pixel/OFL.txt
-/fonts/fusion-pixel/LICENSES/cubic-11/OFL.txt
-/fonts/fusion-pixel/LICENSES/galmuri/LICENSE.txt
-
-Website cube mark, terrain composition and CSS interface styling are original
-to this website. No Mojang game textures or logos are bundled by this redesign.
-Search UI originates from daidr's MinecraftModpackHub.
+Search UI is based on daidr's MinecraftModpackHub; author attribution is retained.
+Real modpack logos and names come from the search data source and belong to
+their respective authors. They are content, not bundled interface artwork.
 
 Not an official Minecraft product. Not approved by or associated with Mojang
 or Microsoft.

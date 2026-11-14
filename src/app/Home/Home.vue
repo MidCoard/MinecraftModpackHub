@@ -5,7 +5,7 @@ import MCFrame from "@/components/MCFrame.vue";
 import { useMessage } from "@/components/Message";
 import SearchBar from "@/components/SearchBar.vue";
 import { ENV_BASE_URL } from "@/utils/env";
-import { Icon } from "@iconify/vue";
+import Icon from "@/components/PixelIcon.vue";
 import { reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterLink, useRouter } from "vue-router";

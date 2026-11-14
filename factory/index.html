@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#edf3ef" />
+    <meta name="theme-color" content="#c6c6c6" />
     <meta
       name="description"
       content="Focess Minecraft 工具：按模组寻找整合包，使用 FactoryCanvas 规划与验证产线。"
@@ -105,7 +105,7 @@
                 fill="currentColor"
                 text-anchor="middle"
                 font-size="16"
-                font-family="Fusion Pixel, monospace"
+                font-family="Bahnschrift, Microsoft YaHei, sans-serif"
               >
                 <text x="74" y="116" data-text="flowInput">原料</text>
                 <text x="310" y="116" data-text="flowProcess">加工</text>
@@ -133,39 +133,48 @@
         aria-label="主要功能"
       >
         <article>
-          <img
+          <svg
             class="capability-icon"
-            src="/art/kenney/table.png"
-            alt=""
-            width="44"
-            height="44"
-          />
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            fill="currentColor"
+            fill-rule="evenodd"
+            shape-rendering="crispEdges"
+          >
+            <path d="M4 5h24v6H4zm2 8h5v15H6zm15 0h5v15h-5z" />
+          </svg>
           <h2 data-text="capImport">导入真实配方</h2>
           <p data-text="capImportCopy">
             选择导出的整合包 JSON，或使用站点提供的配方数据。
           </p>
         </article>
         <article>
-          <img
+          <svg
             class="capability-icon"
-            src="/art/kenney/hammer_iron.png"
-            alt=""
-            width="44"
-            height="44"
-          />
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            fill="currentColor"
+            fill-rule="evenodd"
+            shape-rendering="crispEdges"
+          >
+            <path d="M4 5h17v7H4zm8 9h5v15h-5zM23 4h5v10h-5z" />
+          </svg>
           <h2 data-text="capPlan">连接与求解</h2>
           <p data-text="capPlanCopy">
             设置供给、机器和目标产量，检查物料平衡、供电与设备需求。
           </p>
         </article>
         <article>
-          <img
+          <svg
             class="capability-icon"
-            src="/art/kenney/oven.png"
-            alt=""
-            width="44"
-            height="44"
-          />
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            fill="currentColor"
+            fill-rule="evenodd"
+            shape-rendering="crispEdges"
+          >
+            <path d="M4 3h24v26H4zM8 7v5h16V7zm0 9v9h16v-9z" />
+          </svg>
           <h2 data-text="capSim">验证实际执行</h2>
           <p data-text="capSimCopy">
             在实时仿真中观察物料流动与加工进度，保存方案并继续调整。

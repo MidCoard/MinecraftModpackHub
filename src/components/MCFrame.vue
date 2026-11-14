@@ -8,11 +8,10 @@
   position: relative;
   padding: 6px;
   border: 2px solid var(--stone);
-  background: #b8bea8;
+  background: var(--panel);
   box-shadow:
-    inset 2px 2px #fff9e8,
-    inset -2px -2px #78806a,
-    2px 2px #29312820;
+    var(--raised),
+    0 3px 0 rgb(0 0 0 / 20%);
 }
 .mcframe__main {
   height: 100%;

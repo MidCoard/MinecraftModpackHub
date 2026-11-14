@@ -39,8 +39,8 @@ body {
 }
 
 ::selection {
-  @apply bg-primary;
-  color: #fff;
+  background: var(--action);
+  color: var(--on-action);
 }
 
 input {
@@ -59,7 +59,8 @@ input::placeholder {
 }
 
 .header-link:hover {
-  @apply underline-current text-[#3b904e];
+  @apply underline-current;
+  color: var(--moss);
 }
 
 .grecaptcha-badge {
@@ -78,10 +79,10 @@ input::placeholder {
 
 html {
   scrollbar-gutter: stable;
-  scrollbar-color: #81988a #ebebeb;
+  scrollbar-color: var(--shadow) var(--page);
 }
 :focus-visible {
-  outline: 3px solid #296d4e;
+  outline: 3px solid var(--moss);
   outline-offset: 4px;
 }
 button,

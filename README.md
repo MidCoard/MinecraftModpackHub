@@ -25,4 +25,4 @@ pnpm build
 
 门户源码不复制另一仓库的构建产物；部署时组合这两个静态产物。本站不捆绑整合包、方案或本地游戏文件。
 
-搜索 UI 基于 daidr 的 MinecraftModpackHub，保留作者标记。草地、矿物与工具素材来自 Kenney Voxel Pack（CC0）；像素字体使用 Fusion Pixel Font（OFL-1.1）。本站立方体标记和界面边框独立绘制，素材来源与原始许可证随站点发布，见 `public/credits.txt`。未捆绑 Minecraft 原版贴图或标志。
+搜索 UI 基于 daidr 的 MinecraftModpackHub，保留作者标记。站点的图块、工具插画和界面边框使用自绘 SVG/CSS，字体使用系统字体；不捆绑下载的 UI 材质、字体或 Minecraft 原版贴图与标志。真实整合包图标由搜索数据源提供，见 `public/credits.txt`。

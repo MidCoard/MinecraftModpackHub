@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@iconify/vue': ^4.0.0
   '@intlify/vite-plugin-vue-i18n': ^6.0.3
   '@vitejs/plugin-vue': ^3.1.0
   axios: ^0.27.2
@@ -16,7 +15,6 @@ specifiers:
   windicss: ^3.5.6
 
 dependencies:
-  '@iconify/vue': 4.0.0_vue@3.2.40
   axios: 0.27.2
   pinia: 2.0.22_vue@3.2.40
   sass: 1.55.0
@@ -76,19 +74,6 @@ packages:
     os: [linux]
     requiresBuild: true
     optional: true
-
-  /@iconify/types/2.0.0:
-    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
-    dev: false
-
-  /@iconify/vue/4.0.0_vue@3.2.40:
-    resolution: {integrity: sha512-73z81Yf2HISfehu3qvN9GqL1OnUO7wEMKkiFwVGJ2pqAdGCR8FrVylhRhka+6U+gFLlng0ynnT20svk3jJYwow==}
-    peerDependencies:
-      vue: '>=3'
-    dependencies:
-      '@iconify/types': 2.0.0
-      vue: 3.2.40
-    dev: false
 
   /@intlify/bundle-utils/3.2.1_vue-i18n@9.2.2:
     resolution: {integrity: sha512-rf4cLBOnbqmpXVcCdcYHilZpMt1m82syh3WLBJlZvGxN2KkH9HeHVH4+bnibF/SDXCHNh6lM6wTpS/qw+PkcMg==}

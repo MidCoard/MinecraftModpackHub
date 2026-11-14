@@ -81,11 +81,7 @@ onBeforeUnmount(() => gate.cancel());
         >
           <MCFrame class="modpack-item">
             <div class="top">
-              <img
-                :src="modpack.logoUrl || '/art/kenney/table.png'"
-                class="image"
-                alt=""
-              />
+              <img :src="modpack.logoUrl || '/pack.svg'" class="image" alt="" />
               <div class="detail">
                 <div class="name">{{ modpack.name }}</div>
                 <div v-if="modpack.authors?.length > 0" class="author">

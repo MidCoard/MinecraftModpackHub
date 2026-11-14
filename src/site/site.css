@@ -62,7 +62,9 @@ main,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid var(--line);
+  border: 2px solid var(--stone);
+  background: var(--panel);
+  box-shadow: var(--raised);
   gap: 24px;
 }
 .wordmark {
@@ -123,7 +125,7 @@ main,
 .intro h1 {
   font: 400 clamp(36px, 3.7vw, 48px) / 1.35 var(--pixel);
   margin: 0;
-  text-shadow: 2px 2px #ffffff80;
+  text-shadow: none;
 }
 .headline-second {
   color: var(--moss);
@@ -155,7 +157,10 @@ main,
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 5px 5px #29312820;
+  box-shadow:
+    var(--raised),
+    0 5px 0 rgb(0 0 0 / 20%);
+  background: var(--panel);
 }
 .discovery {
   background: var(--panel);
@@ -197,10 +202,10 @@ main,
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #fff9e8;
-  border: 2px solid #7c8b65;
+  background: var(--control);
+  border: 2px solid var(--stone);
   padding: 12px 16px;
-  color: #526343;
+  color: var(--muted);
   box-shadow:
     inset 3px 3px #0000000e,
     3px 3px #00000010;
@@ -220,9 +225,9 @@ main,
 .mod-chips span {
   font-size: 11px;
   padding: 5px 8px;
-  border: 1px solid #a0ad88;
-  background: #e4e7cc;
-  color: #435738;
+  border: 1px solid var(--line);
+  background: var(--well);
+  color: var(--ink);
 }
 .pixel-land {
   position: absolute;
@@ -237,7 +242,11 @@ main,
 .pixel-land span {
   height: 40px;
   width: 40px;
-  background: url("/art/kenney/dirt_grass.png") center/cover;
+  background: linear-gradient(var(--action) 0 25%, #76543c 25% 100%);
+  border: 2px solid var(--stone);
+  box-shadow:
+    inset 2px 2px 0 rgb(255 255 255 / 25%),
+    inset -2px -2px 0 rgb(0 0 0 / 25%);
   image-rendering: pixelated;
 }
 .pixel-land span:nth-child(2n) {
@@ -272,16 +281,16 @@ main,
   gap: 24px;
   min-height: 50px;
   padding: 12px 16px;
-  background: #4e7138;
-  color: #fff9e8;
-  border: 2px solid #293e22;
+  background: var(--action);
+  color: var(--on-action);
+  border: 2px solid var(--stone);
   box-shadow:
     inset 2px 2px #ffffff38,
     inset -2px -3px #00000038;
   font: 400 16px/1.4 var(--pixel);
 }
 .primary-link:hover {
-  background: #3d602b;
+  background: var(--action-hover);
   text-decoration: none;
 }
 .primary-link:active,
@@ -293,10 +302,8 @@ main,
   font: 20px/1 sans-serif;
 }
 .production {
-  --muted: #c6ceba;
-  --line: #64705d;
-  background: var(--stone);
-  color: #f3ead2;
+  background: var(--panel);
+  color: var(--ink);
 }
 .production .availability {
   color: var(--copper);
@@ -327,13 +334,13 @@ main,
 }
 .production .primary-link,
 .factory-actions .primary-link {
-  background: #d5a263;
-  color: #2b3026;
-  border-color: #1f271f;
+  background: var(--action);
+  color: var(--on-action);
+  border-color: var(--stone);
 }
 .production .primary-link:hover,
 .factory-actions .primary-link:hover {
-  background: #efbd7b;
+  background: var(--action-hover);
 }
 .production :focus-visible {
   outline-color: var(--copper);
@@ -367,17 +374,11 @@ main,
   margin-top: 8px;
 }
 .factory-page {
-  --page: #272f2a;
-  --ink: #f1e8d1;
-  --muted: #bec8b3;
-  --line: #53614e;
-  --moss: #edbb78;
   background: var(--page);
   color: var(--ink);
-  color-scheme: dark;
 }
 .factory-page .locale-toggle {
-  background: #3f493b;
+  background: var(--panel);
 }
 .factory-hero {
   padding-block: 60px 48px;
@@ -389,7 +390,7 @@ main,
 .factory-hero h1 {
   font: 400 clamp(36px, 3.3vw, 48px) / 1.4 var(--pixel);
   margin: 0;
-  text-shadow: 3px 3px #172018;
+  text-shadow: none;
 }
 .factory-hero em {
   font-style: normal;
@@ -426,10 +427,10 @@ main,
 }
 .factory-board {
   border: 3px solid #131b15;
-  background: #384333;
+  background: var(--well);
   box-shadow:
-    inset 2px 2px #ffffff20,
-    6px 6px #172018;
+    var(--raised),
+    0 4px 0 rgb(0 0 0 / 20%);
   overflow: hidden;
 }
 .board-toolbar,
@@ -439,7 +440,7 @@ main,
   gap: 8px;
   font: 12px var(--pixel);
   padding: 15px 18px;
-  background: #48513e;
+  background: var(--panel);
 }
 .board-dot {
   width: 8px;
@@ -508,9 +509,9 @@ main,
 }
 .usage-card {
   border: 2px solid var(--line);
-  box-shadow: inset 2px 2px #ffffff12;
+  box-shadow: var(--raised);
   padding: 24px;
-  background: #303b2e;
+  background: var(--panel);
 }
 .usage-card h3 {
   font: 400 24px/1.4 var(--pixel);
@@ -521,7 +522,7 @@ main,
   word-break: break-word;
   padding: 16px;
   border: 1px solid var(--line);
-  background: #222c23;
+  background: var(--well);
   color: var(--copper);
   font:
     13px/1.7 Consolas,

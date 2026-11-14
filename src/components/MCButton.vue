@@ -87,7 +87,9 @@ const props = defineProps({
     display: block;
     @apply select-none text-center;
     @apply m-0px;
-    @apply bg-[#8b8b8b] font-bold;
+    @apply font-bold;
+    background: var(--action);
+    color: var(--on-action);
   }
 
   &:hover {
@@ -131,7 +133,8 @@ const props = defineProps({
     }
 
     .mcbutton__main {
-      @apply bg-[#666666] text-white;
+      background: var(--action-hover);
+      color: var(--on-action);
     }
   }
 }
