@@ -81,6 +81,10 @@ function choose(mod) {
   clear();
   showResultPanel.value = false;
 }
+function retry() {
+  input.value?.focus();
+  return fetchModList(searchText.value);
+}
 function keydown(event) {
   if (event.isComposing || composing) return;
   if (event.key === "Escape") {
@@ -174,7 +178,7 @@ onBeforeUnmount(() => {
       </div>
       <div v-else-if="error" class="search-error" role="alert">
         {{ t("home.searchbar.error") }}
-        <button type="button" @click="fetchModList(searchText)">
+        <button type="button" @click="retry">
           {{ t("home.searchbar.retry") }}
         </button>
       </div>
