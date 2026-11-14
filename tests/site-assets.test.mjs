@@ -8,6 +8,7 @@ test("navigation artwork ships locally without the replaced textures, fonts or i
   for (const name of [
     "index.html",
     "factory/index.html",
+    "modpacks/index.html",
     "src/site/site.css",
     "src/assets/css/theme.css",
   ]) {
