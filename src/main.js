@@ -4,6 +4,7 @@ import "virtual:windi.css";
 import "virtual:windi-devtools";
 // 引入全局样式
 import "./assets/css/global.css";
+import { readSavedLocale, saveLocale } from "./site/preferences.js";
 
 const app = createApp(App);
 
@@ -35,7 +36,7 @@ const findPrimaryLanguage = () => {
 // 尝试从 localstorage或navigator.language中获取语言
 let lang = findPrimaryLanguage();
 try {
-  const saved = localStorage.getItem("lang");
+  const saved = readSavedLocale(localStorage);
   if (Object.hasOwn(messages, saved)) lang = saved;
 } catch {}
 
@@ -63,7 +64,7 @@ watch(
   (value) => {
     document.documentElement.lang = value === "zh-cn" ? "zh-CN" : "en";
     try {
-      localStorage.setItem("lang", value);
+      saveLocale(localStorage, value);
     } catch {}
   },
   { immediate: true },

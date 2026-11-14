@@ -4,24 +4,11 @@ html,
 body {
   margin: 0;
 
-  font-family:
-    "Segoe UI",
-    PingFang SC,
-    HarmonyOS_Regular,
-    Helvetica Neue,
-    Microsoft YaHei,
-    sans-serif !important;
+  font-family: var(--mc-font-body);
+  font-size: 14px;
+  line-height: 1.6;
   color: var(--ink);
   background: var(--page);
-}
-
-.font-nomc {
-  font-family:
-    PingFang SC,
-    HarmonyOS_Regular,
-    Helvetica Neue,
-    Microsoft YaHei,
-    sans-serif !important;
 }
 
 body {
@@ -43,13 +30,9 @@ body {
   color: var(--on-action);
 }
 
-input {
-  @apply text-17px leading-0;
-  @apply border-1 border-primary border-opacity-60;
-}
-
 input::placeholder {
-  @apply text-primary/70;
+  color: var(--muted);
+  opacity: 1;
 }
 
 .header-link {
@@ -79,11 +62,11 @@ input::placeholder {
 
 html {
   scrollbar-gutter: stable;
-  scrollbar-color: var(--shadow) var(--page);
+  scrollbar-color: var(--mc-scroll-thumb) var(--page);
 }
 :focus-visible {
   outline: 3px solid var(--moss);
-  outline-offset: 4px;
+  outline-offset: 3px;
 }
 button,
 a,
@@ -103,8 +86,5 @@ button:disabled {
 }
 
 .header .left {
-  font-family: var(--pixel);
-}
-.mcbutton {
   font-family: var(--pixel);
 }

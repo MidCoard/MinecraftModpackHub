@@ -1,4 +1,5 @@
 import "./site.css";
+import { readSavedLocale, saveLocale } from "./preferences.js";
 
 const english = {
   disclaimer:
@@ -47,8 +48,7 @@ const chineseAria = Object.fromEntries(
 );
 let locale = "zh-cn";
 try {
-  const saved = localStorage.getItem("lang");
-  if (saved === "en") locale = "en";
+  locale = readSavedLocale(localStorage) || locale;
 } catch {}
 function renderLocale() {
   document.documentElement.lang = locale === "en" ? "en" : "zh-CN";
@@ -77,12 +77,12 @@ function renderLocale() {
     locale === "en"
       ? "Focess Minecraft · Find packs, plan production"
       : "Focess Minecraft · 找整合包，规划产线";
+  try {
+    saveLocale(localStorage, locale);
+  } catch {}
 }
 document.querySelector("[data-locale]").addEventListener("click", () => {
   locale = locale === "en" ? "zh-cn" : "en";
-  try {
-    localStorage.setItem("lang", locale);
-  } catch {}
   renderLocale();
 });
 renderLocale();
