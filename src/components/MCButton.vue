@@ -1,11 +1,13 @@
 <script setup>
 defineProps({ disabled: { type: Boolean, default: false } });
+const emit = defineEmits(["click"]);
 </script>
 <template>
   <button
     type="button"
     class="mcbutton mc-button mc-button--primary"
     :disabled="disabled"
+    @click="emit('click', $event)"
   >
     <span class="mcbutton__main"><slot /></span>
   </button>
