@@ -50,6 +50,7 @@ const { t } = useI18n();
 
     .left {
       @apply flex justify-center items-center gap-x-1;
+      @apply text-sm md:text-lg whitespace-nowrap;
     }
   }
 
