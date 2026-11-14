@@ -99,7 +99,7 @@
     "packs": "Modpack result pages",
     "range": "Showing {from}–{to}",
     "emptyPage": "No entries on this page",
-    "noTotal": "The catalog does not provide a total result count."
+    "pageSize": "{count} per page"
   },
   "sort": {
     "createdAt": "Creation time",
@@ -123,7 +123,7 @@
     "verification_failed": "Verification was rejected. Please try again.",
     "rate_limited": "Too many requests. Wait before trying again.",
     "service_unavailable": "The search service is temporarily unavailable. Please try again later.",
-    "api_unavailable": "This search API is not available yet. Please try again later.",
+    "api_unavailable": "The search service is not ready yet. Please try again later.",
     "network": "Could not connect to the search service. Please try again.",
     "timeout": "The search request timed out. Please try again.",
     "selection_storage": "The selection could not be saved in this browser."

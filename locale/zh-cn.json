@@ -99,7 +99,7 @@
     "packs": "整合包结果分页",
     "range": "显示第 {from}–{to} 条",
     "emptyPage": "此页没有结果",
-    "noTotal": "收录目录不提供结果总数。"
+    "pageSize": "每页 {count} 条"
   },
   "sort": {
     "createdAt": "创建时间",
@@ -123,7 +123,7 @@
     "verification_failed": "验证未通过，请重试。",
     "rate_limited": "请求过于频繁，请等待后重试。",
     "service_unavailable": "搜索服务暂不可用，请稍后重试。",
-    "api_unavailable": "新版搜索接口暂不可用，请稍后重试。",
+    "api_unavailable": "搜索服务尚未就绪，请稍后重试。",
     "network": "无法连接搜索服务，请检查网络后重试。",
     "timeout": "搜索请求超时，请重试。",
     "selection_storage": "无法在此浏览器中保存已选模组。"

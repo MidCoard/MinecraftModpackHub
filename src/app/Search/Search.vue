@@ -10,7 +10,6 @@ import {
   SORT_FIELDS,
   SOURCES,
   PAGE_SIZE,
-  MinecraftError,
 } from "@/api/minecraft.js";
 import { ref, watch, onBeforeUnmount, computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -59,10 +58,10 @@ async function fetchData() {
   meta.value = null;
   modpackList.value = [];
   try {
-    if (!selection.value) throw new MinecraftError("invalid_request", 400);
+    const current = routeSelection(route);
     const page = await minecraft.query(
       "modpacks",
-      selection.value.query,
+      current.query,
       async () => {
         await recaptchaLoaded();
         return executeRecaptcha("minecraft_modpacks");
@@ -237,7 +236,7 @@ onBeforeUnmount(() => gate.cancel());
           @click="pageTo(Math.max(0, meta.offset - PAGE_SIZE))"
         >
           {{ t("pagination.previous") }}</button
-        ><span>{{ t("pagination.noTotal") }}</span
+        ><span>{{ t("pagination.pageSize", { count: meta.limit }) }}</span
         ><button
           type="button"
           :disabled="
