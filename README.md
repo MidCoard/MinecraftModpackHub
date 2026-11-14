@@ -4,7 +4,7 @@
 
 - `/`：工具首页。
 - `/modpacks/`：整合包搜索；结果使用哈希路由。
-- `/factory/`：FactoryCanvas 介绍、使用方式和网页入口。
+- `/factory/app/`：直接打开 FactoryCanvas 规划器。旧 `/factory/` 地址跳转至应用。
 
 ## 开发与构建
 
@@ -21,10 +21,10 @@ pnpm build
 
 搜索调用 `VITE_BASE_URL` 指定的 FocessAPI，默认 `https://api.focess.top`。reCAPTCHA 保留现有站点配置，域名必须被该站点配置允许；网络或验证服务不可用时显示可重试错误，不伪造搜索结果。
 
-将 FactoryCanvas 的 `factorycanvas-static.zip` 解压到站点根目录下的 `factory/app/`，即可从介绍页打开规划器。其资源使用相对地址，不需要 Java 运行服务、上传接口或计算服务器。部署应保留目录结构并提供 `.wasm` 文件；不要将不存在的资源回退成 HTML。可将整合包 JSON 放在该目录下的 `packs/`，用 `/factory/app/?pack=packs/name.json` 打开。
+将 FactoryCanvas 的 `factorycanvas-static.zip` 解压到站点根目录下的 `factory/app/`，即可从首页直接打开规划器。其资源使用相对地址，不需要 Java 运行服务、上传接口或计算服务器。部署应保留目录结构并提供 `.wasm` 文件；不要将不存在的资源回退成 HTML。可将整合包 JSON 放在该目录下的 `packs/`，用 `/factory/app/?pack=packs/name.json` 打开。
 
 门户源码不复制另一仓库的构建产物；部署时组合这两个静态产物。本站不捆绑整合包、方案或本地游戏文件。
 
-搜索 UI 基于 daidr 的 MinecraftModpackHub，保留作者标记。站点的图块、工具插画和界面边框使用自绘 SVG/CSS，字体使用系统字体；不捆绑下载的 UI 材质、字体或 Minecraft 原版贴图与标志。真实整合包图标由搜索数据源提供，见 `public/credits.txt`。
+搜索 UI 基于 [daidr 的 MinecraftModpackHub](https://github.com/daidr/MinecraftModpackHub)。整合包图标和名称来自搜索数据源，归各自作者所有。
 
 基础控件使用 FactoryCanvas 的 `@focess/minecraft-ui` 导出版本，位于 `src/vendor/minecraft-ui/`。该目录由源包的导出命令生成；更新主题时修改源包并重新导出，不手动维护另一份控件样式。

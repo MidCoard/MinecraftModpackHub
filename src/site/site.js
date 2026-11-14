@@ -1,7 +1,6 @@
 import "./site.css";
 
 const english = {
-  credits: "Assets & credits",
   disclaimer:
     "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.",
   brandLabel: "Focess Minecraft home",
@@ -26,46 +25,13 @@ const english = {
   factoryTitle: "Make your production add up",
   factoryCopy:
     "Import pack recipes, connect machines and materials, calculate supply and power, then check the line in a live simulation.",
-  factoryAction: "Explore FactoryCanvas",
+  factoryAction: "Open production planner",
   entryNote:
     "Find modpacks online and plan production in your browser. You keep your own recipe data and plans.",
   homeLink: "Focess home",
   flowInput: "Inputs",
   flowProcess: "Process",
   flowOutput: "Outputs",
-  preview: "Browser planning · local data",
-  factoryHeadlineA: "Turn your recipes into",
-  factoryHeadlineB: "a working production line.",
-  factoryIntro:
-    "Work from the recipes in your own modpack. Plan material flow, machine power, and the output your line can deliver.",
-  openLocal: "Open production planner",
-  usage: "How to use ↓",
-  localNote:
-    "Read an exported JSON file. No Java application or modpack upload required.",
-  diagram: "Production concept",
-  boardInput: "Materials & machines",
-  boardOutput: "Connect → solve → verify",
-  capImport: "Import real recipes",
-  capImportCopy:
-    "Choose an exported modpack JSON file, or load recipe data provided by the site.",
-  capPlan: "Connect and solve",
-  capPlanCopy:
-    "Set supplies, machines, and output goals. Check material balance, power, and equipment requirements.",
-  capSim: "Verify execution",
-  capSimCopy:
-    "Watch material movement and machine progress in live simulation. Save your plan and keep refining it.",
-  usageLabel: "GET STARTED IN YOUR BROWSER",
-  usageTitle: "Your modpack stays local.",
-  usageCopy:
-    "The planner reads only JSON you choose. Calculation and saved plans stay in your browser; game files are not uploaded.",
-  runTitle: "Choose data and start planning",
-  runCopy:
-    "Open the planner, import a modpack JSON file, then choose recipes and output goals:",
-  runThen:
-    "Save plan versions and export backups regularly. Clearing site data removes the copies stored in your browser.",
-  limitsTitle: "Current support",
-  limitsCopy:
-    "Offline metadata readers cover Forge, NeoForge, and Fabric. The game collector targets Minecraft 1.20.1 / Forge 47.4.16. It is compile-verified and has not completed in-game release acceptance. NeoForge and Fabric runtime collectors are not implemented. Static import is not the final in-game recipe set.",
 };
 const chinese = Object.fromEntries(
   [...document.querySelectorAll("[data-text]")].map((node) => [
@@ -107,11 +73,8 @@ function renderLocale() {
     "aria-label",
     locale === "en" ? "切换到简体中文" : "Switch to English",
   );
-  document.title = document.body.classList.contains("factory-page")
-    ? locale === "en"
-      ? "FactoryCanvas · Minecraft production planning"
-      : "FactoryCanvas · Minecraft 产线规划"
-    : locale === "en"
+  document.title =
+    locale === "en"
       ? "Focess Minecraft · Find packs, plan production"
       : "Focess Minecraft · 找整合包，规划产线";
 }

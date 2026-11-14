@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from "vue-i18n";
+import { RouterLink } from "vue-router";
 import LangSwitch from "./LangSwitch.vue";
 import MCFrame from "./MCFrame.vue";
 import Icon from "@/components/PixelIcon.vue";
@@ -10,13 +11,13 @@ const { t } = useI18n();
 <template>
   <div class="header">
     <MCFrame class="main">
-      <a
-        href="/"
+      <RouterLink
+        to="/"
         class="left"
-        :aria-label="t('title.main') + ' · ' + t('header.toolbar.tools')"
+        :aria-label="t('title.main') + ' · ' + t('header.toolbar.home')"
       >
         <Icon icon="pixelarticons:briefcase-search" />{{ t("title.main") }}
-      </a>
+      </RouterLink>
       <div class="right" id="header-slot"></div>
     </MCFrame>
     <MCFrame class="lang-switch">

@@ -41,7 +41,7 @@ jobs:
       - name: Package static site
         run: |
           mkdir -p delivery
-          python3 -m zipfile --create delivery/site.zip dist/index.html dist/assets dist/modpacks dist/factory dist/pack.svg dist/mark.svg dist/credits.txt
+          python3 -m zipfile --create delivery/site.zip dist/index.html dist/assets dist/modpacks dist/factory dist/pack.svg dist/mark.svg
           if git check-ignore delivery/site.zip; then
             echo 'The delivery artifact must be explicitly allowed before upload.'
             exit 1

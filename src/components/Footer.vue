@@ -8,6 +8,7 @@ const { t } = useI18n();
 <template>
   <div class="footer">
     <div class="left">
+      <a href="/">{{ t("header.toolbar.tools") }}</a>
       <a href="https://focess.top/" target="_blank" rel="noopener noreferrer">
         <Icon icon="pixelarticons:external-link" />
         MidCoard's Home
@@ -26,7 +27,6 @@ const { t } = useI18n();
         </a>
       </span>
     </div>
-    <a class="asset-credits" href="/credits.txt">{{ t("footer.credits") }}</a>
     <small class="disclaimer">{{ t("footer.disclaimer") }}</small>
   </div>
 </template>
@@ -36,6 +36,12 @@ const { t } = useI18n();
   @apply flex justify-between flex-wrap gap-3;
   @apply text-xs sm:text-sm md:text-base;
   @apply mb-3 sm:mb-5 md:mb-8;
+
+  .left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 
   .disclaimer {
     width: 100%;
