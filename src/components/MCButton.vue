@@ -37,6 +37,7 @@ const props = defineProps({
   @apply relative cursor-pointer;
   &.disabled {
     @apply cursor-default pointer-events-none;
+    opacity: 0.55;
   }
 
   .mcbutton__border {

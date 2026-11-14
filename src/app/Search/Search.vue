@@ -153,7 +153,7 @@ onBeforeUnmount(() => gate.cancel());
 .search-failure button,
 .load-more {
   padding: 10px 16px;
-  border: 1px solid #81988a;
+  border: 1px solid var(--line);
   background: transparent;
   margin: 12px 0;
 }

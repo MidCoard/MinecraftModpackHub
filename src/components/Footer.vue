@@ -50,7 +50,7 @@ const { t } = useI18n();
 
   a {
     @apply inline-flex items-center gap-x-1;
-    @apply text-[#3b904e];
+    color: var(--moss);
     @apply underline underline-dashed underline-opacity-0 underline-transparent;
 
     &:hover {

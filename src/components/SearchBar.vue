@@ -248,7 +248,7 @@ onBeforeUnmount(() => {
   margin: 0;
 }
 .mod-item.active {
-  background: #d7e4d9;
+  background: var(--control);
 }
 .search-error {
   padding: 16px;
