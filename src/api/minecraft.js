@@ -185,7 +185,12 @@ export function routeSelection(route) {
     throw new MinecraftError("invalid_request", 400);
   // Links made by the old CurseForge-only UI retain their original meaning.
   const source = supplied || (raw ? "curseforge" : "all");
-  const ids = raw ? (supplied ? raw.split(",") : modIds(raw)) : [];
+  let ids;
+  try {
+    ids = raw ? (supplied ? raw.split(",") : modIds(raw)) : [];
+  } catch {
+    throw new MinecraftError("invalid_request", 400);
+  }
   const dependencyRefs = ids.map((sourceId) => ({ source, sourceId }));
   const offsetText = route.query.offset ?? "0";
   if (typeof offsetText !== "string" || !/^\d+$/.test(offsetText))

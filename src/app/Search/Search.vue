@@ -87,7 +87,13 @@ function filter(key, value) {
 function pageTo(offset) {
   router.replace({ query: { ...route.query, offset: String(offset) } });
 }
-watch(() => route.fullPath, fetchData, { immediate: true, flush: "sync" });
+// Cancel immediately; read query/params after the router's computed fields settle.
+watch(
+  () => route.fullPath,
+  () => gate.cancel(),
+  { flush: "sync" },
+);
+watch(() => route.fullPath, fetchData, { immediate: true });
 onBeforeUnmount(() => gate.cancel());
 </script>
 <template>
