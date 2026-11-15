@@ -112,8 +112,8 @@ function onSearchBtnClick() {
         </select>
       </div>
       <p class="source-hint">{{ t("sources.selectionHint") }}</p>
-      <RangeFilters kind="mods" :query="route.query" @apply="applyRanges" />
       <SearchBar :source="source" :filters="modFilters" @add-mod="onModAdded" />
+      <RangeFilters kind="mods" :query="route.query" @apply="applyRanges" />
       <p v-if="selectionError" role="alert">{{ selectionError }}</p>
       <div class="selection-heading">
         <h2>{{ t("home.modlist.title") }}</h2>
