@@ -116,7 +116,7 @@
     "complete": "Declared dependencies resolved"
   },
   "errors": {
-    "invalid_request": "These search settings are invalid. Adjust them and try again.",
+    "invalid_request": "Request rejected: filters or verification may be invalid. Check the filters and retry for fresh verification.",
     "invalid_response": "The search response could not be read. Please try again.",
     "verification_unavailable": "Verification could not finish. Check your connection and try again.",
     "verification_expired": "Verification expired. Try again to obtain a new verification.",
@@ -127,5 +127,14 @@
     "network": "Could not connect to the search service. Please try again.",
     "timeout": "The search request timed out. Please try again.",
     "selection_storage": "The selection could not be saved in this browser."
+  },
+  "ranges": {
+    "title": "Range filters",
+    "hint": "Leave bounds blank for no limit. Dates use {timezone}; the end date includes the whole day. Unknown counts do not match a count range.",
+    "min": "From / minimum",
+    "max": "Through / maximum",
+    "apply": "Apply filters",
+    "clear": "Clear filters",
+    "invalid": "Enter valid dates and non-negative safe whole numbers; minimum must not exceed maximum."
   }
 }

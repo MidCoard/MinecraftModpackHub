@@ -11,9 +11,13 @@ import {
   buildQuery,
   resourceKey,
   PAGE_SIZE,
+  MinecraftError,
 } from "@/api/minecraft.js";
 import { createRequestGate, moveActive } from "@/utils/request-gate.js";
-const props = defineProps({ source: { type: String, required: true } });
+const props = defineProps({
+  source: { type: String, required: true },
+  filters: { type: Object, default: null },
+});
 const { t } = useI18n(),
   { executeRecaptcha, recaptchaLoaded } = useReCaptcha(),
   emit = defineEmits(["add-mod"]);
@@ -38,13 +42,20 @@ async function fetchModList(keyword, offset = 0) {
   active.value = -1;
   showResultPanel.value = true;
   try {
-    const query = buildQuery("mods", { source: props.source, keyword, offset });
+    if (props.filters === null)
+      throw new MinecraftError("invalid_request", 400);
+    const query = buildQuery("mods", {
+      source: props.source,
+      keyword,
+      offset,
+      filters: props.filters,
+    });
     const page = await minecraft.query(
       "mods",
       query,
-      async () => {
+      async (action) => {
         await recaptchaLoaded();
-        return executeRecaptcha("minecraft_mods");
+        return executeRecaptcha(action);
       },
       operation.signal,
     );
@@ -81,6 +92,11 @@ watch(
   () => props.source,
   () => queueSearch(searchText.value),
   { flush: "sync" },
+);
+watch(
+  () => props.filters,
+  () => queueSearch(searchText.value),
+  { deep: true, flush: "sync" },
 );
 function clear() {
   searchText.value = "";

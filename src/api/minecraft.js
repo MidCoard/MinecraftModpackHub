@@ -1,3 +1,4 @@
+import { validateFilters, readRangeDraft, filtersFromDraft } from "./ranges.js";
 import { ENV_BASE_URL } from "../utils/env.js";
 import { boundedRequest, readModSelection } from "../utils/request-gate.js";
 import { modIds } from "../utils/mod-ids.js";
@@ -5,6 +6,11 @@ import { readOverview } from "../utils/overview.js";
 
 export const SOURCES = ["curseforge", "modrinth"];
 export const PAGE_SIZE = 20;
+export const CAPTCHA_ACTIONS = Object.freeze({
+  mods: "search_mods",
+  modpacks: "search_modpacks",
+  overview: "mod_overview",
+});
 export const SELECTION_KEY = "minecraft-mod-selection-v2";
 export const SORT_FIELDS = [
   "createdAt",
@@ -123,6 +129,7 @@ export function buildQuery(
     direction = "desc",
     offset = 0,
     limit = PAGE_SIZE,
+    filters,
   } = {},
 ) {
   if (!["mods", "modpacks"].includes(kind))
@@ -166,7 +173,14 @@ export function buildQuery(
     (keyword.trim() && refs.length)
   )
     throw new MinecraftError("invalid_request", 400);
+  let ranges;
+  try {
+    ranges = validateFilters(filters, kind);
+  } catch {
+    throw new MinecraftError("invalid_request", 400);
+  }
   return {
+    ...(Object.keys(ranges).length ? { filters: ranges } : {}),
     sources,
     ...(keyword.trim() ? { keyword: keyword.trim() } : {}),
     ...(refs.length ? { dependencyRefs: refs } : {}),
@@ -195,12 +209,22 @@ export function routeSelection(route) {
   const offsetText = route.query.offset ?? "0";
   if (typeof offsetText !== "string" || !/^\d+$/.test(offsetText))
     throw new MinecraftError("invalid_request", 400);
+  let filters;
+  try {
+    filters = filtersFromDraft(
+      readRangeDraft(route.query, "modpacks"),
+      "modpacks",
+    );
+  } catch {
+    throw new MinecraftError("invalid_request", 400);
+  }
   const query = buildQuery("modpacks", {
     source,
     dependencyRefs,
     field: route.query.sort || "downloadCount",
     direction: route.query.direction || "desc",
     offset: Number(offsetText),
+    filters,
   });
   return { source, dependencyRefs, query };
 }
@@ -264,7 +288,7 @@ export function createMinecraftClient({
     if (retryAt > now()) throw new MinecraftError("rate_limited", 429, retryAt);
     let token;
     try {
-      token = await boundedRequest(verify);
+      token = await boundedRequest(() => verify(CAPTCHA_ACTIONS[kind]));
     } catch (error) {
       if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
       throw new MinecraftError("verification_unavailable");

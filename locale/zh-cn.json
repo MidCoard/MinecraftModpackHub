@@ -116,7 +116,7 @@
     "complete": "声明依赖已解析"
   },
   "errors": {
-    "invalid_request": "搜索条件无效，请调整后重试。",
+    "invalid_request": "请求被拒绝，可能是筛选参数或验证码校验失败。请检查条件后重试，重试会重新获取验证码。",
     "invalid_response": "无法读取搜索响应，请重试。",
     "verification_unavailable": "验证未能完成，请检查网络后重试。",
     "verification_expired": "验证已失效，请重试以重新验证。",
@@ -127,5 +127,14 @@
     "network": "无法连接搜索服务，请检查网络后重试。",
     "timeout": "搜索请求超时，请重试。",
     "selection_storage": "无法在此浏览器中保存已选模组。"
+  },
+  "ranges": {
+    "title": "范围筛选",
+    "hint": "留空表示不限。日期采用 {timezone} 本地时区，截至日期包含整天；未知数量不匹配数量范围。",
+    "min": "起始 / 最小值",
+    "max": "截至 / 最大值",
+    "apply": "应用筛选",
+    "clear": "清空筛选",
+    "invalid": "请输入有效日期和安全范围内的非负整数，最小值不能大于最大值。"
   }
 }

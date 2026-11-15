@@ -32,3 +32,7 @@ pnpm build
 搜索 UI 基于 [daidr 的 MinecraftModpackHub](https://github.com/daidr/MinecraftModpackHub)。整合包图标和名称来自搜索数据源，归各自作者所有。
 
 基础控件使用 FactoryCanvas 的 `@focess/minecraft-ui` 导出版本，位于 `src/vendor/minecraft-ui/`。该目录由源包的导出命令生成；更新主题时修改源包并重新导出，不手动维护另一份控件样式。
+
+模组搜索和整合包搜索均提供创建日期、更新日期和下载量的独立上下限；整合包还可按模组数量范围筛选。空边界不限，0 是有效数量；日期按浏览器本地时区转换，截至日期包含整天。应用筛选从第一页开始，排序和翻页保留范围，链接可恢复已应用的筛选。
+
+网站验证码 action 分别为 `search_mods`、`search_modpacks` 和 `mod_overview`；每次请求和重试都会重新获取验证码。400 可能来自字段或验证码校验失败，页面不会将其视为空结果。

@@ -27,9 +27,9 @@ async function fetchData() {
   loading.value = true;
   failure.value = null;
   try {
-    const counts = await minecraft.overview(async () => {
+    const counts = await minecraft.overview(async (action) => {
       await recaptchaLoaded();
-      return executeRecaptcha("minecraft_overview");
+      return executeRecaptcha(action);
     }, operation.signal);
     if (operation.current()) result.value = counts;
   } catch (error) {

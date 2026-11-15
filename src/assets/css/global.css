@@ -157,3 +157,41 @@ select:disabled {
   margin: 0 0 18px;
   font-family: var(--pixel);
 }
+
+.range-filters {
+  margin: 16px 0;
+}
+.range-filters h2 {
+  font-size: 16px;
+  margin: 0;
+}
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.range-grid fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 2px solid var(--line);
+}
+.range-grid label {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+.range-grid input {
+  width: 100%;
+  min-width: 0;
+}
+.range-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.range-filters [role="alert"] {
+  color: var(--ink);
+}

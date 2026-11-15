@@ -9,14 +9,40 @@ import MCButton from "@/components/MCButton.vue";
 import MCFrame from "@/components/MCFrame.vue";
 import ResourceLogo from "@/components/ResourceLogo.vue";
 import { useMessage } from "@/components/Message";
+import RangeFilters from "@/components/RangeFilters.vue";
+import { filtersFromDraft, readRangeDraft, rangeQuery } from "@/api/ranges.js";
+import RangeFilters from "@/components/RangeFilters.vue";
+import { filtersFromDraft, readRangeDraft, rangeQuery } from "@/api/ranges.js";
 import SearchBar from "@/components/SearchBar.vue";
 import Icon from "@/components/PixelIcon.vue";
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink, useRouter, useRoute, useRoute } from "vue-router";
 const { success } = useMessage(),
   router = useRouter(),
   { t } = useI18n();
+const route = useRoute();
+const modFilters = computed(() => {
+  try {
+    return filtersFromDraft(readRangeDraft(route.query, "mods"), "mods");
+  } catch {
+    return null;
+  }
+});
+function applyRanges(draft) {
+  router.replace({ query: rangeQuery(route.query, draft, "mods") });
+}
+const route = useRoute();
+const modFilters = computed(() => {
+  try {
+    return filtersFromDraft(readRangeDraft(route.query, "mods"), "mods");
+  } catch {
+    return null;
+  }
+});
+function applyRanges(draft) {
+  router.replace({ query: rangeQuery(route.query, draft, "mods") });
+}
 let saved = [],
   initial = "curseforge";
 try {
@@ -99,7 +125,8 @@ function onSearchBtnClick() {
         </select>
       </div>
       <p class="source-hint">{{ t("sources.selectionHint") }}</p>
-      <SearchBar :source="source" @add-mod="onModAdded" />
+      <RangeFilters kind="mods" :query="route.query" @apply="applyRanges" />
+      <SearchBar :source="source" :filters="modFilters" @add-mod="onModAdded" />
       <p v-if="selectionError" role="alert">{{ selectionError }}</p>
       <div class="selection-heading">
         <h2>{{ t("home.modlist.title") }}</h2>
