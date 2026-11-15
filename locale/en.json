@@ -16,9 +16,9 @@
       "desc": "Choose the mods you want to play. Find packs that include them together."
     },
     "searchbar": {
-      "placeholder": "Enter keywords to search mods",
-      "no-match": "No matched mods",
-      "createby": "Create by {0}",
+      "placeholder": "Mod name or keyword",
+      "no-match": "No mods found",
+      "createby": "By {0}",
       "clear": "Clear search",
       "loading": "Searching mods…",
       "error": "Search failed. Check your connection and try again.",
@@ -31,8 +31,8 @@
       "remove": "Remove {0}",
       "title": "Selected mods",
       "count": "{count} selected",
-      "empty": "Search above to add your first mod.",
-      "hint": "Results include every selected mod from the current source.",
+      "empty": "Search for mods to add here.",
+      "hint": "Find packs that include all these mods.",
       "limit": "Select up to 256 mods."
     },
     "searchbtn": "Find matching modpacks"
@@ -52,15 +52,15 @@
       "notAvailableModpacks": "Not Available Modpacks",
       "notEmptyModpacks": "Not Empty Modpacks"
     },
-    "loading": "Loading index status…",
-    "error": "Could not load index status. Please try again.",
+    "loading": "Loading catalog…",
+    "error": "Could not load the catalog. Please try again.",
     "mods": "Collected mods",
     "modpacks": "Collected modpacks",
-    "total": "Collected catalog: {mods} mods · {modpacks} modpacks",
-    "countNote": "Combined counts add both catalogs; equivalent projects on different sources are counted separately."
+    "total": "{mods} mods · {modpacks} modpacks",
+    "countNote": "A project listed on both sources is counted twice."
   },
   "search": {
-    "no-match-modpack": "No matches in the collected catalog. Try fewer mods or a different source.",
+    "no-match-modpack": "No packs found. Try fewer mods or broader filters.",
     "latest-game-version": "Latest Game Version: ",
     "unknown": "Unknown",
     "mod-count": "Mods Count: ",
@@ -79,7 +79,7 @@
     "retryAfter": "Try again in {seconds}s",
     "approx": "≈ {value}",
     "dependencies": "Dependency data",
-    "dependencyNote": "Matches use one selected version. Counts describe resolved declared mods, not every archive file or transitive dependency. Download counts remain separate for each source."
+    "dependencyNote": "Matches use the selected pack version. Mod counts include resolved declared dependencies; downloads are counted per source."
   },
   "footer": {
     "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft."
@@ -89,8 +89,8 @@
     "curseforge": "CurseForge",
     "modrinth": "Modrinth",
     "all": "Both sources",
-    "selectionHint": "Selections are kept separately when you switch sources.",
-    "dependencyHint": "Matching all {count} selected mods from this source. Return home to change the selection."
+    "selectionHint": "Selected mods are saved separately for each source.",
+    "dependencyHint": "Includes all {count} selected mods. Return home to change your selection."
   },
   "pagination": {
     "previous": "Previous",
@@ -108,33 +108,35 @@
     "modCount": "Mod count",
     "asc": "Ascending",
     "desc": "Descending",
-    "knownCounts": "Mod-count sorting includes only packs with known counts."
+    "knownCounts": "Packs with unknown mod counts are excluded from this sort."
   },
   "dependency": {
-    "unknown": "Not yet known",
+    "unknown": "No data",
     "partial": "Partially resolved",
-    "complete": "Declared dependencies resolved"
+    "complete": "Resolved"
   },
   "errors": {
-    "invalid_request": "Request rejected: filters or verification may be invalid. Check the filters and retry for fresh verification.",
-    "invalid_response": "The search response could not be read. Please try again.",
-    "verification_unavailable": "Verification could not finish. Check your connection and try again.",
-    "verification_expired": "Verification expired. Try again to obtain a new verification.",
-    "verification_failed": "Verification was rejected. Please try again.",
-    "rate_limited": "Too many requests. Wait before trying again.",
+    "invalid_request": "Request failed. Please try again.",
+    "invalid_response": "Could not read the results. Please try again.",
+    "verification_unavailable": "Could not complete verification. Please try again.",
+    "verification_expired": "Verification expired. Please try again.",
+    "verification_failed": "Verification failed. Please try again.",
+    "rate_limited": "Too many requests. Please try again later.",
     "service_unavailable": "The search service is temporarily unavailable. Please try again later.",
-    "api_unavailable": "The search service is not ready yet. Please try again later.",
+    "api_unavailable": "Search is temporarily unavailable. Please try again later.",
     "network": "Could not connect to the search service. Please try again.",
     "timeout": "The search request timed out. Please try again.",
-    "selection_storage": "The selection could not be saved in this browser."
+    "selection_storage": "Could not save your selection. Check your browser storage settings."
   },
   "ranges": {
     "title": "Range filters",
-    "hint": "Leave bounds blank for no limit. Dates use {timezone}; the end date includes the whole day. Unknown counts do not match a count range.",
-    "min": "From / minimum",
-    "max": "Through / maximum",
+    "hint": "Leave blank for no limit. Dates use {timezone} and include the end day. Results with unknown counts are excluded from count filters.",
+    "min": "Minimum",
+    "max": "Maximum",
     "apply": "Apply filters",
     "clear": "Clear filters",
-    "invalid": "Enter valid dates and non-negative safe whole numbers; minimum must not exceed maximum."
+    "invalid": "Check the dates, counts and range limits.",
+    "startDate": "From",
+    "endDate": "Through"
   }
 }

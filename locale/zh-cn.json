@@ -16,9 +16,9 @@
       "desc": "选出想玩的模组，寻找同时包含它们的整合包。"
     },
     "searchbar": {
-      "placeholder": "输入关键词以搜索 mods",
-      "no-match": "无匹配模组",
-      "createby": "由 {0} 创建",
+      "placeholder": "模组名称或关键词",
+      "no-match": "没有找到相关模组",
+      "createby": "作者：{0}",
       "clear": "清空搜索",
       "loading": "正在搜索模组…",
       "error": "搜索失败，请检查网络后重试。",
@@ -26,13 +26,13 @@
       "label": "搜索模组"
     },
     "modlist": {
-      "added": "成功添加模组",
-      "removed": "成功移除模组",
+      "added": "已添加模组",
+      "removed": "已移除模组",
       "remove": "移除 {0}",
       "title": "已选模组",
       "count": "已选 {count} 个",
-      "empty": "在上方搜索并添加第一个模组。",
-      "hint": "结果将同时包含当前来源中的已选模组。",
+      "empty": "搜索模组，然后添加到这里。",
+      "hint": "查找同时包含这些模组的整合包。",
       "limit": "最多选择 256 个模组。"
     },
     "searchbtn": "查找匹配的整合包"
@@ -52,15 +52,15 @@
       "notAvailableModpacks": "不可用整合包",
       "notEmptyModpacks": "非空整合包"
     },
-    "loading": "正在读取索引状态…",
-    "error": "索引状态读取失败，请重试。",
+    "loading": "正在读取收录数据…",
+    "error": "收录数据加载失败，请重试。",
     "mods": "已收录模组",
     "modpacks": "已收录整合包",
-    "total": "收录目录：{mods} 个模组 · {modpacks} 个整合包",
-    "countNote": "合计为两个来源的目录数量之和；跨来源的同类项目分别计数。"
+    "total": "共 {mods} 个模组 · {modpacks} 个整合包",
+    "countNote": "不同来源的同一项目分别计数。"
   },
   "search": {
-    "no-match-modpack": "当前收录目录中没有匹配项，可尝试减少模组或切换来源。",
+    "no-match-modpack": "没有找到匹配的整合包，试试放宽条件。",
     "latest-game-version": "最新游戏版本：",
     "unknown": "未知",
     "mod-count": "模组数量：",
@@ -79,7 +79,7 @@
     "retryAfter": "{seconds} 秒后重试",
     "approx": "约 {value}",
     "dependencies": "依赖信息",
-    "dependencyNote": "按同一选定版本的依赖匹配。模组数量不代表压缩包文件总数或完整的传递依赖；各来源下载量分别统计。"
+    "dependencyNote": "按整合包所选版本匹配。模组数仅统计已解析的声明依赖，下载量按来源分别统计。"
   },
   "footer": {
     "disclaimer": "非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。"
@@ -89,8 +89,8 @@
     "curseforge": "CurseForge",
     "modrinth": "Modrinth",
     "all": "两个来源",
-    "selectionHint": "切换来源时，会分别保留各自已选的模组。",
-    "dependencyHint": "匹配此来源中全部 {count} 个已选模组；返回首页可修改选择。"
+    "selectionHint": "已选模组按来源分别保存。",
+    "dependencyHint": "同时包含已选的 {count} 个模组；返回首页可修改选择。"
   },
   "pagination": {
     "previous": "上一页",
@@ -108,33 +108,35 @@
     "modCount": "模组数量",
     "asc": "升序",
     "desc": "降序",
-    "knownCounts": "按模组数量排序时，仅显示数量已知的整合包。"
+    "knownCounts": "按模组数量排序时，不显示数量未知的整合包。"
   },
   "dependency": {
-    "unknown": "尚未取得",
-    "partial": "部分解析",
-    "complete": "声明依赖已解析"
+    "unknown": "暂无数据",
+    "partial": "部分已解析",
+    "complete": "已解析"
   },
   "errors": {
-    "invalid_request": "请求被拒绝，可能是筛选参数或验证码校验失败。请检查条件后重试，重试会重新获取验证码。",
-    "invalid_response": "无法读取搜索响应，请重试。",
-    "verification_unavailable": "验证未能完成，请检查网络后重试。",
-    "verification_expired": "验证已失效，请重试以重新验证。",
+    "invalid_request": "请求失败，请重试。",
+    "invalid_response": "搜索结果读取失败，请重试。",
+    "verification_unavailable": "无法完成验证，请重试。",
+    "verification_expired": "验证已过期，请重试。",
     "verification_failed": "验证未通过，请重试。",
-    "rate_limited": "请求过于频繁，请等待后重试。",
+    "rate_limited": "请求太频繁，请稍后再试。",
     "service_unavailable": "搜索服务暂不可用，请稍后重试。",
-    "api_unavailable": "搜索服务尚未就绪，请稍后重试。",
+    "api_unavailable": "搜索服务暂不可用，请稍后重试。",
     "network": "无法连接搜索服务，请检查网络后重试。",
     "timeout": "搜索请求超时，请重试。",
-    "selection_storage": "无法在此浏览器中保存已选模组。"
+    "selection_storage": "已选模组保存失败，请检查浏览器存储设置。"
   },
   "ranges": {
     "title": "范围筛选",
-    "hint": "留空表示不限。日期采用 {timezone} 本地时区，截至日期包含整天；未知数量不匹配数量范围。",
-    "min": "起始 / 最小值",
-    "max": "截至 / 最大值",
+    "hint": "留空不限。日期按 {timezone} 计算，包含结束当天。数量未知的结果不参与数量筛选。",
+    "min": "最少",
+    "max": "最多",
     "apply": "应用筛选",
     "clear": "清空筛选",
-    "invalid": "请输入有效日期和安全范围内的非负整数，最小值不能大于最大值。"
+    "invalid": "筛选范围有误，请检查日期、数量和上下限。",
+    "startDate": "开始日期",
+    "endDate": "结束日期"
   }
 }

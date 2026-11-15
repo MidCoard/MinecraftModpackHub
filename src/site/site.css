@@ -139,6 +139,7 @@ main,
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
+  margin-bottom: 32px;
 }
 .tool-card {
   overflow: hidden;
@@ -300,13 +301,6 @@ main,
 .flow-line {
   stroke-dasharray: 5 6;
 }
-.entry-note {
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.8;
-  color: var(--muted);
-  margin: 24px 0 38px;
-}
 .site-footer {
   border-top: 2px solid var(--line);
   display: flex;
@@ -412,10 +406,6 @@ main,
   .discovery-art,
   .production-art {
     min-height: 190px;
-  }
-  .entry-note {
-    text-align: left;
-    margin: 24px 0 28px;
   }
   .site-footer {
     align-items: flex-start;

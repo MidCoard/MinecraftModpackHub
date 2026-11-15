@@ -68,7 +68,16 @@ function clear() {
           :key="side"
           :for="`${kind}-${field}${side}`"
         >
-          {{ t("ranges." + side.toLowerCase()) }}
+          {{
+            t(
+              "ranges." +
+                (field.endsWith("At")
+                  ? side === "Min"
+                    ? "startDate"
+                    : "endDate"
+                  : side.toLowerCase()),
+            )
+          }}
           <input
             :id="`${kind}-${field}${side}`"
             v-model="draft[field + side]"

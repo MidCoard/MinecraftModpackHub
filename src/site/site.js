@@ -14,21 +14,18 @@ const english = {
   skip: "Skip to content",
   headlineA: "Find your next modpack.",
   headlineB: "Build your own factory.",
-  intro:
-    "Start with the mods you want to play. Then turn real recipes into a production line of your own.",
+  intro: "Find modpacks or import recipes to plan a production line.",
   online: "Online search",
   local: "Browser planning",
   sample: "Which mods do you want to play?",
   searchTitle: "Find a pack that fits",
   searchCopy:
-    "Choose mods from CurseForge or Modrinth, find packs that include them, and compare downloads and update times.",
+    "Find packs on CurseForge or Modrinth that include the mods you choose.",
   searchAction: "Find modpacks",
   factoryTitle: "Make your production add up",
   factoryCopy:
-    "Import pack recipes, connect machines and materials, calculate supply and power, then check the line in a live simulation.",
+    "Import recipes, connect machines, calculate production and power, then test the line in simulation.",
   factoryAction: "Open production planner",
-  entryNote:
-    "Find modpacks online and plan production in your browser. You keep your own recipe data and plans.",
   homeLink: "Focess home",
   flowInput: "Inputs",
   flowProcess: "Process",
