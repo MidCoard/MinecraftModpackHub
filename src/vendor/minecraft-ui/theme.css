@@ -1,0 +1,50 @@
+:root {
+  color-scheme: light dark;
+  --mc-canvas: light-dark(#b0b0b0, #242729);
+  --mc-panel: light-dark(#c6c6c6, #3d4145);
+  --mc-text: light-dark(#262626, #f3f3f3);
+  --mc-muted: light-dark(#3f3f3f, #d0d2d3);
+  --mc-primary: light-dark(#284b1d, #b3e897);
+  --mc-on-primary: light-dark(#ffffff, #183012);
+  --mc-border: light-dark(#626262, #737b80);
+  --mc-control-border: light-dark(#202020, #a5adb2);
+  --mc-soft: light-dark(#d4d4d4, #4c5156);
+  --mc-well: light-dark(#b0b0b0, #303438);
+  --mc-control: light-dark(#e1e1e1, #4c5156);
+  --mc-slot: light-dark(#8b8b8b, #303438);
+  --mc-edge: light-dark(#202020, #151719);
+  --mc-highlight: light-dark(#ffffff, #737b80);
+  --mc-shadow: light-dark(#626262, #202327);
+  --mc-warning: light-dark(#63410f, #e8c681);
+  --mc-warning-panel: light-dark(#e8d7ac, #3a2f20);
+  --mc-danger: light-dark(#842929, #f1a3a3);
+  --mc-danger-panel: light-dark(#dec0b8, #3c292c);
+  --mc-tooltip: light-dark(#180d24, #120b1c);
+  --mc-tooltip-text: #f8f2ff;
+  --mc-tooltip-border: light-dark(#78539b, #a187bc);
+  --mc-action: #426b2e;
+  --mc-action-hover: #365925;
+  --mc-on-action: #ffffff;
+  --mc-action-highlight: #729d4e;
+  --mc-action-edge: #25421c;
+  --mc-font-body: "Segoe UI", "Microsoft YaHei", sans-serif;
+  --mc-font-display: "Bahnschrift", "Microsoft YaHei", sans-serif;
+  --mc-font-mono: "Cascadia Code", Consolas, monospace;
+  --mc-raised:
+    inset 2px 2px 0 var(--mc-highlight), inset -2px -2px 0 var(--mc-shadow);
+  --mc-recessed:
+    inset 2px 2px 0 var(--mc-shadow), inset -2px -2px 0 var(--mc-highlight);
+  --mc-action-frame:
+    inset 2px 2px 0 var(--mc-action-highlight),
+    inset -2px -2px 0 var(--mc-action-edge);
+  --mc-popup-shadow: var(--mc-raised), 0 4px 0 rgb(0 0 0 / 24%);
+  --mc-scrim: light-dark(rgb(0 0 0 / 58%), rgb(0 0 0 / 72%));
+  --mc-scroll-thumb: light-dark(#666666, #858b8f);
+  --mc-scroll-hover: light-dark(#454545, #b5bdc2);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}

@@ -1,18 +1,18 @@
+@import "./theme.css";
+
 html,
 body {
   margin: 0;
-  overflow-y: hidden;
-  font-family: IPix, PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
-  @apply text-primary bg-primary/5;
-  overflow: hidden;
-}
 
-.font-nomc {
-  font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif !important;
+  font-family: var(--mc-font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--page);
 }
 
 body {
-  @apply overflow-auto h-100vh;
+  min-height: 100vh;
 }
 
 #app {
@@ -21,23 +21,18 @@ body {
 }
 
 * {
-  outline: none !important;
   @apply box-border;
   -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
-  @apply bg-primary;
-  color: #fff;
-}
-
-input {
-  @apply text-17px leading-0;
-  @apply border-1 border-primary border-opacity-60;
+  background: var(--action);
+  color: var(--on-action);
 }
 
 input::placeholder {
-  @apply text-primary/70;
+  color: var(--muted);
+  opacity: 1;
 }
 
 .header-link {
@@ -47,7 +42,8 @@ input::placeholder {
 }
 
 .header-link:hover {
-  @apply underline-current text-[#3b904e];
+  @apply underline-current;
+  color: var(--moss);
 }
 
 .grecaptcha-badge {
@@ -62,4 +58,140 @@ input::placeholder {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+html {
+  scrollbar-gutter: stable;
+  scrollbar-color: var(--mc-scroll-thumb) var(--page);
+}
+:focus-visible {
+  outline: 3px solid var(--moss);
+  outline-offset: 3px;
+}
+button,
+a,
+summary {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.header .left {
+  font-family: var(--pixel);
+}
+
+.source-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.source-filter label {
+  font-weight: 600;
+}
+.source-filter select {
+  min-width: 150px;
+}
+.source-hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 12px 0;
+}
+.query-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+.query-pagination span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.result-filters {
+  margin-bottom: 18px;
+}
+.result-filters .mcframe__main {
+  padding: 14px;
+}
+.filter-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.filter-fields label {
+  display: grid;
+  gap: 6px;
+  min-width: 140px;
+  flex: 1;
+  font-size: 13px;
+  color: var(--muted);
+}
+.modpack-list > article {
+  min-width: 0;
+}
+.modpack-list > article .modpack-item {
+  height: 100%;
+}
+.catalog-total {
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+select:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+.status-item h2 {
+  margin: 0 0 18px;
+  font-family: var(--pixel);
+}
+
+.range-filters {
+  margin: 16px 0;
+}
+.range-filters h2 {
+  font-size: 16px;
+  margin: 0;
+}
+.range-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+.range-grid fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 2px solid var(--line);
+}
+.range-grid label {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+.range-grid input {
+  width: 100%;
+  min-width: 0;
+}
+.range-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.range-filters [role="alert"] {
+  color: var(--ink);
 }

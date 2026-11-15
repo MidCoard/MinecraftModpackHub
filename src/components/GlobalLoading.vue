@@ -1,12 +1,12 @@
 <script setup>
-import LoadingIcon from './LoadingIcon.vue';
-import MCFrame from './MCFrame.vue';
+import LoadingIcon from "./LoadingIcon.vue";
+import MCFrame from "./MCFrame.vue";
 defineProps({
   isLoading: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 </script>
 
 <template>
@@ -36,7 +36,7 @@ defineProps({
   &:deep(.mcframe__main) {
     @apply flex justify-center items-center;
     @apply text-4xl;
-    @apply text-gray-700;
+    color: var(--ink);
   }
 }
 </style>

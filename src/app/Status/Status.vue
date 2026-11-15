@@ -1,107 +1,112 @@
 <script setup>
-  import MCFrame from "@/components/MCFrame.vue";
-  import { usePageStore } from "@/store/page";
-  import { ENV_BASE_URL } from "@/utils/env";
-  import { onMounted, reactive, ref } from "vue";
-  import { useI18n } from "vue-i18n";
-  import { useReCaptcha } from "vue-recaptcha-v3";
-  import { RouterLink } from "vue-router";
-  import axios from "axios";
-
-  const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-
-  const pageStore = usePageStore();
-
-  const { t } = useI18n();
-
-  onMounted(async () => {
-    pageStore.setPageLoadingState(true);
-    await fetchData();
-    pageStore.setPageLoadingState(false);
-  });
-
-  const result = reactive({
-    availableMods: NaN,
-    availableModpacks: NaN,
-    notAvailableModpacks: NaN,
-    notEmptyModpacks: NaN,
-  });
-
-  const fetchData = async () => {
-    await recaptchaLoaded();
-
-    const token = await executeRecaptcha("mod_overview");
-
-    const { data: _ret } = await axios.post(
-      ENV_BASE_URL + "/v1/focessapi/minecraft/overview",
-      {
-        recaptcha: token,
-      }
-    );
-
-    result.availableMods = _ret.availableMods;
-    result.availableModpacks = _ret.availableModpacks;
-    result.notAvailableModpacks = _ret.notAvailableModpacks;
-    result.notEmptyModpacks = _ret.notEmptyModpacks;
-  };
+import { minecraft } from "@/api/minecraft.js";
+import { createRequestGate } from "@/utils/request-gate.js";
+import MCFrame from "@/components/MCFrame.vue";
+import SearchFailure from "@/components/SearchFailure.vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useReCaptcha } from "vue-recaptcha-v3";
+import { RouterLink } from "vue-router";
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha(),
+  { t, locale } = useI18n(),
+  loading = ref(true),
+  failure = ref(null),
+  result = ref(null),
+  gate = createRequestGate();
+const format = (value) =>
+  Number.isSafeInteger(value)
+    ? new Intl.NumberFormat(locale.value).format(value)
+    : t("search.approx", {
+        value: new Intl.NumberFormat(locale.value, {
+          notation: "compact",
+          maximumSignificantDigits: 3,
+        }).format(value),
+      });
+async function fetchData() {
+  const operation = gate.begin();
+  loading.value = true;
+  failure.value = null;
+  try {
+    const counts = await minecraft.overview(async (action) => {
+      await recaptchaLoaded();
+      return executeRecaptcha(action);
+    }, operation.signal);
+    if (operation.current()) result.value = counts;
+  } catch (error) {
+    if (operation.current()) failure.value = error;
+  } finally {
+    if (operation.current()) loading.value = false;
+  }
+}
+onMounted(fetchData);
+onBeforeUnmount(() => gate.cancel());
 </script>
-
 <template>
   <div>
-    <Teleport to="#header-slot">
-      <RouterLink to="/" class="header-link">{{
+    <Teleport to="#header-slot"
+      ><RouterLink to="/" class="header-link mc-button">{{
         t("header.toolbar.home")
-      }}</RouterLink>
-    </Teleport>
-    <div class="status-wrapper">
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.availableMods") }}</p>
-        <p class="data">{{ result.availableMods }}</p>
-      </MCFrame>
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.availableModpacks") }}</p>
-        <p class="data">{{ result.availableModpacks }}</p>
-      </MCFrame>
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.notAvailableModpacks") }}</p>
-        <p class="data">{{ result.notAvailableModpacks }}</p>
-      </MCFrame>
-      <MCFrame class="status-item">
-        <p class="title">{{ t("status.title.notEmptyModpacks") }}</p>
-        <p class="data">{{ result.notEmptyModpacks }}</p>
-      </MCFrame>
-    </div>
+      }}</RouterLink></Teleport
+    >
+    <h1>{{ t("title.status") }}</h1>
+    <MCFrame v-if="loading" class="status-state"
+      ><p role="status">{{ t("status.loading") }}</p></MCFrame
+    >
+    <MCFrame v-else-if="failure" class="status-state"
+      ><SearchFailure :error="failure" @retry="fetchData"
+    /></MCFrame>
+    <template v-else-if="result"
+      ><p class="catalog-total">
+        {{
+          t("status.total", {
+            mods: format(result.mods),
+            modpacks: format(result.modpacks),
+          })
+        }}
+      </p>
+      <div class="status-wrapper">
+        <MCFrame
+          v-for="provider in result.sources"
+          :key="provider.source"
+          class="status-item"
+          ><h2>{{ t("sources." + provider.source) }}</h2>
+          <p class="title">{{ t("status.mods") }}</p>
+          <p class="data">{{ format(provider.mods) }}</p>
+          <p class="title">{{ t("status.modpacks") }}</p>
+          <p class="data">{{ format(provider.modpacks) }}</p></MCFrame
+        >
+      </div>
+      <p class="source-hint">{{ t("status.countNote") }}</p></template
+    >
   </div>
 </template>
-
-<style scoped lang="scss">
-  .protips {
-    &:deep(.mcframe__main) {
-      @apply py-1 px-2 md:px-10;
-    }
-
-    .title {
-      @apply font-bold text-xl;
-    }
-  }
-
-  .status-wrapper {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4;
-    @apply gap-2;
-
-    .status-item {
-      &:deep(.mcframe__main) {
-        @apply py-3 md:py-5 px-2;
-        @apply flex flex-col gap-y-3 md:gap-y-5 justify-between;
-      }
-
-      .title {
-        @apply text-xl md:text-2xl text-center;
-      }
-
-      .data {
-        @apply text-lg md:text-xl text-center;
-      }
-    }
-  }
+<style scoped>
+h1 {
+  margin: 6px 0 22px;
+  font: 600 clamp(24px, 3vw, 32px) / 1.3 var(--pixel);
+}
+.status-state {
+  padding: 20px;
+  line-height: 1.8;
+}
+.status-state button {
+  margin-left: 12px;
+}
+.status-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 16px;
+}
+.status-item :deep(.mcframe__main) {
+  padding: 22px;
+}
+.title {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0 0 16px;
+}
+.data {
+  font: 600 32px/1.2 var(--mc-font-mono);
+  margin: 0;
+}
 </style>

@@ -12,25 +12,38 @@
   },
   "home": {
     "protips": {
-      "title": "根据模组检索模组包",
-      "desc": "所有信息来源于Curseforge API。 本网站不隶属于Curseforge或Minecraft。"
+      "title": "找到想玩的整合包",
+      "desc": "选出想玩的模组，寻找同时包含它们的整合包。"
     },
     "searchbar": {
-      "placeholder": "输入关键词以搜索 mods",
-      "no-match": "无匹配模组",
-      "createby": "由 {0} 创建"
+      "placeholder": "模组名称或关键词",
+      "no-match": "没有找到相关模组",
+      "createby": "作者：{0}",
+      "clear": "清空搜索",
+      "loading": "正在搜索模组…",
+      "error": "搜索失败，请检查网络后重试。",
+      "retry": "重试",
+      "label": "搜索模组"
     },
     "modlist": {
-      "added": "成功添加模组",
-      "removed": "成功移除模组"
+      "added": "已添加模组",
+      "removed": "已移除模组",
+      "remove": "移除 {0}",
+      "title": "已选模组",
+      "count": "已选 {count} 个",
+      "empty": "搜索模组，然后添加到这里。",
+      "hint": "查找同时包含这些模组的整合包。",
+      "limit": "最多选择 256 个模组。"
     },
-    "searchbtn": "搜索包含以上模组的整合包"
+    "searchbtn": "查找匹配的整合包"
   },
   "header": {
     "toolbar": {
       "status": "状态",
-      "home": "首页"
-    }
+      "home": "首页",
+      "tools": "工具首页"
+    },
+    "language": "界面语言"
   },
   "status": {
     "title": {
@@ -38,15 +51,92 @@
       "availableModpacks": "可用整合包数量",
       "notAvailableModpacks": "不可用整合包",
       "notEmptyModpacks": "非空整合包"
-    }
+    },
+    "loading": "正在读取收录数据…",
+    "error": "收录数据加载失败，请重试。",
+    "mods": "已收录模组",
+    "modpacks": "已收录整合包",
+    "total": "共 {mods} 个模组 · {modpacks} 个整合包",
+    "countNote": "不同来源的同一项目分别计数。"
   },
   "search": {
-    "no-match-modpack": "未找到符合要求的整合包",
+    "no-match-modpack": "没有找到匹配的整合包，试试放宽条件。",
     "latest-game-version": "最新游戏版本：",
     "unknown": "未知",
     "mod-count": "模组数量：",
     "download-count": "下载量：",
     "create-time": "创建时间：",
-    "update-time": "更新时间："
+    "update-time": "更新时间：",
+    "loading": "正在查找匹配的整合包…",
+    "error": "整合包加载失败，请重试。",
+    "retry": "重试",
+    "more": "加载更多整合包",
+    "title": "匹配的整合包",
+    "count": "找到 {count} 个整合包",
+    "sort": "排序依据",
+    "direction": "顺序",
+    "browse": "浏览全部整合包",
+    "retryAfter": "{seconds} 秒后重试",
+    "approx": "约 {value}",
+    "dependencies": "依赖信息",
+    "dependencyNote": "按整合包所选版本匹配。模组数仅统计已解析的声明依赖，下载量按来源分别统计。"
+  },
+  "footer": {
+    "disclaimer": "非 Minecraft 官方产品，与 Mojang 或 Microsoft 无关联。"
+  },
+  "sources": {
+    "label": "来源",
+    "curseforge": "CurseForge",
+    "modrinth": "Modrinth",
+    "all": "两个来源",
+    "selectionHint": "已选模组按来源分别保存。",
+    "dependencyHint": "同时包含已选的 {count} 个模组；返回首页可修改选择。"
+  },
+  "pagination": {
+    "previous": "上一页",
+    "next": "下一页",
+    "mods": "模组结果分页",
+    "packs": "整合包结果分页",
+    "range": "显示第 {from}–{to} 条",
+    "emptyPage": "此页没有结果",
+    "pageSize": "每页 {count} 条"
+  },
+  "sort": {
+    "createdAt": "创建时间",
+    "updatedAt": "更新时间",
+    "downloadCount": "下载量",
+    "modCount": "模组数量",
+    "asc": "升序",
+    "desc": "降序",
+    "knownCounts": "按模组数量排序时，不显示数量未知的整合包。"
+  },
+  "dependency": {
+    "unknown": "暂无数据",
+    "partial": "部分已解析",
+    "complete": "已解析"
+  },
+  "errors": {
+    "invalid_request": "请求失败，请重试。",
+    "invalid_response": "搜索结果读取失败，请重试。",
+    "verification_unavailable": "无法完成验证，请重试。",
+    "verification_expired": "验证已过期，请重试。",
+    "verification_failed": "验证未通过，请重试。",
+    "rate_limited": "请求太频繁，请稍后再试。",
+    "service_unavailable": "搜索服务暂不可用，请稍后重试。",
+    "api_unavailable": "搜索服务暂不可用，请稍后重试。",
+    "network": "无法连接搜索服务，请检查网络后重试。",
+    "timeout": "搜索请求超时，请重试。",
+    "selection_storage": "已选模组保存失败，请检查浏览器存储设置。"
+  },
+  "ranges": {
+    "title": "范围筛选",
+    "hint": "留空不限。日期按 {timezone} 计算，包含结束当天。数量未知的结果不参与数量筛选。",
+    "min": "最少",
+    "max": "最多",
+    "apply": "应用筛选",
+    "clear": "清空筛选",
+    "invalid": "筛选范围有误，请检查日期、数量和上下限。",
+    "startDate": "开始日期",
+    "endDate": "结束日期"
   }
 }

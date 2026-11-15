@@ -1,0 +1,16 @@
+{
+  "name": "@focess/minecraft-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "theme.css",
+    "components.css",
+    "icons.mjs"
+  ],
+  "exports": {
+    "./theme.css": "./theme.css",
+    "./components.css": "./components.css",
+    "./icons": "./icons.mjs"
+  }
+}

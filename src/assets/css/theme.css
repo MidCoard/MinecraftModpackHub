@@ -1,0 +1,26 @@
+@import "../../vendor/minecraft-ui/components.css";
+:root {
+  --page: var(--mc-canvas);
+  --ink: var(--mc-text);
+  --muted: var(--mc-muted);
+  --line: var(--mc-border);
+  --moss: var(--mc-primary);
+  --copper: light-dark(#603609, #edbb78);
+  --panel: var(--mc-panel);
+  --stone: var(--mc-edge);
+  --well: var(--mc-well);
+  --control: var(--mc-control);
+  --highlight: var(--mc-highlight);
+  --shadow: var(--mc-shadow);
+  --action: var(--mc-action);
+  --action-hover: var(--mc-action-hover);
+  --on-action: var(--mc-on-action);
+  --raised: var(--mc-raised);
+  --recessed: var(--mc-recessed);
+  --pixel: var(--mc-font-display);
+  font-family: var(--mc-font-body);
+  font-synthesis: none;
+  color: var(--ink);
+  background: var(--page);
+  scrollbar-color: var(--mc-scroll-thumb) var(--page);
+}

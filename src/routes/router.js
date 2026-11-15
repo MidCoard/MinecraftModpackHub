@@ -1,57 +1,56 @@
-import * as VueRouter from 'vue-router'
-import { usePageStore } from '../store/page'
-import pinia from '@/store/index'
+import * as VueRouter from "vue-router";
+import { usePageStore } from "../store/page";
+import pinia from "@/store/index";
 
-const pageStore = usePageStore(pinia)
+const pageStore = usePageStore(pinia);
 
-const routeModules = import.meta.globEager('../app/**/routes/index.js')
+const routeModules = import.meta.globEager("../app/**/routes/index.js");
 
 const routes = [
   {
-    path: '/',
-    redirect: '/home'
-  }
-]
+    path: "/",
+    redirect: "/home",
+  },
+];
 
 for (const element in routeModules) {
-  let routeModule = routeModules[element]
-  if (routeModule['routes']) {
-    routes.push(...routeModule['routes'])
+  let routeModule = routeModules[element];
+  if (routeModule["routes"]) {
+    routes.push(...routeModule["routes"]);
   }
 }
 
 const router = VueRouter.createRouter({
-  history: VueRouter.createWebHashHistory(),
-  routes
-})
+  history: VueRouter.createWebHashHistory("/modpacks/"),
+  routes,
+});
 
 const togglePageLoadingState = (() => {
-  let TIMER = null
+  let TIMER = null;
   return (state) => {
     if (state == 1) {
       TIMER = setTimeout(() => {
-        pageStore.setPageLoadingState(true)
-      }, 100)
+        pageStore.setPageLoadingState(true);
+      }, 100);
     } else if (state == 0) {
-      clearTimeout(TIMER)
-      pageStore.setPageLoadingState(false)
+      clearTimeout(TIMER);
+      pageStore.setPageLoadingState(false);
     } else {
-      clearTimeout(TIMER)
+      clearTimeout(TIMER);
     }
-  }
-})()
-
+  };
+})();
 
 router.afterEach((to, from, failure) => {
   if (!to.meta.asyncLoading) {
-    togglePageLoadingState(0)
+    togglePageLoadingState(0);
   } else {
-    togglePageLoadingState(2)
+    togglePageLoadingState(2);
   }
-})
+});
 
 router.beforeEach((to, from, next) => {
-  togglePageLoadingState(1)
+  togglePageLoadingState(1);
 
   // 这里可以处理用户信息获取的相关逻辑
   // if (!userStore.userInfo || !userStore.userInfo.name) {
@@ -62,8 +61,7 @@ router.beforeEach((to, from, next) => {
   // } else {
   //   next()
   // }
-  next()
-})
+  next();
+});
 
-
-export default router
+export default router;

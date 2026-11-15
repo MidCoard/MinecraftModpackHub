@@ -1,10 +1,10 @@
 export const routes = [
   {
     name: "search",
-    path: '/search/:ids',
-    component: () => import('../Search.vue'),
+    path: "/search/:ids?",
+    component: () => import("../Search.vue"),
     meta: {
-      pageTitle: 'title.search'
+      pageTitle: "title.search",
     },
-  }
-]
+  },
+];

@@ -1,64 +1,62 @@
 <script setup>
-  import { useI18n } from "vue-i18n";
-  import LangSwitch from "./LangSwitch.vue";
-  import MCFrame from "./MCFrame.vue";
-  import { Icon } from "@iconify/vue";
+import { useI18n } from "vue-i18n";
+import { RouterLink } from "vue-router";
+import LangSwitch from "./LangSwitch.vue";
+import MCFrame from "./MCFrame.vue";
+import Icon from "@/components/PixelIcon.vue";
 
-  const { t } = useI18n();
+const { t } = useI18n();
 </script>
 
 <template>
   <div class="header">
     <MCFrame class="main">
-      <div class="left">
+      <RouterLink
+        to="/"
+        class="left"
+        :aria-label="t('title.main') + ' · ' + t('header.toolbar.home')"
+      >
         <Icon icon="pixelarticons:briefcase-search" />{{ t("title.main") }}
-      </div>
+      </RouterLink>
       <div class="right" id="header-slot"></div>
     </MCFrame>
-    <MCFrame class="lang-switch">
-      <LangSwitch />
-    </MCFrame>
+    <LangSwitch class="lang-switch" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .header {
-    @apply h-40px md:h-50px text-base md:text-lg;
-    @apply select-none;
-    @apply sticky top-3 md:top-5 z-20;
-    @apply flex gap-x-2;
-    @apply flex-shrink-0;
+.header {
+  @apply text-base md:text-lg;
+  min-height: 64px;
+  @apply select-none;
+  @apply sticky top-3 md:top-5 z-20;
+  @apply flex gap-x-2;
+  @apply flex-shrink-0;
 
-    &::before {
-      content: "";
-      @apply absolute -top-3 md:-top-5 left-0 right-0 bottom-0;
-      background-image: linear-gradient(
-        to bottom,
-        #ebebeb,
-        #ebebeb 30%,
-        transparent
-      );
+  &::before {
+    content: "";
+    @apply absolute -top-3 md:-top-5 left-0 right-0 bottom-0;
+    background: var(--page);
+  }
+
+  .main {
+    @apply flex-grow;
+
+    &:deep(.mcframe__main) {
+      @apply flex justify-between items-center;
+      @apply px-2 sm:px-5 md:px-10;
     }
 
-    .main {
-      @apply flex-grow;
-
-      &:deep(.mcframe__main) {
-        @apply flex justify-between items-center;
-        @apply px-2 sm:px-5 md:px-10;
-      }
-
-      .left {
-        @apply flex justify-center items-center gap-x-1;
-      }
-    }
-
-    .lang-switch {
-      &:deep(.mcframe__main) {
-        @apply flex justify-between items-center;
-        @apply px-0 md:px-2;
-        @apply text-sm md:text-base;
-      }
+    .left {
+      @apply flex justify-center items-center gap-x-1;
+      @apply text-sm md:text-lg whitespace-nowrap;
     }
   }
+
+  .lang-switch {
+    position: relative;
+    align-self: center;
+    flex-shrink: 0;
+  }
+}
 </style>

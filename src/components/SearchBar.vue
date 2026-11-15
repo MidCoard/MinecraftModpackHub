@@ -1,243 +1,397 @@
 <script setup>
-  import { useI18n } from "vue-i18n";
-  import { Icon } from "@iconify/vue";
-  import MCFrame from "./MCFrame.vue";
-  import { ref, watch } from "vue";
-  import LoadingIcon from "./LoadingIcon.vue";
-  import axios from "axios";
-  import { useReCaptcha } from "vue-recaptcha-v3";
-  import { ENV_BASE_URL } from "@/utils/env";
-  const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-
-  const { t } = useI18n();
-
-  const strof = (str, maxlen) => {
-    if (str.length > maxlen) {
-      return str.substring(0, maxlen) + "...";
-    } else {
-      return str;
+import { useI18n } from "vue-i18n";
+import { ref, watch, onBeforeUnmount } from "vue";
+import { useReCaptcha } from "vue-recaptcha-v3";
+import MCFrame from "./MCFrame.vue";
+import LoadingIcon from "./LoadingIcon.vue";
+import ResourceLogo from "./ResourceLogo.vue";
+import SearchFailure from "./SearchFailure.vue";
+import {
+  minecraft,
+  buildQuery,
+  resourceKey,
+  PAGE_SIZE,
+  MinecraftError,
+} from "@/api/minecraft.js";
+import { createRequestGate, moveActive } from "@/utils/request-gate.js";
+const props = defineProps({
+  source: { type: String, required: true },
+  filters: { type: Object, default: null },
+});
+const { t } = useI18n(),
+  { executeRecaptcha, recaptchaLoaded } = useReCaptcha(),
+  emit = defineEmits(["add-mod"]);
+const searchText = ref(""),
+  showResultPanel = ref(false),
+  isLoading = ref(false),
+  result = ref([]),
+  error = ref(null),
+  active = ref(-1),
+  input = ref(null),
+  meta = ref(null),
+  requestedOffset = ref(0);
+let composing = false,
+  timer;
+const gate = createRequestGate();
+async function fetchModList(keyword, offset = 0) {
+  if (!keyword.trim()) return;
+  const operation = gate.begin();
+  requestedOffset.value = offset;
+  isLoading.value = true;
+  error.value = null;
+  active.value = -1;
+  showResultPanel.value = true;
+  try {
+    if (props.filters === null)
+      throw new MinecraftError("invalid_request", 400);
+    const query = buildQuery("mods", {
+      source: props.source,
+      keyword,
+      offset,
+      filters: props.filters,
+    });
+    const page = await minecraft.query(
+      "mods",
+      query,
+      async (action) => {
+        await recaptchaLoaded();
+        return executeRecaptcha(action);
+      },
+      operation.signal,
+    );
+    if (!operation.current()) return;
+    result.value = page.data;
+    meta.value = page.page;
+  } catch (problem) {
+    if (operation.current()) {
+      error.value = problem;
+      result.value = [];
     }
-  };
-
-  // 防抖函数
-  const debounce = (fn, delay = 500) => {
-    let timer = null;
-    return function () {
-      if (timer) {
-        clearTimeout(timer);
-      }
-      timer = setTimeout(() => {
-        fn.apply(this, arguments);
-      }, delay);
-    };
-  };
-
-  const searchText = ref("");
-  const showResultPanel = ref(false);
-  const isLoading = ref(false);
-  const result = ref([]);
-  const mouseInPanel = ref(false);
-
-  const searchHandler = debounce(function (keyword) {
-    fetchModList(keyword);
-  });
-
-  watch(
-    () => searchText.value,
-    (val) => {
-      if (val != "") {
-        searchHandler(val);
-        tryShowResultPanel();
-      } else {
-        showResultPanel.value = false;
-      }
-    }
-  );
-
-  // cancel token
-  let CancelToken = null;
-
-  const fetchModList = async (keyword) => {
-    isLoading.value = true;
-    // cancel old request
-    if (CancelToken) {
-      CancelToken.cancel();
-    }
-
-    await recaptchaLoaded();
-
-    const token = await executeRecaptcha("mod_overview");
-
-    // create new cancel token
-    CancelToken = axios.CancelToken.source();
-
-    try {
-      const { data: _ret } = await axios.post(
-        ENV_BASE_URL + "/v1/focessapi/minecraft/mod/search",
-        {
-          recaptcha: token,
-          sortBy: 1,
-          sortType: 4,
-          keyword,
-        },
-        {
-          cancelToken: CancelToken.token,
-        }
-      );
-
-      result.value = _ret;
-    } catch (error) {
-      console.log(error);
-    }
-    isLoading.value = false;
-  };
-
-  const tryShowResultPanel = () => {
-    showResultPanel.value = true;
-  };
-
-  const tryHideResultPanel = () => {
-    if (!mouseInPanel.value) {
-      showResultPanel.value = false;
-    }
-  };
-
-  const emit = defineEmits(["add-mod"]);
-
-  const onModItemClick = (mod) => {
-    emit("add-mod", mod);
+  } finally {
+    if (operation.current()) isLoading.value = false;
+  }
+}
+function queueSearch(value) {
+  clearTimeout(timer);
+  gate.cancel();
+  isLoading.value = false;
+  error.value = null;
+  result.value = [];
+  meta.value = null;
+  active.value = -1;
+  if (composing || !value.trim()) {
     showResultPanel.value = false;
-    searchText.value = "";
-    result.value = [];
-  };
+    return;
+  }
+  showResultPanel.value = true;
+  isLoading.value = true;
+  timer = setTimeout(() => fetchModList(value), 300);
+}
+watch(searchText, queueSearch);
+watch(
+  () => props.source,
+  () => queueSearch(searchText.value),
+  { flush: "sync" },
+);
+watch(
+  () => props.filters,
+  () => queueSearch(searchText.value),
+  { deep: true, flush: "sync" },
+);
+function clear() {
+  searchText.value = "";
+  queueSearch("");
+  input.value?.focus();
+}
+function choose(mod) {
+  emit("add-mod", mod);
+  clear();
+  showResultPanel.value = false;
+}
+function retry() {
+  input.value?.focus();
+  return fetchModList(searchText.value, requestedOffset.value);
+}
+function pageTo(offset) {
+  input.value?.focus();
+  return fetchModList(searchText.value, offset);
+}
+function keydown(event) {
+  if (event.isComposing || composing) return;
+  if (event.key === "Escape") {
+    showResultPanel.value = false;
+    active.value = -1;
+    return;
+  }
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    event.preventDefault();
+    showResultPanel.value = true;
+    if (result.value.length)
+      active.value = moveActive(
+        active.value,
+        event.key === "ArrowDown" ? 1 : -1,
+        result.value.length,
+      );
+  }
+  if (event.key === "Enter") {
+    event.preventDefault();
+    clearTimeout(timer);
+    if (
+      showResultPanel.value &&
+      active.value >= 0 &&
+      result.value[active.value]
+    )
+      choose(result.value[active.value]);
+    else fetchModList(searchText.value);
+  }
+}
+onBeforeUnmount(() => {
+  clearTimeout(timer);
+  gate.cancel();
+});
 </script>
-
 <template>
-  <div class="search-bar">
-    <MCFrame>
+  <div
+    class="search-bar"
+    @focusout="
+      (event) => {
+        if (!event.currentTarget.contains(event.relatedTarget))
+          showResultPanel = false;
+      }
+    "
+  >
+    <div class="search-control">
       <input
-        v-model.trim="searchText"
+        id="mod-search-input"
+        ref="input"
+        v-model="searchText"
         class="search-input"
         type="text"
+        maxlength="256"
+        role="combobox"
+        :aria-label="t('home.searchbar.label')"
         :placeholder="t('home.searchbar.placeholder')"
-        @focus="tryShowResultPanel()"
-        @blur="tryHideResultPanel()"
+        aria-autocomplete="list"
+        aria-controls="mod-search-options"
+        :aria-expanded="showResultPanel"
+        :aria-activedescendant="
+          showResultPanel && active >= 0 ? 'mod-option-' + active : undefined
+        "
+        @keydown="keydown"
+        @focus="showResultPanel = !!searchText.trim()"
+        @compositionstart="
+          composing = true;
+          clearTimeout(timer);
+          gate.cancel();
+        "
+        @compositionend="
+          composing = false;
+          queueSearch(searchText);
+        "
       />
-    </MCFrame>
-    <Transition name="fade">
-      <MCFrame
-        v-if="showResultPanel"
-        class="float-panel"
-        @pointerenter="mouseInPanel = true"
-        @pointerleave="mouseInPanel = false"
+      <button
+        v-if="searchText"
+        type="button"
+        class="clear-search"
+        :aria-label="t('home.searchbar.clear')"
+        @click="clear"
       >
-        <div v-if="isLoading" class="loading"><LoadingIcon></LoadingIcon></div>
-        <template v-else>
-          <div v-if="result.length == 0" class="no-match">
-            {{ t("home.searchbar.no-match") }}
-          </div>
-          <div v-else class="mod-list">
-            <div
-              v-for="mod of result"
-              :key="mod.id"
-              class="mod-item"
-              @click="onModItemClick(mod)"
-            >
-              <div class="left">
-                <div class="image">
-                  <img
-                    :src="
-                      mod.logoUrl ||
-                      `${ENV_BASE_URL}/v1/focessapi/minecraft/mod/logo/${mod.id}`
-                    "
-                  />
-                </div>
-                <div class="detail">
-                  <div class="name">{{ strof(mod.name, 30) }}</div>
-                  <div v-if="mod.latestGameVersions.length > 0" class="version">
-                    <template
-                      v-for="gameVersion of mod.latestGameVersions.slice(0, 5)"
-                    >
-                      {{ gameVersion.name }}&nbsp;
-                    </template>
-                  </div>
-                </div>
-              </div>
-              <div v-if="mod.authors.length !== 0" class="right">
-                {{
-                  t("home.searchbar.createby", [strof(mod.authors[0].name, 7)])
-                }}
+        ×
+      </button>
+    </div>
+    <MCFrame v-if="showResultPanel" id="mod-search-panel" class="float-panel">
+      <div
+        v-if="isLoading"
+        class="loading"
+        role="status"
+        :aria-label="t('home.searchbar.loading')"
+      >
+        <LoadingIcon />
+      </div>
+      <SearchFailure
+        v-else-if="error"
+        class="search-error"
+        :error="error"
+        @retry="retry"
+      />
+      <p
+        v-if="!isLoading && !error && !result.length"
+        class="no-match"
+        role="status"
+      >
+        {{ t("home.searchbar.no-match") }}
+      </p>
+      <ul
+        v-show="!isLoading && !error && result.length"
+        id="mod-search-options"
+        role="listbox"
+        class="mod-list"
+        :aria-label="t('home.searchbar.label')"
+      >
+        <li
+          v-for="(mod, index) in result"
+          :id="'mod-option-' + index"
+          :key="resourceKey(mod)"
+          role="option"
+          :aria-selected="active === index"
+          class="mod-item"
+          :class="{ active: active === index }"
+          @mousedown.prevent
+          @click="choose(mod)"
+        >
+          <div class="left">
+            <div class="image"><ResourceLogo :url="mod.logoUrl" /></div>
+            <div class="detail">
+              <div class="name">{{ mod.name ?? t("search.unknown") }}</div>
+              <div class="version">
+                {{ t("sources." + mod.source) }} · {{ mod.sourceId }}
               </div>
             </div>
           </div>
-        </template>
-      </MCFrame>
-    </Transition>
+        </li>
+      </ul>
+      <nav
+        v-if="meta && !isLoading && !error"
+        class="query-pagination"
+        :aria-label="t('pagination.mods')"
+      >
+        <button
+          type="button"
+          :disabled="meta.offset === 0"
+          @click="pageTo(Math.max(0, meta.offset - PAGE_SIZE))"
+        >
+          {{ t("pagination.previous") }}
+        </button>
+        <button
+          type="button"
+          :disabled="
+            meta.returned < meta.limit || meta.offset + meta.limit > 1000000
+          "
+          @click="pageTo(meta.offset + meta.limit)"
+        >
+          {{ t("pagination.next") }}
+        </button>
+      </nav>
+    </MCFrame>
   </div>
 </template>
-
-<style lang="scss" scoped>
-  .search-bar {
-    @apply h-46px;
-    .search-input {
-      @apply bg-transparent border-transparent;
-      @apply px-2 md:px-10;
-      @apply w-full;
-      @apply text-lg;
-    }
+<style scoped>
+.search-bar {
+  position: relative;
+}
+.search-control {
+  position: relative;
+}
+.search-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 52px 10px 14px;
+}
+.clear-search {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  font-size: 22px;
+}
+.float-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  width: 100%;
+  z-index: 25;
+  box-shadow: var(--mc-popup-shadow);
+}
+.float-panel :deep(.mcframe__main) {
+  max-height: min(50vh, 420px);
+  overflow: auto;
+}
+.mod-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mod-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.mod-item + .mod-item {
+  border-top-color: var(--line);
+}
+.mod-item:hover,
+.mod-item.active {
+  background: var(--control);
+  border-color: var(--moss);
+  box-shadow: var(--recessed);
+}
+.left {
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+}
+.image {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  padding: 3px;
+  background: var(--well);
+  box-shadow: var(--recessed);
+}
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.version,
+.right {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.right {
+  flex: none;
+  max-width: 30%;
+  overflow-wrap: anywhere;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 22px;
+  font-size: 32px;
+}
+.no-match,
+.search-error {
+  padding: 18px;
+  margin: 0;
+  line-height: 1.7;
+}
+.search-error button {
+  display: block;
+  margin-top: 12px;
+}
+@media (max-width: 560px) {
+  .right {
+    display: none;
   }
-
-  .float-panel {
-    @apply mt-1 relative z-10;
-    filter: drop-shadow(0 1rem 1rem rgba(0, 0, 0, 0.5));
-
-    &:deep(.mcframe__main) {
-      @apply max-h-50vh overflow-auto;
-    }
-
-    .loading {
-      @apply flex justify-center items-center py-5 text-5xl;
-    }
-
-    .no-match {
-      @apply text-center;
-    }
-
-    .mod-list {
-      @apply select-none;
-      .mod-item {
-        @apply flex justify-between py-1 px-1;
-
-        &:hover {
-          @apply bg-primary/10 cursor-pointer;
-        }
-
-        .left {
-          @apply flex;
-          .image {
-            @apply mr-2;
-            @apply flex-shrink-0;
-            img {
-              @apply h-50px w-50px object-cover;
-            }
-          }
-
-          .detail {
-            @apply flex flex-col justify-center;
-            .name {
-              @apply whitespace-nowrap overflow-hidden overflow-ellipsis max-w-70vw;
-            }
-
-            .version {
-              @apply text-primary/60;
-            }
-          }
-        }
-
-        .right {
-          @apply hidden md:block;
-        }
-      }
-    }
-  }
+}
 </style>

@@ -1,14 +1,15 @@
 <script setup>
-  import { useI18n } from "vue-i18n";
-  import { Icon } from "@iconify/vue";
+import { useI18n } from "vue-i18n";
+import Icon from "@/components/PixelIcon.vue";
 
-  const { t } = useI18n();
+const { t } = useI18n();
 </script>
 
 <template>
   <div class="footer">
     <div class="left">
-      <a href="https://focess.top/" target="_blank">
+      <a href="/">{{ t("header.toolbar.tools") }}</a>
+      <a href="https://focess.top/" target="_blank" rel="noopener noreferrer">
         <Icon icon="pixelarticons:external-link" />
         MidCoard's Home
       </a>
@@ -16,34 +17,51 @@
     <div class="right">
       <span>
         Powered by&nbsp;
-        <a href="https://api.focess.top/" target="_blank">
+        <a
+          href="https://api.focess.top/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Icon icon="pixelarticons:external-link" />
           FocessAPI
         </a>
       </span>
     </div>
+    <small class="disclaimer">{{ t("footer.disclaimer") }}</small>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .footer {
-    @apply flex justify-between;
-    @apply text-xs sm:text-sm md:text-base;
-    @apply mb-3 sm:mb-5 md:mb-8;
+.footer {
+  @apply flex justify-between flex-wrap gap-3;
+  @apply text-xs sm:text-sm md:text-base;
+  @apply mb-3 sm:mb-5 md:mb-8;
 
-    .left span,
-    .right span {
-      @apply flex items-center;
-    }
+  .left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 
-    a {
-      @apply inline-flex items-center gap-x-1;
-      @apply text-[#3b904e];
-      @apply underline underline-dashed underline-opacity-0 underline-transparent;
+  .disclaimer {
+    width: 100%;
+    font-size: 11px;
+    color: var(--muted);
+  }
 
-      &:hover {
-        @apply underline-current;
-      }
+  .left span,
+  .right span {
+    @apply flex items-center;
+  }
+
+  a {
+    @apply inline-flex items-center gap-x-1;
+    color: var(--moss);
+    @apply underline underline-dashed underline-opacity-0 underline-transparent;
+
+    &:hover {
+      @apply underline-current;
     }
   }
+}
 </style>

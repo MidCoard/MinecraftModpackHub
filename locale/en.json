@@ -12,25 +12,38 @@
   },
   "home": {
     "protips": {
-      "title": "Search modpacks by mods",
-      "desc": "All information are provided by CurseForge API. This website is not affiliated with CurseForge or Minecraft."
+      "title": "Find a modpack",
+      "desc": "Choose the mods you want to play. Find packs that include them together."
     },
     "searchbar": {
-      "placeholder": "Enter keywords to search mods",
-      "no-match": "No matched mods",
-      "createby": "Create by {0}"
+      "placeholder": "Mod name or keyword",
+      "no-match": "No mods found",
+      "createby": "By {0}",
+      "clear": "Clear search",
+      "loading": "Searching mods…",
+      "error": "Search failed. Check your connection and try again.",
+      "retry": "Try again",
+      "label": "Search for a mod"
     },
     "modlist": {
       "added": "Mod added",
-      "removed": "Mod removed"
+      "removed": "Mod removed",
+      "remove": "Remove {0}",
+      "title": "Selected mods",
+      "count": "{count} selected",
+      "empty": "Search for mods to add here.",
+      "hint": "Find packs that include all these mods.",
+      "limit": "Select up to 256 mods."
     },
-    "searchbtn": "Checkout modpacks covered above mods"
+    "searchbtn": "Find matching modpacks"
   },
   "header": {
     "toolbar": {
       "status": "Status",
-      "home": "Home"
-    }
+      "home": "Home",
+      "tools": "All tools"
+    },
+    "language": "Language"
   },
   "status": {
     "title": {
@@ -38,15 +51,92 @@
       "availableModpacks": "Available Modpacks",
       "notAvailableModpacks": "Not Available Modpacks",
       "notEmptyModpacks": "Not Empty Modpacks"
-    }
+    },
+    "loading": "Loading catalog…",
+    "error": "Could not load the catalog. Please try again.",
+    "mods": "Collected mods",
+    "modpacks": "Collected modpacks",
+    "total": "{mods} mods · {modpacks} modpacks",
+    "countNote": "A project listed on both sources is counted twice."
   },
   "search": {
-    "no-match-modpack": "No matched modpack found",
+    "no-match-modpack": "No packs found. Try fewer mods or broader filters.",
     "latest-game-version": "Latest Game Version: ",
     "unknown": "Unknown",
     "mod-count": "Mods Count: ",
     "download-count": "Downloads: ",
     "create-time": "Created: ",
-    "update-time": "Modified: "
+    "update-time": "Modified: ",
+    "loading": "Finding matching modpacks…",
+    "error": "Could not load modpacks. Please try again.",
+    "retry": "Try again",
+    "more": "Show more modpacks",
+    "title": "Matching modpacks",
+    "count": "{count} modpacks found",
+    "sort": "Sort by",
+    "direction": "Order",
+    "browse": "Browse all modpacks",
+    "retryAfter": "Try again in {seconds}s",
+    "approx": "≈ {value}",
+    "dependencies": "Dependency data",
+    "dependencyNote": "Matches use the selected pack version. Mod counts include resolved declared dependencies; downloads are counted per source."
+  },
+  "footer": {
+    "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft."
+  },
+  "sources": {
+    "label": "Source",
+    "curseforge": "CurseForge",
+    "modrinth": "Modrinth",
+    "all": "Both sources",
+    "selectionHint": "Selected mods are saved separately for each source.",
+    "dependencyHint": "Includes all {count} selected mods. Return home to change your selection."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "mods": "Mod result pages",
+    "packs": "Modpack result pages",
+    "range": "Showing {from}–{to}",
+    "emptyPage": "No entries on this page",
+    "pageSize": "{count} per page"
+  },
+  "sort": {
+    "createdAt": "Creation time",
+    "updatedAt": "Update time",
+    "downloadCount": "Downloads",
+    "modCount": "Mod count",
+    "asc": "Ascending",
+    "desc": "Descending",
+    "knownCounts": "Packs with unknown mod counts are excluded from this sort."
+  },
+  "dependency": {
+    "unknown": "No data",
+    "partial": "Partially resolved",
+    "complete": "Resolved"
+  },
+  "errors": {
+    "invalid_request": "Request failed. Please try again.",
+    "invalid_response": "Could not read the results. Please try again.",
+    "verification_unavailable": "Could not complete verification. Please try again.",
+    "verification_expired": "Verification expired. Please try again.",
+    "verification_failed": "Verification failed. Please try again.",
+    "rate_limited": "Too many requests. Please try again later.",
+    "service_unavailable": "The search service is temporarily unavailable. Please try again later.",
+    "api_unavailable": "Search is temporarily unavailable. Please try again later.",
+    "network": "Could not connect to the search service. Please try again.",
+    "timeout": "The search request timed out. Please try again.",
+    "selection_storage": "Could not save your selection. Check your browser storage settings."
+  },
+  "ranges": {
+    "title": "Range filters",
+    "hint": "Leave blank for no limit. Dates use {timezone} and include the end day. Results with unknown counts are excluded from count filters.",
+    "min": "Minimum",
+    "max": "Maximum",
+    "apply": "Apply filters",
+    "clear": "Clear filters",
+    "invalid": "Check the dates, counts and range limits.",
+    "startDate": "From",
+    "endDate": "Through"
   }
 }

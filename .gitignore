@@ -25,3 +25,12 @@ dist-ssr
 *.docx
 
 .rsw
+# Local design context and verification output
+/DESIGN.md
+/UX-CONTRACT.md
+/premium-ui.json
+/verification/
+/.pnpm-store/
+
+/delivery/*
+!/delivery/site.zip
