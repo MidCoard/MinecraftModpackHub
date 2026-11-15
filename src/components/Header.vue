@@ -20,9 +20,7 @@ const { t } = useI18n();
       </RouterLink>
       <div class="right" id="header-slot"></div>
     </MCFrame>
-    <MCFrame class="lang-switch">
-      <LangSwitch />
-    </MCFrame>
+    <LangSwitch class="lang-switch" />
   </div>
 </template>
 
@@ -56,11 +54,9 @@ const { t } = useI18n();
   }
 
   .lang-switch {
-    &:deep(.mcframe__main) {
-      @apply flex justify-between items-center;
-      @apply px-0 md:px-2;
-      @apply text-sm md:text-base;
-    }
+    position: relative;
+    align-self: center;
+    flex-shrink: 0;
   }
 }
 </style>

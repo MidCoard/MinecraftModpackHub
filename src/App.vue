@@ -31,16 +31,6 @@ const { t } = useI18n();
 </template>
 
 <style scoped lang="scss">
-.toolbar {
-  @apply select-none;
-  @apply fixed top-0 right-0 mt-2 mr-2 flex gap-x-2;
-  .lang-switch {
-    select {
-      @apply w-full h-full;
-    }
-  }
-}
-
 .main-wrapper {
   @apply max-w-1300px w-full min-h-100vh;
   max-width: 1120px;

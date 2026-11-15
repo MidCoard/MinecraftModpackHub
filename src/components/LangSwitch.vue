@@ -1,19 +1,25 @@
 <script setup>
 import { useI18n } from "vue-i18n";
 
-const { t, availableLocales, locale } = useI18n();
+const { locale } = useI18n();
 </script>
 
 <template>
-  <select v-model="locale" :aria-label="t('header.language')">
-    <option v-for="item of availableLocales" :value="item" :key="item">
-      {{ t(`locate.${item}`) }}
-    </option>
-  </select>
+  <button
+    type="button"
+    class="mc-button locale-toggle"
+    :lang="locale === 'en' ? 'zh-CN' : 'en'"
+    :aria-label="locale === 'en' ? '切换到简体中文' : 'Switch to English'"
+    :title="locale === 'en' ? '切换到简体中文' : 'Switch to English'"
+    @click="locale = locale === 'en' ? 'zh-cn' : 'en'"
+  >
+    {{ locale === "en" ? "中文" : "EN" }}
+  </button>
 </template>
 
-<style lang="scss" scoped>
-select {
-  @apply bg-transparent text-primary h-full;
+<style scoped>
+.locale-toggle {
+  min-width: 64px;
+  min-height: 40px;
 }
 </style>

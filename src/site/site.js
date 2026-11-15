@@ -69,6 +69,7 @@ function renderLocale() {
     );
   const control = document.querySelector("[data-locale]");
   control.textContent = locale === "en" ? "中文" : "EN";
+  control.lang = locale === "en" ? "zh-CN" : "en";
   control.setAttribute(
     "aria-label",
     locale === "en" ? "切换到简体中文" : "Switch to English",
