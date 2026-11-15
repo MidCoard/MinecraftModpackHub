@@ -11,27 +11,14 @@ import ResourceLogo from "@/components/ResourceLogo.vue";
 import { useMessage } from "@/components/Message";
 import RangeFilters from "@/components/RangeFilters.vue";
 import { filtersFromDraft, readRangeDraft, rangeQuery } from "@/api/ranges.js";
-import RangeFilters from "@/components/RangeFilters.vue";
-import { filtersFromDraft, readRangeDraft, rangeQuery } from "@/api/ranges.js";
 import SearchBar from "@/components/SearchBar.vue";
 import Icon from "@/components/PixelIcon.vue";
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { RouterLink, useRouter, useRoute, useRoute } from "vue-router";
+import { RouterLink, useRouter, useRoute } from "vue-router";
 const { success } = useMessage(),
   router = useRouter(),
   { t } = useI18n();
-const route = useRoute();
-const modFilters = computed(() => {
-  try {
-    return filtersFromDraft(readRangeDraft(route.query, "mods"), "mods");
-  } catch {
-    return null;
-  }
-});
-function applyRanges(draft) {
-  router.replace({ query: rangeQuery(route.query, draft, "mods") });
-}
 const route = useRoute();
 const modFilters = computed(() => {
   try {

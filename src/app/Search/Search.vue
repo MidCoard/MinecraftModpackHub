@@ -1,8 +1,6 @@
 <script setup>
 import RangeFilters from "@/components/RangeFilters.vue";
 import { rangeQuery } from "@/api/ranges.js";
-import RangeFilters from "@/components/RangeFilters.vue";
-import { rangeQuery } from "@/api/ranges.js";
 import MCFrame from "@/components/MCFrame.vue";
 import ResourceLogo from "@/components/ResourceLogo.vue";
 import SearchFailure from "@/components/SearchFailure.vue";
@@ -91,9 +89,6 @@ function filter(key, value) {
 function applyRanges(draft) {
   router.replace({ query: rangeQuery(route.query, draft, "modpacks") });
 }
-function applyRanges(draft) {
-  router.replace({ query: rangeQuery(route.query, draft, "modpacks") });
-}
 function pageTo(offset) {
   router.replace({ query: { ...route.query, offset: String(offset) } });
 }
@@ -167,7 +162,6 @@ onBeforeUnmount(() => gate.cancel());
           </select></label
         >
       </div>
-      <RangeFilters kind="modpacks" :query="route.query" @apply="applyRanges" />
       <RangeFilters kind="modpacks" :query="route.query" @apply="applyRanges" />
       <p v-if="selection?.dependencyRefs.length" class="source-hint">
         {{
